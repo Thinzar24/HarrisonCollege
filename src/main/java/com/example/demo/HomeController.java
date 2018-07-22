@@ -23,14 +23,12 @@ public class HomeController {
     private UserService userService;
 
     @RequestMapping("/")
-    public String listPets(Model model)
-    {
-        return "";
+    public String getIndex() {
+        return "index";
     }
 
     @GetMapping("/login")
-    public String login()
-    {
+    public String login() {
         return "login";
     }
 

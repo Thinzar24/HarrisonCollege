@@ -23,3 +23,4 @@ Running the application and creating tables
 4. Check to see tables got created in MySQL.
 5. Stop application and change application.properties:
 	spring.jpa.hibernate.ddl-auto=update
+6. Comment out everything in the run() method in the DataLoader.java file.
