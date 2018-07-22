@@ -13,3 +13,13 @@ Merging and Pushing Changes
 2. git commit -m "commit message"
 3. git pull origin master
 4. git push origin master
+
+Running the application and creating tables
+1. Open up MySQL.
+2. Run queries:
+	create database harrison;
+	use harrison;
+3. Run the application.
+4. Check to see tables got created in MySQL.
+5. Stop application and change application.properties:
+	spring.jpa.hibernate.ddl-auto=update
