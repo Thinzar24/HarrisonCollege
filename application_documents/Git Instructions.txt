@@ -1,0 +1,15 @@
+Git Push and Pull Instructions
+
+Pulling Down GitHub Project
+1. Create local folder to hold project files.
+2. Open git command line.
+3. Navigate to that folder you've just created.
+4. git init
+5. git remote add origin https://your_username@github.com/romielisse/HarrisonCollege.git
+6. git pull origin master
+
+Merging and Pushing Changes
+1. git add --all
+2. git commit -m "commit message"
+3. git pull origin master
+4. git push origin master

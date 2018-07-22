@@ -1,0 +1,23 @@
+body {
+    margin: 30px auto 0px auto;
+    font-family: Verdana;
+    width: 85%;
+}
+
+div.jumbotron {
+    padding-top: 10%;
+}
+
+.navbar {
+    margin-bottom: 30px;
+}
+
+div.footer {
+    margin-top: 30px;
+    position: fixed;
+    left: 0;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #c8cbcf;
+}

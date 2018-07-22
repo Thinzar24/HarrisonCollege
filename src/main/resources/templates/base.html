@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:fragment="header">
+    <meta charset="UTF-8"/>
+    <link th:href="@{/css/bootstrap.min.css}" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet"/>
+</head>
+<body>
+
+    <div th:fragment="nav">
+
+        <nav class="navbar navbar-expand-sm bg-light fixed-top">
+
+            <!-- Links -->
+            <ul class="navbar-nav">
+                <li sec:authorize="isAuthenticated()" class="nav-item">
+                    Welcome <span th:text="${#authentication.name}"></span>!
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
+                    <a class="nav-link" href="/register">Register</a>
+                </li>
+                <li sec:authorize="!isAuthenticated()" class="nav-item">
+                    <a class="nav-link" href="/login">Login</a>
+                </li>
+            </ul>
+
+        </nav>
+
+        <div class="jumbotron text-center">
+            <h1>Harrison College</h1>
+        </div>
+
+    </div><!--end div fragment nav-->
+
+    <div th:fragment="footer">
+        <div class="footer">&#169; 2018 Harrison College</div>
+    </div>
+
+</body>
+</html>

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <title>Classrooms</title>
+    <th:block th:insert="base :: header"></th:block>
+</head>
+<body>
+
+<div class="container">
+
+    <div th:replace="base :: nav"></div>
+
+    <h3>Classrooms used by [[${title_type}]]</h3>
+
+    <!--Insert content here-->
+
+    <div th:replace="base :: footer"></div>
+
+</div>
+
+</body>
+</html>
