@@ -1,8 +1,9 @@
-package com.example.demo;
+package com.example.demo.Beans;
+
+import com.example.demo.Beans.Role;
 
 import javax.persistence.*;
 import java.util.Collection;
-import java.util.Set;
 
 @Entity
 @Table(name="USER")

@@ -7,8 +7,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class DataLoader implements CommandLineRunner{
 
-    @Autowired
-    RoleRepository roleRepository;
+    /*@Autowired
+    RoleRepository roleRepository;*/
 
     /*
         Run method will be executed after the application context is
@@ -18,11 +18,11 @@ public class DataLoader implements CommandLineRunner{
     @Override
     public void run(String... strings) throws Exception{
         System.out.println("Loading data...");
-
+/*
         roleRepository.save(new Role("Admin"));
         roleRepository.save(new Role("Student"));
         roleRepository.save(new Role("Instructor"));
-        roleRepository.save(new Role("Advisor"));
+        roleRepository.save(new Role("Advisor")); */
 
     }
 }

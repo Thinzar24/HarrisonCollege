@@ -1,7 +1,5 @@
 package com.example.demo.Beans;
 
-import com.example.demo.User;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -74,5 +72,14 @@ public class Student {
 
     public void setClasses(Set<Class> classes) {
         this.classes = classes;
+    }
+
+    public Set<Grade> getGrades() {
+        return grades;
+    }
+
+    public Student setGrades(Set<Grade> grades) {
+        this.grades = grades;
+        return this;
     }
 }

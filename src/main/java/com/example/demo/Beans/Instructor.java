@@ -1,7 +1,5 @@
 package com.example.demo.Beans;
 
-import com.example.demo.User;
-
 import javax.persistence.*;
 import java.util.Set;
 

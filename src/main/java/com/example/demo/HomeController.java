@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.Beans.User;
+import com.example.demo.Repository.RoleRepository;
+import com.example.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -36,7 +39,7 @@ public class HomeController {
     public String showRegistrationPage(Model model)
     {
         model.addAttribute("user", new User());
-        return "registration";
+        return "studentform";
     }
 
     @PostMapping("/register")
@@ -46,7 +49,7 @@ public class HomeController {
 
         if (result.hasErrors())
         {
-            return "registration";
+            return "studentform";
         }
         else
         {
@@ -63,5 +66,6 @@ public class HomeController {
         User user = userRepository.findByUsername(currentusername);
         return user;
     }
+
 
 }
