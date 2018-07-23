@@ -24,14 +24,9 @@
             <tbody>
             <!--sample for loop-->
             <tr th:each="user : ${users}">
-                <!--Sample cell text-->
-<<<<<<< HEAD
                 <td ><span th:text="${user.id}"></span></td>
-=======
                 <td ><span th:text="${user.name}"></span></td>
->>>>>>> 03bfd9acd9c96c01e95be218f2dbff19bc63f32e
                 <td >
-                    <!--Sample button link-->
                     <span th:if="${user.role != 'Student'}"></span>
                     <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
                 </td>
