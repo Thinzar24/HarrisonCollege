@@ -3,10 +3,8 @@ package com.example.demo;
 import com.example.demo.Beans.Major;
 import com.example.demo.Beans.Student;
 import com.example.demo.Beans.User;
-import com.example.demo.Repository.MajorRepository;
-import com.example.demo.Repository.RoleRepository;
-import com.example.demo.Repository.StudentRepository;
-import com.example.demo.Repository.UserRepository;
+import com.example.demo.Repository.*;
+import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -32,6 +30,9 @@ public class HomeController {
 
     @Autowired
     MajorRepository majorRepository;
+
+    @Autowired
+    DepartmentRepository departmentRepository;
 
     @Autowired
     private UserService userService;
@@ -87,6 +88,41 @@ public class HomeController {
     public String studentMain()
     {
         return "studentmain";
+    }
+    @RequestMapping("/instructormain")
+    public String instructorMain()
+    {
+        return "instructormain";
+    }
+    @RequestMapping("/adminmain")
+    public String adminMain()
+    {
+        return "adminmain";
+    }
+
+    @RequestMapping("/advisormain")
+    public String advisorMain()
+    {
+        return "advisormain";
+    }
+
+    @GetMapping("/addMajor")
+    public String addMajor(Model model)
+    {
+        model.addAttribute("major", new Major());
+        model.addAttribute("departments", departmentRepository.findAll());
+        return "majorform";
+    }
+
+    @PostMapping("/addMajor")
+    public String processMajor(@Valid @ModelAttribute Major major, BindingResult result)
+    {
+        if(result.hasErrors())
+        {
+            return "majorform";
+        }
+        majorRepository.save(major);
+        return "redirect:/adminmain";
     }
 
 
