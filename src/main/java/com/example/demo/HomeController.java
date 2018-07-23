@@ -2,6 +2,7 @@ package com.example.demo;
 
 import com.example.demo.Beans.Major;
 import com.example.demo.Beans.Student;
+import com.example.demo.Beans.Subject;
 import com.example.demo.Beans.User;
 import com.example.demo.Repository.*;
 import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
@@ -29,10 +30,28 @@ public class HomeController {
     StudentRepository studentRepository;
 
     @Autowired
+    InstructorRepository instructorRepository;
+
+    @Autowired
     MajorRepository majorRepository;
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    CourseRepository courseRepository;
+
+    @Autowired
+    SubjectRepository subjectRepository;
+
+    //@Autowired
+    //ClassRepository classRepository;
+
+    @Autowired
+    ClassroomRepository classroomRepository;
+
+    @Autowired
+    GradeRepository gradeRepository;
 
     @Autowired
     private UserService userService;
@@ -153,13 +172,20 @@ public class HomeController {
     }
 
     @RequestMapping("/courses")
-    public String getCourses(){
+    public String getCourses(Model model){
+        model.addAttribute("courses", courseRepository.findAll());
         return "courses";
     }
 
     @RequestMapping("/classesInCurrentSemester")
-    public String getCurrentClasses(){
+    public String getCurrentClasses(Model model){
+        //model.addAttribute("classes", classRepository.findAllBySemester("current"));
         return "classes";
+    }
+
+    @GetMapping("/adminsearch")
+    public String getAdminSearch(){
+        return "adminsearch";
     }
 
 }
