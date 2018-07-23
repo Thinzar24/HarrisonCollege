@@ -25,6 +25,9 @@ public class Student {
     @ManyToMany(mappedBy = "students")
     private Set<Class> classes;
 
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    public Set<Grade> grades;
+
     public long getId() {
         return id;
     }

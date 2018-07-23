@@ -1,2 +1,2 @@
-create database harrison;
+-- create database harrison;
 use harrison;
