@@ -22,18 +22,22 @@
             </tr>
             </thead>
             <tbody>
-            <!--sample for loop-->
             <tr th:each="user : ${users}">
-                <!--Sample cell text-->
-<<<<<<< HEAD
-                <td ><span th:text="${user.id}"></span></td>
-=======
+                <td ><span th:text="${user.username}"></span></td>
                 <td ><span th:text="${user.name}"></span></td>
->>>>>>> 03bfd9acd9c96c01e95be218f2dbff19bc63f32e
+                <td ><span th:text="${user.roles.role}"></span></td>
                 <td >
-                    <!--Sample button link-->
-                    <span th:if="${user.role != 'Student'}"></span>
-                    <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
+                        <select id="newRole" name="role_type">
+                            <option th:if="${user.roles.role!='Admin'}"
+                                    value = "1" text="Admin"/>
+                            <option th:if="${user.roles.role!='Student'}"
+                                    value = "2" text="Admin"/>
+                            <option th:if="${user.roles.role!='Instructor'}"
+                                    value = "3" text="Admin"/>
+                            <option th:if="${user.roles.role!='Adivisor'}"
+                                    value = "4" text="Admin"/>
+                        </select>
+                            <a class="btn btn-primary" th:href ="@{/updateRole/{id}(id=${user.id})}">Change</a>
                 </td>
             </tr>
             </tbody>
