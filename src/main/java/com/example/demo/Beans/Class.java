@@ -33,8 +33,7 @@ public class Class {
     @JoinColumn(name = "course_id")
     private Course course;
 
-
-    @OneToMany(mappedBy = "class", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "aClass", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
 
     @ManyToOne(fetch = FetchType.LAZY)
