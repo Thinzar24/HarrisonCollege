@@ -97,7 +97,7 @@ public class HomeController {
     @RequestMapping("/adminmain")
     public String adminMain()
     {
-        return "adminmain";
+        return "admin/adminmain";
     }
 
     @RequestMapping("/advisormain")
@@ -111,7 +111,7 @@ public class HomeController {
     {
         model.addAttribute("major", new Major());
         model.addAttribute("departments", departmentRepository.findAll());
-        return "majorform";
+        return "admin/majorform";
     }
 
     @PostMapping("/addMajor")
@@ -123,6 +123,13 @@ public class HomeController {
         }
         majorRepository.save(major);
         return "redirect:/adminmain";
+    }
+
+    @GetMapping("/users")
+    public String changeRole(Model model)
+    {
+        model.addAttribute("users", userRepository.findAll());
+        return "users";
     }
 
 

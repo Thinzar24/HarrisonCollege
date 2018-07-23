@@ -24,8 +24,8 @@
 
 
                 <div class="form-group">
-                    <label for="departmentInput"><strong>Choose your Major</strong></label>
-                    <select class="form-control" id="departmentInput" th:field="department">
+                    <label for="departmentInput"><strong>Choose A Department</strong></label>
+                    <select class="form-control" id="departmentInput" th:field="*{department}">
                         <option th:each="department : ${departments}"
                                 th:value="${department.id}"
                                 th:utext="${department.department_name}"/>
