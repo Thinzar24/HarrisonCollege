@@ -1,5 +1,6 @@
 package com.example.demo;
 
+import com.example.demo.Beans.Major;
 import com.example.demo.Beans.Student;
 import com.example.demo.Beans.User;
 import com.example.demo.Repository.MajorRepository;
@@ -66,7 +67,8 @@ public class HomeController {
             Student student = new Student();
             student.setEntry_year(request.getParameter("entry_year"));
             student.setStudent_number(request.getParameter("student_number"));
-            student.setMajor(majorRepository.findByMajor_name("major"));
+            student.setMajor(majorRepository.findById(Long.parseLong(request.getParameter("major"))).get());
+            student.setUser(user);
             studentRepository.save(student);
             userService.saveStudent(user);
         }
@@ -79,6 +81,12 @@ public class HomeController {
         String currentusername = authentication.getName();
         User user = userRepository.findByUsername(currentusername);
         return user;
+    }
+
+    @RequestMapping("/studentmain")
+    public String studentMain()
+    {
+        return "studentmain";
     }
 
 
