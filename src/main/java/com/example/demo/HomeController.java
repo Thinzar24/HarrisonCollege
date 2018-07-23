@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.Beans.Major;
+import com.example.demo.Beans.Role;
 import com.example.demo.Beans.Student;
 import com.example.demo.Beans.Subject;
 import com.example.demo.Beans.User;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import javax.websocket.server.PathParam;
 
 @Controller
 public class HomeController {
@@ -24,13 +26,13 @@ public class HomeController {
     UserRepository userRepository;
 
     @Autowired
+    InstructorRepository instructorRepository;
+
+    @Autowired
     RoleRepository roleRepository;
 
     @Autowired
     StudentRepository studentRepository;
-
-    @Autowired
-    InstructorRepository instructorRepository;
 
     @Autowired
     MajorRepository majorRepository;
@@ -148,27 +150,64 @@ public class HomeController {
     public String changeRole(Model model)
     {
         model.addAttribute("users", userRepository.findAll());
-        return "users";
+        return "admin/users";
     }
 
+    @RequestMapping("/updateRole/{id}")
+    public String processChageRole(@PathParam("id") long id, HttpServletRequest request)
+    {
+        User user = userRepository.findById(id).get();
+        //Role preRole = user.getRoles();
+        long role_id = Long.parseLong(request.getParameter("role_type"));
+        Role role = roleRepository.findById(role_id).get();
+        user.setRoles(role);
+        userRepository.save(user);
+
+        if(preRole.getRole().equalsIgnoreCase("Student"))
+        {
+
+            studentRepository.delete();
+
+        }else if (preRole.getRole().equalsIgnoreCase("Instructor"))
+        {
+            instructorRepository.delete();
+        }
+
+        if(role.getRole().equalsIgnoreCase("student"))
+        {
+            return "/register";
+        }else if (role.getRole().equalsIgnoreCase("instructor"))
+        {
+            return "/addInstructor";
+        }
+        return "redirect:/adminmain";
+    }
+
+
+
+
+
+
+
+>>>>>>> 49f479481b9daf6ed0673eb340f83a7a677b72e2
     @GetMapping("/courseform")
     public String addCourse(){
-        return "courseform";
+        return "admin/courseform";
     }
 
     @GetMapping("/classroomform")
     public String addClassroom(){
-        return "classroomform";
+        return "admin/classroomform";
     }
 
     @GetMapping("/departmentform")
     public String addDepartment(){
-        return "departmentform";
+        return "admin/departmentform";
     }
 
     @GetMapping("/classform")
     public String addClass(){
-        return "classform";
+        return "admin/classform";
     }
 
     @RequestMapping("/courses")
@@ -182,10 +221,13 @@ public class HomeController {
         //model.addAttribute("classes", classRepository.findAllBySemester("current"));
         return "classes";
     }
+<<<<<<< HEAD
 
     @GetMapping("/adminsearch")
     public String getAdminSearch(){
         return "adminsearch";
     }
+=======
+>>>>>>> 49f479481b9daf6ed0673eb340f83a7a677b72e2
 
 }
