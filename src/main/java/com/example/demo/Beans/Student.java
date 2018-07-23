@@ -78,7 +78,8 @@ public class Student {
         return grades;
     }
 
-    public void setGrades(Set<Grade> grades) {
+    public Student setGrades(Set<Grade> grades) {
         this.grades = grades;
+        return this;
     }
 }

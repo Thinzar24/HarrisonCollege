@@ -1,5 +1,7 @@
 package com.example.demo.Beans;
 
+import com.example.demo.Beans.Role;
+
 import javax.persistence.*;
 import java.util.Collection;
 
