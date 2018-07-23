@@ -30,13 +30,13 @@ public class DataLoader implements CommandLineRunner{
      */
     @Override
     public void run(String... strings) throws Exception{
-        System.out.println("Loading data...");
-
+//        System.out.println("Loading data...");
+//
 //        roleRepository.save(new Role("Admin"));
 //        roleRepository.save(new Role("Student"));
 //        roleRepository.save(new Role("Instructor"));
 //        roleRepository.save(new Role("Advisor"));
-
+//
 //        Role adminRole = roleRepository.findByRole("ADMIN");
 //        Role studentRole = roleRepository.findByRole("Student");
 //        Role instructorRole = roleRepository.findByRole("Instructor");

@@ -66,7 +66,7 @@ public class HomeController {
             Student student = new Student();
             student.setEntry_year(request.getParameter("entry_year"));
             student.setStudent_number(request.getParameter("student_number"));
-            student.setMajor(majorRepository.findByMajor_name("major"));
+            //student.setMajor(majorRepository.findByMajor_name("major"));
             studentRepository.save(student);
             userService.saveStudent(user);
         }
