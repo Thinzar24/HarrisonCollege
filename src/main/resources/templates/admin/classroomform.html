@@ -12,28 +12,42 @@
     <div th:replace="base :: nav"></div>
 
     <form action="#"
-          th:action="@{/}"
-          th:object="${}"
+          th:action="@{/process}"
+          th:object="${classroom}"
           method="post">
 
         <input type="hidden" th:field="*{id}">
 
         <!--Sample text input-->
         <div class="form-group">
-            <label for="manufacturer">Manufacturer:</label>
-            <input class="form-control" type="text" id="manufacturer" th:field="*{manufacturer}"/>
+            <label for="building_name">Enter Building Name :</label>
+            <input class="form-control" type="text" id="building_name" th:field="*{building_name}"/>
         </div>
 
-        <!--Sample dropdown input-->
         <div class="form-group">
-            <label for="category">Category:</label>
-            <select name="category" id="category" class="custom-select" th:field="*{category}">
-                <option value="">Select Category</option>
-                <option th:each="category : ${categories}"
-                        th:value="${category.id}"
-                        th:utext="${category.categoryName}"/>
-            </select>
+            <label for="room_number">Enter Room Number :</label>
+            <input class="form-control" type="text" id="room_number" th:field="*{room_number}"/>
         </div>
+
+        <div class="form-group">
+            <label for="capacity">Enter Capacity :</label>
+            <input class="form-control" type="text" id="capacity" th:field="*{capacity}"/>
+        </div>
+
+
+
+        <!--Sample dropdown input-->
+        <!--<div class="form-group">-->
+            <!--<label for="category">Category:</label>-->
+            <!--<select name="category" id="category" class="custom-select" th:field="*{category}">-->
+                <!--<option value="">Select Category</option>-->
+                <!--<option th:each="classroom : ${classrooms}"-->
+                        <!--th:value="${classroom.id}"-->
+                        <!--th:utext="${classroom.building_name}"-->
+                        <!--th:utext="${classroom.room_number}"-->
+                        <!--th:utext="${classroom.capacity}"/>-->
+            <!--</select>-->
+        <!--</div>-->
 
         <input class="submit-btn" type="submit" value="Submit"/>
     </form>
