@@ -13,7 +13,26 @@
 
     <h3>[[${page_title}]]</h3>
 
-    <!--Insert content here-->
+    <div class="table-responsive">
+        <table class="table table-hover text-center">
+            <thead>
+            <tr>
+                <th>Column title goes here</th>
+            </tr>
+            </thead>
+            <tbody>
+            <!--sample for loop-->
+            <tr th:each="company : ${companies}">
+                <!--Sample cell text-->
+                <td ><span th:text="${company.companyid}"></span></td>
+                <td >
+                    <!--Sample button link-->
+                    <a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
 
     <div th:replace="base :: footer"></div>
 

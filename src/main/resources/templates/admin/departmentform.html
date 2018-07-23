@@ -11,7 +11,33 @@
 
     <div th:replace="base :: nav"></div>
 
-    <!--Insert content here-->
+    <form action="#"
+          th:action="@{/}"
+          th:object="${}"
+          method="post">
+
+        <input type="hidden" th:field="*{id}">
+
+        <!--Sample text input-->
+        <div class="form-group">
+            <label for="manufacturer">Manufacturer:</label>
+            <input class="form-control" type="text" id="manufacturer" th:field="*{manufacturer}"/>
+        </div>
+
+        <!--Sample dropdown input-->
+        <div class="form-group">
+            <label for="category">Category:</label>
+            <select name="category" id="category" class="custom-select" th:field="*{category}">
+                <option value="">Select Category</option>
+                <option th:each="category : ${categories}"
+                        th:value="${category.id}"
+                        th:utext="${category.categoryName}"/>
+            </select>
+        </div>
+
+        <input class="submit-btn" type="submit" value="Submit"/>
+    </form>
+
 
     <div th:replace="base :: footer"></div>
 
