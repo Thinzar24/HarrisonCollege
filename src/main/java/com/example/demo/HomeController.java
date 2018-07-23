@@ -125,6 +125,7 @@ public class HomeController {
         return "redirect:/adminmain";
     }
 
+<<<<<<< HEAD
     @GetMapping("/users")
     public String changeRole(Model model)
     {
@@ -132,5 +133,36 @@ public class HomeController {
         return "users";
     }
 
+=======
+    @GetMapping("/courseform")
+    public String addCourse(){
+        return "courseform";
+    }
+
+    @GetMapping("/classroomform")
+    public String addClassroom(){
+        return "classroomform";
+    }
+
+    @GetMapping("/departmentform")
+    public String addDepartment(){
+        return "departmentform";
+    }
+
+    @GetMapping("/classform")
+    public String addClass(){
+        return "classform";
+    }
+
+    @RequestMapping("/courses")
+    public String getCourses(){
+        return "courses";
+    }
+
+    @RequestMapping("/classesInCurrentSemester")
+    public String getCurrentClasses(){
+        return "classes";
+    }
+>>>>>>> 03bfd9acd9c96c01e95be218f2dbff19bc63f32e
 
 }
