@@ -75,7 +75,7 @@ public class MySimpleUrlAuthenticationSuccessHandler implements AuthenticationSu
         } else if (isAdvisor){
             return "/advisormain";
         } else if (isInstructor) {
-            return "/insgructormain";
+            return "/instructormain";
         } else {
             throw new IllegalStateException();
         }
