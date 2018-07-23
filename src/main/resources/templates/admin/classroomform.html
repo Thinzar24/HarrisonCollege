@@ -34,20 +34,18 @@
             <input class="form-control" type="text" id="capacity" th:field="*{capacity}"/>
         </div>
 
-
-
         <!--Sample dropdown input-->
-        <!--<div class="form-group">-->
-            <!--<label for="category">Category:</label>-->
-            <!--<select name="category" id="category" class="custom-select" th:field="*{category}">-->
-                <!--<option value="">Select Category</option>-->
-                <!--<option th:each="classroom : ${classrooms}"-->
-                        <!--th:value="${classroom.id}"-->
-                        <!--th:utext="${classroom.building_name}"-->
-                        <!--th:utext="${classroom.room_number}"-->
-                        <!--th:utext="${classroom.capacity}"/>-->
-            <!--</select>-->
-        <!--</div>-->
+        <div class="form-group">
+        <label for="category">Category:</label>
+        <select name="category" id="category" class="custom-select" th:field="*{category}">
+        <option value="">Select Category</option>
+        <option th:each="category : ${categories}"
+        th:value="${category.id}"
+        th:utext="${category.categoryName}"/>
+        <option value="Yes">Yes</option>
+            <option value="No">No</option>
+        </select>
+        </div>
 
         <input class="submit-btn" type="submit" value="Submit"/>
     </form>

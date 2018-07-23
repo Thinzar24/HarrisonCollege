@@ -1,7 +1,11 @@
 package com.example.demo;
 
+import com.example.demo.Beans.Major;
+import com.example.demo.Beans.Student;
 import com.example.demo.Beans.User;
+import com.example.demo.Repository.MajorRepository;
 import com.example.demo.Repository.RoleRepository;
+import com.example.demo.Repository.StudentRepository;
 import com.example.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -11,6 +15,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
@@ -23,7 +28,14 @@ public class HomeController {
     RoleRepository roleRepository;
 
     @Autowired
+    StudentRepository studentRepository;
+
+    @Autowired
+    MajorRepository majorRepository;
+
+    @Autowired
     private UserService userService;
+
 
     @RequestMapping("/")
     public String getIndex() {
@@ -39,23 +51,27 @@ public class HomeController {
     public String showRegistrationPage(Model model)
     {
         model.addAttribute("user", new User());
-        return "registration";
+        model.addAttribute("majors", majorRepository.findAll());
+        return "studentform";
     }
 
     @PostMapping("/register")
-    public String processRegistrationPage(@Valid @ModelAttribute User user, BindingResult result, Model model)
+    public String processRegistrationPage(@Valid @ModelAttribute User user, BindingResult result, HttpServletRequest request)
     {
-        model.addAttribute("user", user);
-
         if (result.hasErrors())
         {
-            return "registration";
+            return "studentform";
         }
         else
         {
+            Student student = new Student();
+            student.setEntry_year(request.getParameter("entry_year"));
+            student.setStudent_number(request.getParameter("student_number"));
+            student.setMajor(majorRepository.findById(Long.parseLong(request.getParameter("major"))).get());
+            student.setUser(user);
+            studentRepository.save(student);
             userService.saveStudent(user);
         }
-
         return "redirect:/";
     }
 
@@ -66,5 +82,12 @@ public class HomeController {
         User user = userRepository.findByUsername(currentusername);
         return user;
     }
+
+    @RequestMapping("/studentmain")
+    public String studentMain()
+    {
+        return "studentmain";
+    }
+
 
 }
