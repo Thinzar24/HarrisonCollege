@@ -36,10 +36,6 @@ public class Class {
     @OneToMany(mappedBy = "aClass", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "subject_id")
-    private Subject subject;
-
     public long getId() {
         return id;
     }
@@ -118,13 +114,5 @@ public class Class {
 
     public void setGrades(Set<Grade> grades) {
         this.grades = grades;
-    }
-
-    public Subject getSubject() {
-        return subject;
-    }
-
-    public void setSubject(Subject subject) {
-        this.subject = subject;
     }
 }
