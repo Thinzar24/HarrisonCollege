@@ -125,5 +125,34 @@ public class HomeController {
         return "redirect:/adminmain";
     }
 
+    @GetMapping("/courseform")
+    public String addCourse(){
+        return "courseform";
+    }
+
+    @GetMapping("/classroomform")
+    public String addClassroom(){
+        return "classroomform";
+    }
+
+    @GetMapping("/departmentform")
+    public String addDepartment(){
+        return "departmentform";
+    }
+
+    @GetMapping("/classform")
+    public String addClass(){
+        return "classform";
+    }
+
+    @RequestMapping("/courses")
+    public String getCourses(){
+        return "courses";
+    }
+
+    @RequestMapping("/classesInCurrentSemester")
+    public String getCurrentClasses(){
+        return "classes";
+    }
 
 }
