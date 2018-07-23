@@ -1,10 +1,212 @@
 <!DOCTYPE html>
-<html lang="en" xmlns:th="www.thymeleaf.org">
+<html lang="en" xmlns:th="www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <meta charset="UTF-8">
-    <title>$Title$</title>
+    <title>Search Queries</title>
+    <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
-$END$
+
+<div class="container">
+
+    <div th:replace="base :: nav"></div>
+
+    <!--View all classes by an instructor-->
+    <h4>View all classes by an instructor</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all classes by a student-->
+    <h4>View all classes by a student</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all classes that an instructor has taught-->
+    <h4>View a list of all classes that an instructor has taught</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all classes of a course-->
+    <h4>View a list of all classes of a course</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all classes in current semester-->
+    <h4>View all classes in current semester</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all classes in a subject in current semester-->
+    <h4>View all classes in a subject in current semester</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all classes by an instructor in a current semester-->
+    <h4>View all classes by an instructor in a current semester</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all classes at a certain time in the current semester-->
+    <h4>View all classes at a certain time in the current semester</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all current classes in a department-->
+    <h4>View all current classes in a department</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all classrooms used by a course-->
+    <h4>View a list of all classrooms used by a course</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all classrooms used by an instructor-->
+    <h4>View a list of all classrooms used by an instructor</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all classrooms used by a student-->
+    <h4>View a list of all classrooms used by a student</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View a list of all students taught by an instructor-->
+    <h4>View a list of all students taught by an instructor</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!-----????????--->
+    <!--View a list of all instructors that have taught a class-->
+    <h4>View a list of all instructors that have taught a class</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all courses in a department-->
+    <h4>View all courses in a department</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <!--View all majors in a department-->
+    <h4>View all majors in a department</h4>
+    <form action="#"
+          th:action="@{/}"
+          method="post">
+        <div class="form-group">
+            <label for="lastname">Last Name</label>
+            <input type="lastname" class="form-control" id="lastname" name="lastname">
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+
+    <div th:replace="base :: footer"></div>
+
+</div>
+
 </body>
 </html>
