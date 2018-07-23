@@ -1,5 +1,8 @@
 package com.example.demo;
 
+import com.example.demo.Beans.User;
+import com.example.demo.Repository.RoleRepository;
+import com.example.demo.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
