@@ -124,6 +124,7 @@ public class HomeController {
         return "advisormain";
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model)
     {
@@ -131,7 +132,6 @@ public class HomeController {
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
-
     @PostMapping("/addMajor")
     public String processMajor(@Valid @ModelAttribute Major major, BindingResult result)
     {
@@ -142,14 +142,25 @@ public class HomeController {
         majorRepository.save(major);
         return "redirect:/adminmain";
     }
-
+    @RequestMapping("/listMajor")
+    public String viewAllMajor(Model model)
+    {
+        model.addAttribute("majors", majorRepository.findAll());
+        return "majors";
+    }
+    @RequestMapping("/updateMajor/{id}")
+    public String updateMajor(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("major", majorRepository.findById(id));
+        return "admin/majorform";
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
     public String changeRole(Model model)
     {
         model.addAttribute("users", userRepository.findAll());
         return "admin/users";
     }
-
     @RequestMapping("/updateToAdmin/{id}")
     public String updateToAdmin(@PathVariable("id") long id)
     {
@@ -188,8 +199,6 @@ public class HomeController {
         model.addAttribute("majors", majorRepository.findAll());
         return "studentform";
     }
-
-
     @GetMapping("/updateToInstructor/{id}")
     public String updateToInstructor(@PathVariable("id") long id, Model model)
     {
@@ -199,7 +208,6 @@ public class HomeController {
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/instructorform";
     }
-
     @PostMapping("/updateToInstructor")
     public String addInstructor(@Valid @ModelAttribute Instructor instructor, BindingResult result,HttpServletRequest request)
     {
@@ -222,7 +230,6 @@ public class HomeController {
         System.out.println("################# AFTER ADD TO INSTRUCTOR");
         return "redirect:/users";
     }
-
     @RequestMapping("/updateToAdvisor/{id}")
     public String updateToAdvisor(@PathVariable("id") long id)
     {
@@ -247,7 +254,6 @@ public class HomeController {
         }
         return "redirect:/users";
     }
-
     // receives User object, returns old role of that user
     private String getOldRole(User user) {
         String oldRole = "";
@@ -260,7 +266,6 @@ public class HomeController {
         }
         return oldRole;
     }
-
     // receives role id and role name, returns collection of roles
     private Collection<Role> setNewRole(long id, String role_name) {
         Role role = new Role();
@@ -271,22 +276,54 @@ public class HomeController {
         return roles;
     }
 
+/////////////////////////////////////////////////////////////////For courses
+
+
+
+
 
     @GetMapping("/courseform")
     public String addCourse(){
         return "admin/courseform";
     }
 
+    ///////////////////////////////For Classes
+
     @GetMapping("/classroomform")
     public String addClassroom(){
         return "admin/classroomform";
     }
 
-    @GetMapping("/departmentform")
-    public String addDepartment(){
+/////////////////////////////////////////////////////////////////////////////FOR Department
+    @GetMapping("/addDepartment")
+    public String addDepartment(Model model)
+    {
+        model.addAttribute("department", new Department());
         return "admin/departmentform";
     }
-
+    @PostMapping("/addDepartment")
+    public String processDepartment(@Valid @ModelAttribute Department department, BindingResult result)
+    {
+        if(result.hasErrors())
+        {
+            return "admin/departmentform";
+        }
+        departmentRepository.save(department);
+        return "redirect:/adminmain";
+    }
+    @RequestMapping("/listDepartment")
+    public String viewAllDepartment(Model model)
+    {
+      model.addAttribute("departments", departmentRepository.findAll());
+      return "admin/departments";
+    }
+    @RequestMapping("/updateDepartment/{id}")
+    public String updateDepartment(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("department", departmentRepository.findById(id));
+        return "admin/departmentform";
+    }
+//////////////////////////////////////////////////////////////////////////////For Class
     @GetMapping("/classform")
     public String addClass(){
         return "admin/classform";

@@ -16,11 +16,11 @@ public class Instructor {
     @JoinColumn(name="department_id")
     private Department department;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "instructor", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "instructor", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     public Set<Class> classes;
 
     public long getId() {
