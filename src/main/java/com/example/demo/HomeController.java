@@ -10,12 +10,10 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.jws.WebParam;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
-import java.lang.Class;
-import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -144,40 +142,107 @@ public class HomeController {
         return "admin/users";
     }
 
-    @RequestMapping("/updateRole/{id}")
-    public String updateToAdmin(@PathParam("id") long id) {
+    @RequestMapping("/updateToAdmin/{id}")
+    public String updateToAdmin(@PathVariable("id") long id)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(stdId);
+            user.setRoles(setNewRole(1,"Admin"));
+            userRepository.save(user);
+        } else if (oldRole.equalsIgnoreCase("instructor"))
+        {
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(instId);
+            user.setRoles(setNewRole(1, "Admin" ));
+            userRepository.save(user);
+        }
+        else
+        {
+            user.setRoles(setNewRole(1, "Admin" ));
+            userRepository.save(user);
+        }
+        return "redirect:/users";
+    }
+
+    @RequestMapping("/updateToStudent/{id}")
+    public String updateToStudent(@PathVariable("id") long id)
+    {
         User user = userRepository.findById(id).get();
         String oldRole = getOldRole(user);
 
-        if (oldRole.equalsIgnoreCase("Student")) {
-            studentRepository.deleteById(id);
-            user.setRoles(setNewRole(1, "Admin"));
+        if (oldRole.equalsIgnoreCase("instructor"))
+        {
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(id);
+            user.setRoles(setNewRole(2, "Student" ));
             userRepository.save(user);
         }
-//        User user = userRepository.findById(id).get();
-//        Role oldRole = user.getRoles();
-//        long role_id = Long.parseLong(request.getParameter("role_type"));
-//        Role role = roleRepository.findById(role_id).get();
-//        user.setRoles(role);
-//        userRepository.save(user);
-//
-//        if(preRole.getRole().equalsIgnoreCase("Student"))
-//        {
-//
-//            studentRepository.delete();
-//
-//        }else if (preRole.getRole().equalsIgnoreCase("Instructor"))
-//        {
-//            instructorRepository.delete();
-//        }
-//
-//        if(role.getRole().equalsIgnoreCase("student"))
-//        {
-//            return "/register";
-//        }else if (role.getRole().equalsIgnoreCase("instructor"))
-//        {
-//            return "/addInstructor";
-//        }
+        else
+        {
+            user.setRoles(setNewRole(2, "Student" ));
+            userRepository.save(user);
+        }
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/updateToInstructor/{id}")
+    public String updateToInstructor(@PathVariable("id") long id, Model model)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(id);
+        }
+        user.setRoles(setNewRole(3,"Instructor"));
+        userRepository.save(user);
+        Instructor instructor = new Instructor();
+        instructor.setUser(user);
+        model.addAttribute("insturctor", instructor);
+        model.addAttribute("user_id", user.getId());
+        model.addAttribute("departments", departmentRepository.findAll());
+        return "admin/instructorform";
+    }
+
+    @PostMapping("/updateToInstructor")
+    public String addInstructor(@Valid @ModelAttribute Instructor instructor, BindingResult result,HttpServletRequest request)
+    {
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        if(result.hasErrors())
+        {
+            return "admin/instructorform";
+        }
+        instructorRepository.save(instructor);
+        return "redirect:/users";
+    }
+
+    @RequestMapping("/updateToAdvisor/{id}")
+    public String updateToAdvisor(@PathVariable("id") long id)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(id);
+            user.setRoles(setNewRole(4,"Advisor"));
+            userRepository.save(user);
+        } else if (oldRole.equalsIgnoreCase("instructor"))
+        {
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(id);
+            user.setRoles(setNewRole(4, "Advisor" ));
+            userRepository.save(user);
+        }
+        else
+        {
+            user.setRoles(setNewRole(4, "Advisor" ));
+            userRepository.save(user);
+        }
         return "redirect:/users";
     }
 
@@ -185,10 +250,12 @@ public class HomeController {
     private String getOldRole(User user) {
         String oldRole = "";
 
-        while (user.getRoles().iterator().hasNext()) {
-            oldRole = user.getRoles().iterator().next().getRole();
+        Iterator<Role> it = user.getRoles().iterator();
+        while(it.hasNext()){
+            Role role = it.next();
+            oldRole = role.getRole();
+            it.remove();
         }
-
         return oldRole;
     }
 
@@ -205,9 +272,9 @@ public class HomeController {
         role.setRole(role_name);
         Collection<Role> roles = new HashSet<>();
         roles.add(role);
-
         return roles;
     }
+
 
     @GetMapping("/courseform")
     public String addCourse() {

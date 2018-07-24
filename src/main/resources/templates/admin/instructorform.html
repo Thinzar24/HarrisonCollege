@@ -14,6 +14,7 @@
     <div class="row p-5">
         <div class="col-sm-0 col-md-2"></div>
         <div class="col-sm-12 col-md-8">
+<<<<<<< HEAD
             <form method="post" action="/addInstructor" th:object="${instructor}">
                 <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
@@ -50,6 +51,37 @@
                 <input class="submit-btn" type="submit" value="Submit"/>
             </form>
         </div>
+=======
+    <form action="/updateToInstructor" th:object="${insturctor}" method="post">
+
+        <input type="hidden" th:field="*{id}">
+        <input type="hidden" th:value="${user_id}" name="user_id">
+
+        <div class="form-group"><strong>Employee Number: </strong>
+            <input type="text" placeholder="Enter Employee Number" th:field="*{employeeNumber}" class="form-control">
+            <span th:if="${#fields.hasErrors('employeeNumber')}" th:errors="*{employeeNumber}"></span>
+        </div>
+
+        <div class="form-group"><strong>Office Number: </strong>
+            <input type="text" placeholder="Enter Office Number" th:field="*{officeNumber}" class="form-control">
+            <span th:if="${#fields.hasErrors('officeNumber')}" th:errors="*{officeNumber}"></span>
+        </div>
+
+        <!--Sample dropdown input-->
+        <div class="form-group">
+            <label for="department">Department:</label>
+            <select name="department" id="department" class="custom-select" th:field="*{department}">
+                <option value="">Select Department</option>
+                <option th:each="department : ${departments}"
+                        th:value="${department.id}"
+                        th:utext="${department.departmentName}"/>
+            </select>
+        </div>
+
+        <input class="submit-btn" type="submit" value="Submit"/>
+    </form>
+        </div>
+>>>>>>> e98e9cbbaf5bb6b8daed024553d67a446cf6654d
         <div class="col-sm-0 col-md-2"></div>
     </div>
 
