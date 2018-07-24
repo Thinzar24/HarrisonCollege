@@ -12,184 +12,184 @@
     <div th:replace="base :: nav"></div>
 
     <!--View all classes by an instructor-->
-    <h4>View all classes by an instructor</h4>
+    <strong>View all classes by an instructor</strong>
     <form action="#"
           th:action="@{/classesByInstructor}"
           method="post">
         <div class="form-group">
-            <label for="instructorname">Instructor Name</label>
-            <input type="text" class="form-control" id="instructorname" name="instructorname"/>
+            <label for="instructorname1">Instructor Name</label>
+            <input type="text" id="instructorname1" name="instructorname1"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all classes by a student-->
-    <h4>View all classes by a student</h4>
+    <strong>View all classes by a student</strong>
     <form action="#"
           th:action="@{/classesByStudent}"
           method="post">
         <div class="form-group">
-            <label for="studentname">Student Name</label>
-            <input type="text" class="form-control" id="studentname" name="studentname"/>
+            <label for="studentname1">Student Name</label>
+            <input type="text" id="studentname1" name="studentname1"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all classes that an instructor has taught-->
-    <h4>View a list of all classes that an instructor has taught</h4>
+    <strong>View a list of all classes that an instructor has taught</strong>
     <form action="#"
-          th:action="@{/classesByInstructor}"
+          th:action="@{/classesTaughtByInstructor}"
           method="post">
         <div class="form-group">
-            <label for="instructorname">Instructor Name</label>
-            <input type="text" class="form-control" id="instructorname" name="instructorname"/>
+            <label for="instructorname2">Instructor Name</label>
+            <input type="text" id="instructorname2" name="instructorname2"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all classes of a course-->
-    <h4>View a list of all classes of a course</h4>
+    <strong>View a list of all classes of a course</strong>
     <form action="#"
           th:action="@{/classesByCourse}"
           method="post">
         <div class="form-group">
-            <label for="course">Course Name</label>
-            <input type="text" class="form-control" id="course" name="course"/>
+            <label for="course1">Course Name</label>
+            <input type="text" id="course1" name="course1"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all classes in a subject in current semester-->
-    <h4>View all classes in a subject in current semester</h4>
+    <strong>View all classes in a subject in current semester</strong>
     <form action="#"
           th:action="@{/classesBySubjectInCurrentSemester}"
           method="post">
         <div class="form-group">
             <label for="subject">Subject Name</label>
-            <input type="text" class="form-control" id="subject" name="subject"/>
+            <input type="text" id="subject" name="subject"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all classes by an instructor in a current semester-->
-    <h4>View all classes by an instructor in a current semester</h4>
+    <strong>View all classes by an instructor in a current semester</strong>
     <form action="#"
           th:action="@{/classesByInstructorInCurrentSemester}"
           method="post">
         <div class="form-group">
-            <label for="instructorname">Instructor Name</label>
-            <input type="text" class="form-control" id="instructorname" name="instructorname"/>
+            <label for="instructorname3">Instructor Name</label>
+            <input type="text" id="instructorname3" name="instructorname3"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all classes at a certain time in the current semester-->
-    <h4>View all classes at a certain time in the current semester</h4>
+    <strong>View all classes at a certain time in the current semester</strong>
     <form action="#"
           th:action="@{/classesByTimeInCurrentSemester}"
           method="post">
         <div class="form-group">
             <label for="time">Class Time</label>
-            <input type="text" class="form-control" id="time" name="time"/>
+            <input type="text" id="time" name="time"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all current classes in a department-->
-    <h4>View all current classes in a department</h4>
+    <strong>View all current classes in a department</strong>
     <form action="#"
           th:action="@{/classesByDepartment}"
           method="post">
         <div class="form-group">
-            <label for="department">Department Name</label>
-            <input type="text" class="form-control" id="department" name="department"/>
+            <label for="department1">Department Name</label>
+            <input type="text" id="department1" name="department1"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all classrooms used by a course-->
-    <h4>View a list of all classrooms used by a course</h4>
+    <strong>View a list of all classrooms used by a course</strong>
     <form action="#"
           th:action="@{/classroomsByCourse}"
           method="post">
         <div class="form-group">
             <label for="course">Course Name</label>
-            <input type="text" class="form-control" id="course" name="course"/>
+            <input type="text" id="course" name="course"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all classrooms used by an instructor-->
-    <h4>View a list of all classrooms used by an instructor</h4>
+    <strong>View a list of all classrooms used by an instructor</strong>
     <form action="#"
           th:action="@{/classroomsByInstructor}"
           method="post">
         <div class="form-group">
-            <label for="instructorname">Instructor Name</label>
-            <input type="text" class="form-control" id="instructorname" name="instructorname"/>
+            <label for="instructorname4">Instructor Name</label>
+            <input type="text" id="instructorname4" name="instructorname4"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all classrooms used by a student-->
-    <h4>View a list of all classrooms used by a student</h4>
+    <strong>View a list of all classrooms used by a student</strong>
     <form action="#"
           th:action="@{/classroomsByStudent}"
           method="post">
         <div class="form-group">
             <label for="studentname">Student Name</label>
-            <input type="text" class="form-control" id="studentname" name="studentname"/>
+            <input type="text" id="studentname" name="studentname"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View a list of all students taught by an instructor-->
-    <h4>View a list of all students taught by an instructor</h4>
+    <strong>View a list of all students taught by an instructor</strong>
     <form action="#"
           th:action="@{/studentsByInstructor}"
           method="post">
         <div class="form-group">
             <label for="instructorname">Instructor Name</label>
-            <input type="text" class="form-control" id="instructorname" name="instructorname"/>
+            <input type="text" id="instructorname" name="instructorname"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!-----????????--->
     <!--View a list of all instructors that have taught a class-->
-    <!--<h4>View a list of all instructors that have taught a class</h4>-->
+    <!--<strong>View a list of all instructors that have taught a class</strong>-->
     <!--<form action="#"-->
           <!--th:action="@{/}"-->
           <!--method="post">-->
         <!--<div class="form-group">-->
             <!--<label for="lastname">Last Name</label>-->
-            <!--<input type="text" class="form-control" id="lastname" name="lastname"/>-->
+            <!--<input type="text" id="lastname" name="lastname"/>-->
         <!--</div>-->
         <!--<button type="submit" class="btn btn-primary">Search</button>-->
     <!--</form>-->
 
     <!--View all courses in a department-->
-    <h4>View all courses in a department</h4>
+    <strong>View all courses in a department</strong>
     <form action="#"
           th:action="@{/coursesByDepartment}"
           method="post">
         <div class="form-group">
-            <label for="department">Department Name</label>
-            <input type="text" class="form-control" id="department" name="department"/>
+            <label for="department2">Department Name</label>
+            <input type="text" id="department2" name="department2"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <!--View all majors in a department-->
-    <h4>View all majors in a department</h4>
+    <strong>View all majors in a department</strong>
     <form action="#"
           th:action="@{/majorsByDepartment}"
           method="post">
         <div class="form-group">
             <label for="department">Department Name</label>
-            <input type="text" class="form-control" id="department" name="department"/>
+            <input type="text" id="department" name="department"/>
+            <button type="submit" class="btn btn-primary">Search</button>
         </div>
-        <button type="submit" class="btn btn-primary">Search</button>
     </form>
 
     <div th:replace="base :: footer"></div>

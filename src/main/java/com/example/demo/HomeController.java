@@ -1,11 +1,7 @@
 package com.example.demo;
 
-import com.example.demo.Beans.Major;
-import com.example.demo.Beans.Role;
-import com.example.demo.Beans.Student;
-import com.example.demo.Beans.User;
+import com.example.demo.Beans.*;
 import com.example.demo.Repository.*;
-import org.hibernate.id.BulkInsertionCapableIdentifierGenerator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -14,9 +10,11 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -38,6 +36,21 @@ public class HomeController {
 
     @Autowired
     DepartmentRepository departmentRepository;
+
+    @Autowired
+    CourseRepository courseRepository;
+
+    @Autowired
+    SubjectRepository subjectRepository;
+
+    @Autowired
+    ClassRepository classRepository;
+
+    @Autowired
+    ClassroomRepository classroomRepository;
+
+    @Autowired
+    GradeRepository gradeRepository;
 
     @Autowired
     private UserService userService;
@@ -71,8 +84,8 @@ public class HomeController {
         else
         {
             Student student = new Student();
-            student.setEntry_year(request.getParameter("entry_year"));
-            student.setStudent_number(request.getParameter("student_number"));
+            student.setEntryYear(request.getParameter("entry_year"));
+            student.setStudentNumber(request.getParameter("student_number"));
             student.setMajor(majorRepository.findById(Long.parseLong(request.getParameter("major"))).get());
             student.setUser(user);
             studentRepository.save(student);
@@ -130,45 +143,138 @@ public class HomeController {
         return "redirect:/adminmain";
     }
 
-<<<<<<< HEAD
-    @RequestMapping("/users")
-=======
     @GetMapping("/users")
->>>>>>> 27819920b1b5c813e7403dfc59006499adda958f
     public String changeRole(Model model)
     {
         model.addAttribute("users", userRepository.findAll());
         return "admin/users";
     }
 
-    @RequestMapping("/updateRole/{id}")
-    public String processChageRole(@PathParam("id") long id, HttpServletRequest request)
+    @RequestMapping("/updateToAdmin/{id}")
+    public String updateToAdmin(@PathVariable("id") long id)
     {
         User user = userRepository.findById(id).get();
-        Role preRole = user.getRoles();
-        long role_id = Long.parseLong(request.getParameter("role_type"));
-        Role role = roleRepository.findById(role_id).get();
-        user.setRoles(role);
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(stdId);
+            user.setRoles(setNewRole(1,"Admin"));
+            userRepository.save(user);
+        } else if (oldRole.equalsIgnoreCase("instructor"))
+        {
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(instId);
+            user.setRoles(setNewRole(1, "Admin" ));
+            userRepository.save(user);
+        }
+        else
+        {
+            user.setRoles(setNewRole(1, "Admin" ));
+            userRepository.save(user);
+        }
+        return "redirect:/users";
+    }
+
+    @RequestMapping("/updateToStudent/{id}")
+    public String updateToStudent(@PathVariable("id") long id)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+
+        if (oldRole.equalsIgnoreCase("instructor"))
+        {
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(id);
+            user.setRoles(setNewRole(2, "Student" ));
+            userRepository.save(user);
+        }
+        else
+        {
+            user.setRoles(setNewRole(2, "Student" ));
+            userRepository.save(user);
+        }
+
+        return "redirect:/users";
+    }
+
+    @GetMapping("/updateToInstructor/{id}")
+    public String updateToInstructor(@PathVariable("id") long id, Model model)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(id);
+        }
+        user.setRoles(setNewRole(3,"Instructor"));
         userRepository.save(user);
+        Instructor instructor = new Instructor();
+        instructor.setUser(user);
+        model.addAttribute("insturctor", instructor);
+        model.addAttribute("user_id", user.getId());
+        model.addAttribute("departments", departmentRepository.findAll());
+        return "admin/instructorform";
+    }
 
-        if(preRole.getRole().equalsIgnoreCase("Student"))
+    @PostMapping("/updateToInstructor")
+    public String addInstructor(@Valid @ModelAttribute Instructor instructor, BindingResult result,HttpServletRequest request)
+    {
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        if(result.hasErrors())
         {
-
-            studentRepository.delete();
-
-        }else if (preRole.getRole().equalsIgnoreCase("Instructor"))
-        {
-            instructorRepository.delete();
+            return "admin/instructorform";
         }
+        instructorRepository.save(instructor);
+        return "redirect:/users";
+    }
 
-        if(role.getRole().equalsIgnoreCase("student"))
+    @RequestMapping("/updateToAdvisor/{id}")
+    public String updateToAdvisor(@PathVariable("id") long id)
+    {
+        User user = userRepository.findById(id).get();
+        String oldRole = getOldRole(user);
+
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(id);
+            user.setRoles(setNewRole(4,"Advisor"));
+            userRepository.save(user);
+        } else if (oldRole.equalsIgnoreCase("instructor"))
         {
-            return "/register";
-        }else if (role.getRole().equalsIgnoreCase("instructor"))
-        {
-            return "/addInstructor";
+            long instId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(id);
+            user.setRoles(setNewRole(4, "Advisor" ));
+            userRepository.save(user);
         }
-        return "redirect:/adminmain";
+        else
+        {
+            user.setRoles(setNewRole(4, "Advisor" ));
+            userRepository.save(user);
+        }
+        return "redirect:/users";
+    }
+
+    // receives User object, returns old role of that user
+    private String getOldRole(User user) {
+        String oldRole = "";
+
+        Iterator<Role> it = user.getRoles().iterator();
+        while(it.hasNext()){
+            Role role = it.next();
+            oldRole = role.getRole();
+            it.remove();
+        }
+        return oldRole;
+    }
+
+    // receives role id and role name, returns collection of roles
+    private Collection<Role> setNewRole(long id, String role_name) {
+        Role role = new Role();
+        role.setId(id);
+        role.setRole(role_name);
+        Collection<Role> roles = new HashSet<>();
+        roles.add(role);
+        return roles;
     }
 
 
@@ -193,13 +299,76 @@ public class HomeController {
     }
 
     @RequestMapping("/courses")
-    public String getCourses(){
+    public String getCourses(Model model){
+        model.addAttribute("courses", courseRepository.findAll());
         return "courses";
     }
 
     @RequestMapping("/classesInCurrentSemester")
-    public String getCurrentClasses(){
+    public String getCurrentClasses(Model model){
+        model.addAttribute("classes", classRepository.findAllBySemester("current"));
         return "classes";
     }
 
+    @GetMapping("/adminsearch")
+    public String getAdminSearch(){
+        return "admin/adminsearch";
+    }
+
+    @PostMapping("/classesByInstructor")
+    public String getClassesByInstructor(Model model, @RequestParam("instructorname1") String instructor_name) {
+        User user = userRepository.findByName(instructor_name);
+        Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes", classRepository.findAllByInstructor(instructor));
+        return "classes";
+    }
+
+    @PostMapping("/classesByStudent")
+    public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name){
+        User user = userRepository.findByName(student_name);
+        Student student = studentRepository.findByUser(user);
+
+        Set<Student> students = new HashSet<>();
+        students.add(student);
+
+        // This only returns one class even though it's more than one
+        model.addAttribute("classes", classRepository.findAllByStudents(students));
+        return "classes";
+    }
+
+    @PostMapping("/classesTaughtByInstructor")
+    public String getClassesTaughtByInstructor(Model model, @RequestParam("instructorname2") String instructor_name) {
+
+        User user = userRepository.findByName(instructor_name);
+        Instructor instructor = instructorRepository.findByUser(user);
+
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor,"past"));
+
+        return "classes";
+    }
+
+    @PostMapping("/classesByCourse")
+    public String getClassesByCourse(Model model, @RequestParam("course1") String course_name) {
+        Course course = courseRepository.findByCourseName(course_name);
+        model.addAttribute("classes", classRepository.findAllByCourse(course));
+        return "classes";
+    }
+
+    @PostMapping("/classesBySubjectInCurrentSemester")
+    public String getClassesBySubjectInCurrentSemester(Model model, @RequestParam("subject") String subject_name) {
+        Subject subject = subjectRepository.findBySubjectName(subject_name);
+        ArrayList<Course> courses = courseRepository.findAllBySubject(subject);
+        ArrayList<com.example.demo.Beans.Class> classes = new ArrayList<>();
+
+        while(courses.iterator().hasNext()){
+            Course course = courses.iterator().next();
+            while(classRepository.findAllByCourse(course).iterator().hasNext()){
+                com.example.demo.Beans.Class aClass = classRepository.findAllByCourse(course).iterator().next();
+                classes.add(aClass);
+            }
+        }
+
+        model.addAttribute("classes", classes);
+        return "classes";
+    }
 }

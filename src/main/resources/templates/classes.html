@@ -14,20 +14,33 @@
     <div class="table-responsive">
         <table class="table table-hover text-center">
             <thead>
-            <tr>
-                <th>Column title goes here</th>
-            </tr>
+                <tr>
+                    <th>Department</th>
+                    <th>Subject</th>
+                    <th>Course</th>
+                    <th>Instructor</th>
+                    <th>Class Days</th>
+                    <th>Class Time</th>
+                    <th>Credits</th>
+                    <th>Semester</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <!--sample for loop-->
-            <tr th:each="company : ${companies}">
-                <!--Sample cell text-->
-                <td ><span th:text="${company.companyid}"></span></td>
-                <td >
-                    <!--Sample button link-->
-                    <a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>
-                </td>
-            </tr>
+                <tr th:each="aClass : ${classes}">
+                    <td ><span th:text="${aClass.course.major.department.departmentName}"></span></td>
+                    <td ><span th:text="${aClass.course.subject.subjectName}"></span></td>
+                    <td ><span th:text="${aClass.course.courseName}"></span></td>
+                    <td ><span th:text="${aClass.instructor.user.name}"></span></td>
+                    <td ><span th:text="${aClass.days}"></span></td>
+                    <td ><span th:text="${aClass.time}"></span></td>
+                    <td ><span th:text="${aClass.course.credits}"></span></td>
+                    <td ><span th:text="${aClass.semester}"></span></td>
+                    <td >
+                        <!--Sample button link-->
+                        <!--<a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>-->
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>

@@ -1,6 +1,7 @@
 body {
     margin: 30px auto 0px auto;
     font-family: Verdana;
+    font-size: 8pt;
     width: 85%;
 }
 
@@ -20,4 +21,8 @@ div.footer {
     width: 100%;
     text-align: center;
     background-color: #c8cbcf;
+}
+
+form {
+    margin: 10px auto;
 }

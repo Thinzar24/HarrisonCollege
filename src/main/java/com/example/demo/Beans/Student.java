@@ -9,8 +9,8 @@ public class Student {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String student_number;
-    private String entry_year;
+    private String studentNumber;
+    private String entryYear;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
@@ -34,20 +34,20 @@ public class Student {
         this.id = id;
     }
 
-    public String getStudent_number() {
-        return student_number;
+    public String getStudentNumber() {
+        return studentNumber;
     }
 
-    public void setStudent_number(String student_number) {
-        this.student_number = student_number;
+    public void setStudentNumber(String studentNumber) {
+        this.studentNumber = studentNumber;
     }
 
-    public String getEntry_year() {
-        return entry_year;
+    public String getEntryYear() {
+        return entryYear;
     }
 
-    public void setEntry_year(String entry_year) {
-        this.entry_year = entry_year;
+    public void setEntryYear(String entryYear) {
+        this.entryYear = entryYear;
     }
 
     public Major getMajor() {
