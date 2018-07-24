@@ -12,7 +12,7 @@
     <div th:replace="base :: nav"></div>
 
     <form action="#"
-          th:action="@{/process}"
+          th:action="@{/addCourse}"
           th:object="${course}"
           method="post">
 
@@ -40,17 +40,23 @@
         </div>
 
         <!--Sample dropdown input-->
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <select name="category" id="category" class="custom-select" th:field="*{category}">
-                <option value="">Select Category</option>
-                <option th:each="category : ${categories}"
-                        th:value="${category.id}"
-                        th:utext="${category.categoryName}"/>
-                <option value="Yes">Yes</option>
-                <option value="No">No</option>
-            </select>
-            </select>
+        <!--<div class="form-group">-->
+            <!--<label for="departmentInput"><strong>Choose A Course</strong></label>-->
+            <!--<select class="form-control" id="departmentInput" th:field="*{course}">-->
+                <!--<option th:each="course : ${courses}"-->
+                        <!--th:value="${course.id}"-->
+                        <!--th:utext="${course.course_name}"/>-->
+            <!--</select>-->
+        <!--</div>-->
+
+        <div sec:authorize="hasAuthority('Admin')">
+            <div class="form-group">
+                <label for="enabledInput"><strong>Enabled</strong></label>
+                <select class="form-control" id="enabledInput" th:field="*{disabled}">
+                    <option value="0">disabled</option>
+                    <option value="1">active</option>
+                </select>
+            </div>
         </div>
 
         <input class="submit-btn" type="submit" value="Submit"/>

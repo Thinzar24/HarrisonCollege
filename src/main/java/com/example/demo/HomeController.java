@@ -1,6 +1,7 @@
 package com.example.demo;
 
 import com.example.demo.Beans.*;
+import com.example.demo.Beans.Class;
 import com.example.demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -57,7 +58,10 @@ public class HomeController {
 
 
     @RequestMapping("/")
-    public String getIndex() {
+    public String getIndex(Model model) {
+        if(getUser() != null) {
+            model.addAttribute("user_role_id", getUserRoleID(getUser()));
+        }
         return "index";
     }
 
@@ -67,22 +71,17 @@ public class HomeController {
     }
 
     @GetMapping("/register")
-    public String showRegistrationPage(Model model)
-    {
+    public String showRegistrationPage(Model model) {
         model.addAttribute("user", new User());
         model.addAttribute("majors", majorRepository.findAll());
         return "studentform";
     }
 
     @PostMapping("/register")
-    public String processRegistrationPage(@Valid @ModelAttribute User user, BindingResult result, HttpServletRequest request)
-    {
-        if (result.hasErrors())
-        {
+    public String processRegistrationPage(@Valid @ModelAttribute User user, BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
             return "studentform";
-        }
-        else
-        {
+        } else {
             Student student = new Student();
             student.setEntryYear(request.getParameter("entry_year"));
             student.setStudentNumber(request.getParameter("student_number"));
@@ -95,7 +94,7 @@ public class HomeController {
     }
 
     // Returns currently logged in user
-    private User getUser(){
+    private User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String currentusername = authentication.getName();
         User user = userRepository.findByUsername(currentusername);
@@ -103,40 +102,35 @@ public class HomeController {
     }
 
     @RequestMapping("/studentmain")
-    public String studentMain()
-    {
+    public String studentMain() {
         return "studentmain";
     }
+
     @RequestMapping("/instructormain")
-    public String instructorMain()
-    {
+    public String instructorMain() {
         return "instructormain";
     }
+
     @RequestMapping("/adminmain")
-    public String adminMain()
-    {
+    public String adminMain() {
         return "admin/adminmain";
     }
 
     @RequestMapping("/advisormain")
-    public String advisorMain()
-    {
+    public String advisorMain() {
         return "advisormain";
     }
 
 /////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
-    public String addMajor(Model model)
-    {
+    public String addMajor(Model model) {
         model.addAttribute("major", new Major());
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
     @PostMapping("/addMajor")
-    public String processMajor(@Valid @ModelAttribute Major major, BindingResult result)
-    {
-        if(result.hasErrors())
-        {
+    public String processMajor(@Valid @ModelAttribute Major major, BindingResult result) {
+        if (result.hasErrors()) {
             return "majorform";
         }
         majorRepository.save(major);
@@ -156,8 +150,7 @@ public class HomeController {
     }
 /////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
-    public String changeRole(Model model)
-    {
+    public String changeRole(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "admin/users";
     }
@@ -266,6 +259,11 @@ public class HomeController {
         }
         return oldRole;
     }
+    private long getUserRoleID(User user){
+        String role = getOldRole(getUser());
+        long role_id = roleRepository.findByRole(role).getId();
+        return role_id;
+    }
     // receives role id and role name, returns collection of roles
     private Collection<Role> setNewRole(long id, String role_name) {
         Role role = new Role();
@@ -276,31 +274,75 @@ public class HomeController {
         return roles;
     }
 
-/////////////////////////////////////////////////////////////////For courses
+////////////////////////////////////////////////////////////////////////////////////////////For Course
+    @GetMapping("/addCourse")
+    public String addCourse(Model model) {
+        model.addAttribute("course", new Course());
+        return "admin/courseform" ;
+    }
 
-
-
-
-
-    @GetMapping("/courseform")
-    public String addCourse(){
+    @PostMapping("/addCourse")
+    public String processCourse(@Valid @ModelAttribute Course course, BindingResult result)
+    {
+        if(result.hasErrors())
+        {
+            return "admin/courseform";
+        }
+        courseRepository.save(course);
+        return "redirect:/adminmain";
+    }
+    @RequestMapping("/listCourse")
+    public String viewAllCourse(Model model)
+    {
+        model.addAttribute("courses", courseRepository.findAll());
+        return "courses";
+    }
+    @RequestMapping("/updateCourse/{id}")
+    public String updateCourse(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("course", courseRepository.findById(id));
         return "admin/courseform";
     }
 
-    ///////////////////////////////For Classes
+//////////////////////////////////////////////////////////////////////////////////////////For Classes
 
-    @GetMapping("/classroomform")
-    public String addClassroom(){
-        return "admin/classroomform";
-    }
+    @GetMapping("/addClass")
+    public String addClass(Model model) {
+        model.addAttribute("instructors", instructorRepository.findAll());
+    model.addAttribute("class", new Class());
+    return "admin/classform" ;
+}
 
-/////////////////////////////////////////////////////////////////////////////FOR Department
-    @GetMapping("/addDepartment")
-    public String addDepartment(Model model)
+    @PostMapping("/addClass")
+    public String processClass(@Valid @ModelAttribute Class aclass, BindingResult result)
     {
-        model.addAttribute("department", new Department());
-        return "admin/departmentform";
+        if(result.hasErrors())
+        {
+            return "admin/classform";
+        }
+        classRepository.save(aclass);
+        return "redirect:/adminmain";
     }
+    @RequestMapping("/listClass")
+    public String viewAllClass(Model model)
+    {
+        model.addAttribute("classes", classRepository.findAll());
+        return "classes";
+    }
+    @RequestMapping("/updateClass/{id}")
+    public String updateClass(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("class", classRepository.findById(id));
+        return "admin/classform";
+    }
+
+//////////////////////////////////////////////////////////////////////////////////////////FOR Department
+    @GetMapping("/addDepartment")
+    public String addDepartment(Model model) {
+        model.addAttribute("department", new Department());
+        return "admin/departmentform" ;
+    }
+
     @PostMapping("/addDepartment")
     public String processDepartment(@Valid @ModelAttribute Department department, BindingResult result)
     {
@@ -323,26 +365,18 @@ public class HomeController {
         model.addAttribute("department", departmentRepository.findById(id));
         return "admin/departmentform";
     }
-//////////////////////////////////////////////////////////////////////////////For Class
-    @GetMapping("/classform")
-    public String addClass(){
-        return "admin/classform";
-    }
 
-    @RequestMapping("/courses")
-    public String getCourses(Model model){
-        model.addAttribute("courses", courseRepository.findAll());
-        return "courses";
-    }
+///////////////////////////////////////////////////////////////////////////////////////////// FOR QUERY
+
 
     @RequestMapping("/classesInCurrentSemester")
-    public String getCurrentClasses(Model model){
+    public String getCurrentClasses(Model model) {
         model.addAttribute("classes", classRepository.findAllBySemester("current"));
         return "classes";
     }
 
     @GetMapping("/adminsearch")
-    public String getAdminSearch(){
+    public String getAdminSearch() {
         return "admin/adminsearch";
     }
 
@@ -355,15 +389,13 @@ public class HomeController {
     }
 
     @PostMapping("/classesByStudent")
-    public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name){
+    public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name) {
         User user = userRepository.findByName(student_name);
         Student student = studentRepository.findByUser(user);
+        Set<com.example.demo.Beans.Class> classList = student.getClasses();
 
-        Set<Student> students = new HashSet<>();
-        students.add(student);
-
-        // This only returns one class even though it's more than one
-        model.addAttribute("classes", classRepository.findAllByStudents(students));
+        model.addAttribute("classes_title", "Classes taken by " + student_name);
+        model.addAttribute("classes", classList);
         return "classes";
     }
 
@@ -373,7 +405,7 @@ public class HomeController {
         User user = userRepository.findByName(instructor_name);
         Instructor instructor = instructorRepository.findByUser(user);
 
-        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor,"past"));
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "past"));
 
         return "classes";
     }
@@ -391,15 +423,180 @@ public class HomeController {
         ArrayList<Course> courses = courseRepository.findAllBySubject(subject);
         ArrayList<com.example.demo.Beans.Class> classes = new ArrayList<>();
 
-        while(courses.iterator().hasNext()){
-            Course course = courses.iterator().next();
-            while(classRepository.findAllByCourse(course).iterator().hasNext()){
-                com.example.demo.Beans.Class aClass = classRepository.findAllByCourse(course).iterator().next();
+        Iterator<Course> courseIterator = courses.iterator();
+
+        while (courseIterator.hasNext()) {
+            Course course = courseIterator.next();
+            Iterator<com.example.demo.Beans.Class> classIterator = classRepository.findAllByCourseAndSemester(course, "current").iterator();
+            while (classIterator.hasNext()) {
+                com.example.demo.Beans.Class aClass = classIterator.next();
                 classes.add(aClass);
+                classIterator.remove();
             }
+            courseIterator.remove();
         }
 
         model.addAttribute("classes", classes);
         return "classes";
     }
+
+    @PostMapping("/classesByInstructorInCurrentSemester")
+    public String getClassesByInstructorInCurrentSemester(Model model, @RequestParam("instructorname3") String instructor_name) {
+        User user = userRepository.findByName(instructor_name);
+        Instructor instructor = instructorRepository.findByUser(user);
+
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "current"));
+
+        return "classes";
+    }
+
+    @PostMapping("/classesByTimeInCurrentSemester")
+    public String getClassesByTimeInCurrentSemester(Model model, @RequestParam("class_time") String class_time) {
+        model.addAttribute("classes", classRepository.findAllByTimeAndSemester(class_time, "current"));
+        return "classes";
+    }
+
+    @PostMapping("/classesByDepartment")
+    public String getClassesByDepartment(Model model, @RequestParam("department1") String department_name) {
+
+        Department department = departmentRepository.findByDepartmentName(department_name);
+        ArrayList<Major> majors = majorRepository.findAllByDepartment(department);
+        ArrayList<Course> courses = new ArrayList<>();
+        ArrayList<com.example.demo.Beans.Class> classes = new ArrayList<>();
+
+        Iterator<Major> majorIterator = majors.iterator();
+        while (majorIterator.hasNext()) {
+            Major major = majorIterator.next();
+            courses = courseRepository.findAllByMajor(major);
+            Iterator<Course> courseIterator = courses.iterator();
+
+            while (courseIterator.hasNext()) {
+                Course course = courseIterator.next();
+                Iterator<com.example.demo.Beans.Class> classIterator = classRepository.findAllByCourseAndSemester(course, "current").iterator();
+                while (classIterator.hasNext()) {
+                    com.example.demo.Beans.Class aClass = classIterator.next();
+                    classes.add(aClass);
+                    classIterator.remove();
+                }
+                courseIterator.remove();
+            }
+            majorIterator.remove();
+        }
+        model.addAttribute("classes", classes);
+        return "classes";
+    }
+
+    @PostMapping("/classroomsByCourse")
+    public String getClassroomsByCourse(Model model, @RequestParam("course") String course_name){
+        Course course = courseRepository.findByCourseName(course_name);
+
+        Set<com.example.demo.Beans.Class> classSet = new HashSet<>();
+        Iterable<com.example.demo.Beans.Class> classes = classRepository.findAllByCourse(course);
+        Iterator<com.example.demo.Beans.Class> classIterator = classes.iterator();
+
+        ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        while(classIterator.hasNext()){
+            com.example.demo.Beans.Class aClass = classIterator.next();
+            classSet.add(aClass);
+            Classroom classroom = classroomRepository.findByClasses(classSet);
+            if(!classrooms.contains(classroom)) {
+                classrooms.add(classroom);
+            }
+            classSet.remove(aClass);
+            classIterator.remove();
+        }
+
+        model.addAttribute("title_type", course_name);
+        model.addAttribute("classrooms", classrooms);
+        return "admin/classrooms";
+    }
+
+    @PostMapping("/classroomsByInstructor")
+    public String getClassroomsByInstructor(Model model, @RequestParam("instructorname4") String instructor_name) {
+        User user = userRepository.findByName(instructor_name);
+        Instructor instructor = instructorRepository.findByUser(user);
+
+        Set<com.example.demo.Beans.Class> classSet = new HashSet<>();
+        Iterable<com.example.demo.Beans.Class> classes = classRepository.findAllByInstructor(instructor);
+        Iterator<com.example.demo.Beans.Class> classIterator = classes.iterator();
+
+        ArrayList<Classroom> classrooms = new ArrayList<>();
+
+        while(classIterator.hasNext()){
+            com.example.demo.Beans.Class aClass = classIterator.next();
+            classSet.add(aClass);
+            Classroom classroom = classroomRepository.findByClasses(classSet);
+            classrooms.add(classroom);
+            classSet.remove(aClass);
+            classIterator.remove();
+        }
+
+        model.addAttribute("title_type", instructor_name);
+        model.addAttribute("classrooms", classrooms);
+        return "admin/classrooms";
+    }
+
+    @PostMapping("/classroomsByStudent")
+    public String getClassroomsByStudent(Model model, @RequestParam("studentname") String student_name) {
+//        User user = userRepository.findByName(student_name);
+//        Instructor instructor = instructorRepository.findByUser(user);
+//
+//        Set<com.example.demo.Beans.Class> classSet = new HashSet<>();
+//        Iterable<com.example.demo.Beans.Class> classes = classRepository.findAllByInstructor(instructor);
+//        Iterator<com.example.demo.Beans.Class> classIterator = classes.iterator();
+//
+//        ArrayList<Classroom> classrooms = new ArrayList<>();
+//
+//        while(classIterator.hasNext()){
+//            com.example.demo.Beans.Class aClass = classIterator.next();
+//            classSet.add(aClass);
+//            Classroom classroom = classroomRepository.findByClasses(classSet);
+//            classrooms.add(classroom);
+//            classSet.remove(aClass);
+//            classIterator.remove();
+//        }
+//
+//        model.addAttribute("title_type", instructor_name);
+//        model.addAttribute("classrooms", classrooms);
+        return "admin/classrooms";
+    }
+
+    @PostMapping("/coursesByDepartment")
+    public String getCoursesByDepartment(Model model, @RequestParam("department2") String department_name){
+        Department department = departmentRepository.findByDepartmentName(department_name);
+        ArrayList<Major> majors = majorRepository.findAllByDepartment(department);
+        ArrayList<Course> courses = new ArrayList<>();
+        ArrayList<Course> courseList = new ArrayList<>();
+
+        Iterator<Major> majorIterator = majors.iterator();
+
+        while (majorIterator.hasNext()) {
+            Major major = majorIterator.next();
+            courses = courseRepository.findAllByMajor(major);
+            Iterator<Course> courseIterator = courses.iterator();
+
+            while (courseIterator.hasNext()) {
+                Course course = courseIterator.next();
+                courseList.add(course);
+                courseIterator.remove();
+            }
+            majorIterator.remove();
+        }
+
+        model.addAttribute("courses",courseList);
+        return "courses";
+
+    }
+
+    @PostMapping("/majorsByDepartment")
+    public String getMajorsByDepartment(Model model, @RequestParam("department") String department_name){
+        Department department = departmentRepository.findByDepartmentName(department_name);
+
+        model.addAttribute("user_role_id", getUserRoleID(getUser()));
+        model.addAttribute("majors",majorRepository.findAllByDepartment(department));
+        return "majors";
+    }
+
+
 }

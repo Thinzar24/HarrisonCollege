@@ -5,9 +5,10 @@ import com.example.demo.Beans.Student;
 import com.example.demo.Beans.User;
 import org.springframework.data.repository.CrudRepository;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 public interface StudentRepository extends CrudRepository<Student, Long> {
-    Iterable<Student> findAllByClasses(Set<Class> classes);
+    ArrayList<Student> findAllByUser(User user);
     Student findByUser(User user);
 }

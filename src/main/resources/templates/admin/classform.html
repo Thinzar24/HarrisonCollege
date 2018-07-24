@@ -12,7 +12,7 @@
     <div th:replace="base :: nav"></div>
 
     <form action="#"
-          th:action="@{/process}"
+          th:action="@{/addClass}"
           th:object="${class}"
           method="post">
 
@@ -23,16 +23,19 @@
             <label for="crn">Enter CRN Number :</label>
             <input class="form-control" type="text" id="crn" th:field="*{crn}"/>
         </div>
+        <br/>
 
         <div class="form-group">
             <label for="crn">Enter Semester Number :</label>
             <input class="form-control" type="text" id="semester" th:field="*{semester}"/>
         </div>
+        <br/>
 
         <div class="form-group">
             <label for="crn">Enter Day:</label>
             <input class="form-control" type="text" id="days" th:field="*{days}"/>
         </div>
+        <br/>
 
         <div class="form-group">
             <label for="crn">Enter time :</label>
@@ -40,15 +43,14 @@
         </div>
 
         <!--Sample dropdown input-->
-        <!--<div class="form-group">-->
-            <!--<label for="category">Category:</label>-->
-            <!--<select name="category" id="category" class="custom-select" th:field="*{category}">-->
-                <!--<option value="">Select Category</option>-->
-                <!--<option th:each="category : ${categories}"-->
-                        <!--th:value="${category.id}"-->
-                        <!--th:utext="${category.categoryName}"/>-->
-            <!--</select>-->
-        <!--</div>-->
+        <div class="form-group">
+            <label for="instInput">Choose your Instructor:</label>
+            <select class="form-control" id="instInput" name="class">
+                <option th:each="instructor : ${instructors}"
+                        th:value="${instructor.id}"
+                        th:utext="${instructor.user.name}"/>
+            </select>
+        </div>
 
         <input class="submit-btn" type="submit" value="Submit"/>
     </form>

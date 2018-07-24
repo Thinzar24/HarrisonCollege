@@ -89,8 +89,8 @@
           th:action="@{/classesByTimeInCurrentSemester}"
           method="post">
         <div class="form-group">
-            <label for="time">Class Time</label>
-            <input type="text" id="time" name="time"/>
+            <label for="class_time">Class Time</label>
+            <input type="text" id="class_time" name="class_time"/>
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
@@ -155,18 +155,17 @@
         </div>
     </form>
 
-    <!-----????????--->
     <!--View a list of all instructors that have taught a class-->
-    <!--<strong>View a list of all instructors that have taught a class</strong>-->
-    <!--<form action="#"-->
-          <!--th:action="@{/}"-->
-          <!--method="post">-->
-        <!--<div class="form-group">-->
-            <!--<label for="lastname">Last Name</label>-->
-            <!--<input type="text" id="lastname" name="lastname"/>-->
-        <!--</div>-->
-        <!--<button type="submit" class="btn btn-primary">Search</button>-->
-    <!--</form>-->
+    <strong>View a list of all instructors that have taught a class</strong>
+    <form action="#"
+          th:action="@{/instructorsByClass}"
+          method="post">
+        <div class="form-group">
+            <label for="crn">Class CRN</label>
+            <input type="text" id="crn" name="crn"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
 
     <!--View all courses in a department-->
     <strong>View all courses in a department</strong>
