@@ -176,41 +176,25 @@ public class HomeController {
     }
 
     @RequestMapping("/updateToStudent/{id}")
-    public String updateToStudent(@PathVariable("id") long id)
+    public String updateToStudent(@PathVariable("id") long id, Model model)
     {
         User user = userRepository.findById(id).get();
         String oldRole = getOldRole(user);
-
-        if (oldRole.equalsIgnoreCase("instructor"))
-        {
-            long instId = instructorRepository.findByUser(user).getId();
-            instructorRepository.deleteById(id);
-            user.setRoles(setNewRole(2, "Student" ));
-            userRepository.save(user);
+        if(oldRole.equalsIgnoreCase("Instructor")){
+            long intId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(intId);
         }
-        else
-        {
-            user.setRoles(setNewRole(2, "Student" ));
-            userRepository.save(user);
-        }
-
-        return "redirect:/users";
+        model.addAttribute("user", userRepository.findById(id));
+        model.addAttribute("majors", majorRepository.findAll());
+        return "studentform";
     }
+
 
     @GetMapping("/updateToInstructor/{id}")
     public String updateToInstructor(@PathVariable("id") long id, Model model)
     {
         User user = userRepository.findById(id).get();
-        String oldRole = getOldRole(user);
-        if(oldRole.equalsIgnoreCase("Student")){
-            long stdId = studentRepository.findByUser(user).getId();
-            studentRepository.deleteById(id);
-        }
-        user.setRoles(setNewRole(3,"Instructor"));
-        userRepository.save(user);
-        Instructor instructor = new Instructor();
-        instructor.setUser(user);
-        model.addAttribute("insturctor", instructor);
+        model.addAttribute("insturctor", new Instructor());
         model.addAttribute("user_id", user.getId());
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/instructorform";
@@ -219,12 +203,23 @@ public class HomeController {
     @PostMapping("/updateToInstructor")
     public String addInstructor(@Valid @ModelAttribute Instructor instructor, BindingResult result,HttpServletRequest request)
     {
-        long userId = Long.parseLong(request.getParameter("user_id"));
         if(result.hasErrors())
         {
             return "admin/instructorform";
         }
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        User user = userRepository.findById(userId).get();
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(stdId);
+        }
+        user.setRoles(setNewRole(3,"Instructor"));
+        instructor.setUser(user);
+        userRepository.save(user);
+        System.out.println("@@@@@@@@@@@@@@@@@");
         instructorRepository.save(instructor);
+        System.out.println("################# AFTER ADD TO INSTRUCTOR");
         return "redirect:/users";
     }
 
@@ -233,16 +228,15 @@ public class HomeController {
     {
         User user = userRepository.findById(id).get();
         String oldRole = getOldRole(user);
-
         if(oldRole.equalsIgnoreCase("Student")){
             long stdId = studentRepository.findByUser(user).getId();
-            studentRepository.deleteById(id);
+            studentRepository.deleteById(stdId);
             user.setRoles(setNewRole(4,"Advisor"));
             userRepository.save(user);
         } else if (oldRole.equalsIgnoreCase("instructor"))
         {
             long instId = instructorRepository.findByUser(user).getId();
-            instructorRepository.deleteById(id);
+            instructorRepository.deleteById(instId);
             user.setRoles(setNewRole(4, "Advisor" ));
             userRepository.save(user);
         }
