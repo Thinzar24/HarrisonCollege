@@ -1,5 +1,4 @@
 package com.example.demo;
-
 import com.example.demo.Beans.*;
 import com.example.demo.Beans.Class;
 import com.example.demo.Repository.*;
@@ -121,7 +120,7 @@ public class HomeController {
         return "advisormain";
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////For MAJOR
+    /////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model) {
         model.addAttribute("major", new Major());
@@ -148,7 +147,7 @@ public class HomeController {
         model.addAttribute("major", majorRepository.findById(id));
         return "admin/majorform";
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
+    /////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
     public String changeRole(Model model) {
         model.addAttribute("users", userRepository.findAll());
@@ -260,7 +259,7 @@ public class HomeController {
         return oldRole;
     }
     private long getUserRoleID(User user){
-        String role = getOldRole(getUser());
+        String role = getOldRole(user);
         long role_id = roleRepository.findByRole(role).getId();
         return role_id;
     }
@@ -335,12 +334,12 @@ public class HomeController {
         model.addAttribute("class", classRepository.findById(id));
         return "admin/classform";
     }
-
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
+
     @GetMapping("/addDepartment")
     public String addDepartment(Model model) {
         model.addAttribute("department", new Department());
-        return "admin/departmentform" ;
+        return "admin/departmentform";
     }
 
     @PostMapping("/addDepartment")
@@ -356,8 +355,8 @@ public class HomeController {
     @RequestMapping("/listDepartment")
     public String viewAllDepartment(Model model)
     {
-      model.addAttribute("departments", departmentRepository.findAll());
-      return "admin/departments";
+        model.addAttribute("departments", departmentRepository.findAll());
+        return "admin/departments";
     }
     @RequestMapping("/updateDepartment/{id}")
     public String updateDepartment(@PathVariable("id") long id, Model model)
