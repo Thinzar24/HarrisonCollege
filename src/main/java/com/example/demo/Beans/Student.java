@@ -16,7 +16,7 @@ public class Student {
     @JoinColumn(name = "major_id")
     private Major major;
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
 

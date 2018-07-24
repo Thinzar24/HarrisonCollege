@@ -120,13 +120,13 @@ public class HomeController {
         return "advisormain";
     }
 
+/////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model) {
         model.addAttribute("major", new Major());
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
-
     @PostMapping("/addMajor")
     public String processMajor(@Valid @ModelAttribute Major major, BindingResult result) {
         if (result.hasErrors()) {
@@ -135,13 +135,24 @@ public class HomeController {
         majorRepository.save(major);
         return "redirect:/adminmain";
     }
-
+    @RequestMapping("/listMajor")
+    public String viewAllMajor(Model model)
+    {
+        model.addAttribute("majors", majorRepository.findAll());
+        return "majors";
+    }
+    @RequestMapping("/updateMajor/{id}")
+    public String updateMajor(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("major", majorRepository.findById(id));
+        return "admin/majorform";
+    }
+/////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
     public String changeRole(Model model) {
         model.addAttribute("users", userRepository.findAll());
         return "admin/users";
     }
-
     @RequestMapping("/updateToAdmin/{id}")
     public String updateToAdmin(@PathVariable("id") long id)
     {
@@ -168,73 +179,63 @@ public class HomeController {
     }
 
     @RequestMapping("/updateToStudent/{id}")
-    public String updateToStudent(@PathVariable("id") long id)
+    public String updateToStudent(@PathVariable("id") long id, Model model)
     {
         User user = userRepository.findById(id).get();
         String oldRole = getOldRole(user);
-
-        if (oldRole.equalsIgnoreCase("instructor"))
-        {
-            long instId = instructorRepository.findByUser(user).getId();
-            instructorRepository.deleteById(id);
-            user.setRoles(setNewRole(2, "Student" ));
-            userRepository.save(user);
+        if(oldRole.equalsIgnoreCase("Instructor")){
+            long intId = instructorRepository.findByUser(user).getId();
+            instructorRepository.deleteById(intId);
         }
-        else
-        {
-            user.setRoles(setNewRole(2, "Student" ));
-            userRepository.save(user);
-        }
-
-        return "redirect:/users";
+        model.addAttribute("user", userRepository.findById(id));
+        model.addAttribute("majors", majorRepository.findAll());
+        return "studentform";
     }
-
     @GetMapping("/updateToInstructor/{id}")
     public String updateToInstructor(@PathVariable("id") long id, Model model)
     {
         User user = userRepository.findById(id).get();
-        String oldRole = getOldRole(user);
-        if(oldRole.equalsIgnoreCase("Student")){
-            long stdId = studentRepository.findByUser(user).getId();
-            studentRepository.deleteById(id);
-        }
-        user.setRoles(setNewRole(3,"Instructor"));
-        userRepository.save(user);
-        Instructor instructor = new Instructor();
-        instructor.setUser(user);
-        model.addAttribute("insturctor", instructor);
+        model.addAttribute("insturctor", new Instructor());
         model.addAttribute("user_id", user.getId());
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/instructorform";
     }
-
     @PostMapping("/updateToInstructor")
     public String addInstructor(@Valid @ModelAttribute Instructor instructor, BindingResult result,HttpServletRequest request)
     {
-        long userId = Long.parseLong(request.getParameter("user_id"));
         if(result.hasErrors())
         {
             return "admin/instructorform";
         }
+        long userId = Long.parseLong(request.getParameter("user_id"));
+        User user = userRepository.findById(userId).get();
+        String oldRole = getOldRole(user);
+        if(oldRole.equalsIgnoreCase("Student")){
+            long stdId = studentRepository.findByUser(user).getId();
+            studentRepository.deleteById(stdId);
+        }
+        user.setRoles(setNewRole(3,"Instructor"));
+        instructor.setUser(user);
+        userRepository.save(user);
+        System.out.println("@@@@@@@@@@@@@@@@@");
         instructorRepository.save(instructor);
+        System.out.println("################# AFTER ADD TO INSTRUCTOR");
         return "redirect:/users";
     }
-
     @RequestMapping("/updateToAdvisor/{id}")
     public String updateToAdvisor(@PathVariable("id") long id)
     {
         User user = userRepository.findById(id).get();
         String oldRole = getOldRole(user);
-
         if(oldRole.equalsIgnoreCase("Student")){
             long stdId = studentRepository.findByUser(user).getId();
-            studentRepository.deleteById(id);
+            studentRepository.deleteById(stdId);
             user.setRoles(setNewRole(4,"Advisor"));
             userRepository.save(user);
         } else if (oldRole.equalsIgnoreCase("instructor"))
         {
             long instId = instructorRepository.findByUser(user).getId();
-            instructorRepository.deleteById(id);
+            instructorRepository.deleteById(instId);
             user.setRoles(setNewRole(4, "Advisor" ));
             userRepository.save(user);
         }
@@ -245,7 +246,6 @@ public class HomeController {
         }
         return "redirect:/users";
     }
-
     // receives User object, returns old role of that user
     private String getOldRole(User user) {
         String oldRole = "";
@@ -275,22 +275,54 @@ public class HomeController {
         return roles;
     }
 
+/////////////////////////////////////////////////////////////////For courses
+
+
+
+
 
     @GetMapping("/courseform")
     public String addCourse() {
         return "admin/courseform";
     }
 
+    ///////////////////////////////For Classes
+
     @GetMapping("/classroomform")
     public String addClassroom() {
         return "admin/classroomform";
     }
 
-    @GetMapping("/departmentform")
-    public String addDepartment() {
+/////////////////////////////////////////////////////////////////////////////FOR Department
+    @GetMapping("/addDepartment")
+    public String addDepartment(Model model)
+    {
+        model.addAttribute("department", new Department());
         return "admin/departmentform";
     }
-
+    @PostMapping("/addDepartment")
+    public String processDepartment(@Valid @ModelAttribute Department department, BindingResult result)
+    {
+        if(result.hasErrors())
+        {
+            return "admin/departmentform";
+        }
+        departmentRepository.save(department);
+        return "redirect:/adminmain";
+    }
+    @RequestMapping("/listDepartment")
+    public String viewAllDepartment(Model model)
+    {
+      model.addAttribute("departments", departmentRepository.findAll());
+      return "admin/departments";
+    }
+    @RequestMapping("/updateDepartment/{id}")
+    public String updateDepartment(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("department", departmentRepository.findById(id));
+        return "admin/departmentform";
+    }
+//////////////////////////////////////////////////////////////////////////////For Class
     @GetMapping("/classform")
     public String addClass() {
         return "admin/classform";
