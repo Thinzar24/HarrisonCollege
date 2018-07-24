@@ -9,8 +9,8 @@ public class Classroom {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String building_name;
-    private String room_number;
+    private String buildingName;
+    private String roomNumber;
     private int capacity;
     private boolean disabled;
 
@@ -25,20 +25,20 @@ public class Classroom {
         this.id = id;
     }
 
-    public String getBuilding_name() {
-        return building_name;
+    public String getBuildingName() {
+        return buildingName;
     }
 
-    public void setBuilding_name(String building_name) {
-        this.building_name = building_name;
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
     }
 
-    public String getRoom_number() {
-        return room_number;
+    public String getRoomNumber() {
+        return roomNumber;
     }
 
-    public void setRoom_number(String room_number) {
-        this.room_number = room_number;
+    public void setRoomNumber(String roomNumber) {
+        this.roomNumber = roomNumber;
     }
 
     public int getCapacity() {

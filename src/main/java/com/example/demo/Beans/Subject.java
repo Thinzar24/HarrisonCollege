@@ -9,7 +9,7 @@ public class Subject {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String subject_name;
+    private String subjectName;
 
     @OneToMany(mappedBy = "subject", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Course> courses;
@@ -22,12 +22,12 @@ public class Subject {
         this.id = id;
     }
 
-    public String getSubject_name() {
-        return subject_name;
+    public String getSubjectName() {
+        return subjectName;
     }
 
-    public void setSubject_name(String subject_name) {
-        this.subject_name = subject_name;
+    public void setSubjectName(String subjectName) {
+        this.subjectName = subjectName;
     }
 
     public Set<Course> getCourses() {

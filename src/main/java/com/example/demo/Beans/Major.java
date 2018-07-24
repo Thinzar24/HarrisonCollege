@@ -10,7 +10,7 @@ public class Major {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
-    private String major_name;
+    private String majorName;
     private boolean disabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,12 +31,12 @@ public class Major {
         this.id = id;
     }
 
-    public String getMajor_name() {
-        return major_name;
+    public String getMajorName() {
+        return majorName;
     }
 
-    public void setMajor_name(String major_name) {
-        this.major_name = major_name;
+    public void setMajorName(String majorName) {
+        this.majorName = majorName;
     }
 
     public boolean isDisabled() {

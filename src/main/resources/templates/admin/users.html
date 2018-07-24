@@ -14,40 +14,52 @@
     <div class="table-responsive">
         <table class="table table-hover text-center">
             <thead>
-            <tr>
-                <th>Username</th>
-                <th>Name</th>
-                <th>Current Role</th>
-                <th>Update Role</th>
-            </tr>
+                <tr>
+                    <th>Username</th>
+                    <th>Name</th>
+                    <th>Current Role</th>
+                    <th>Update Role</th>
+                </tr>
             </thead>
             <tbody>
-            <tr th:each="user : ${users}">
-<<<<<<< HEAD
-                <td ><span th:text="${user.id}"></span></td>
-                <td ><span th:text="${user.name}"></span></td>
-                <td >
-                    <span th:if="${user.role != 'Student'}"></span>
-                    <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
-=======
-                <td ><span th:text="${user.username}"></span></td>
-                <td ><span th:text="${user.name}"></span></td>
-                <td ><span th:text="${user.roles.role}"></span></td>
-                <td >
-                        <select id="newRole" name="role_type">
-                            <option th:if="${user.roles.role!='Admin'}"
-                                    value = "1" text="Admin"/>
-                            <option th:if="${user.roles.role!='Student'}"
-                                    value = "2" text="Admin"/>
-                            <option th:if="${user.roles.role!='Instructor'}"
-                                    value = "3" text="Admin"/>
-                            <option th:if="${user.roles.role!='Adivisor'}"
-                                    value = "4" text="Admin"/>
-                        </select>
-                            <a class="btn btn-primary" th:href ="@{/updateRole/{id}(id=${user.id})}">Change</a>
->>>>>>> 49f479481b9daf6ed0673eb340f83a7a677b72e2
-                </td>
-            </tr>
+                <tr th:each="user : ${users}">
+                    <td ><span th:text="${user.username}"></span></td>
+                    <td ><span th:text="${user.name}"></span></td>
+                    <td >
+                        <div th:each="role: ${user.roles}">
+                            <span th:text="${role.role}"></span>
+                        </div>
+                    </td>
+                    <td>
+                        <div th:each="role: ${user.roles}">
+                            <span th:if="${role.role != 'Admin'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToAdmin/{id}(id=${user.id})}">Admin</a>
+                            </span>
+                            <span th:if="${role.role != 'Student'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
+                            </span>
+                            <span th:if="${role.role != 'Instructor'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToInstructor/{id}(id=${user.id})}">Instructor</a>
+                            </span>
+                            <span th:if="${role.role != 'Advisor'}">
+                                <a class="btn btn-primary" th:href ="@{/updateToAdvisor/{id}(id=${user.id})}">Advisor</a>
+                            </span>
+                        </div>
+                    </td>
+                    <!--<td >-->
+                        <!--<select id="newRole" name="role_type">-->
+                            <!--<option th:if="${user.roles.role != 'Admin'}"-->
+                                    <!--value = "1" text="Admin"/>-->
+                            <!--<option th:if="${user.roles.role != 'Student'}"-->
+                                    <!--value = "2" text="Admin"/>-->
+                            <!--<option th:if="${user.roles.role != 'Instructor'}"-->
+                                    <!--value = "3" text="Admin"/>-->
+                            <!--<option th:if="${user.roles.role != 'Advisor'}"-->
+                                    <!--value = "4" text="Admin"/>-->
+                        <!--</select>-->
+                            <!--<a class="btn btn-primary" th:href ="@{/updateRole/{id}(id=${user.id})}">Change</a>-->
+                    <!--</td>-->
+                </tr>
             </tbody>
         </table>
     </div>
