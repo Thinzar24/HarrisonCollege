@@ -1,5 +1,4 @@
 package com.example.demo;
-
 import com.example.demo.Beans.*;
 import com.example.demo.Repository.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -120,7 +119,7 @@ public class HomeController {
         return "advisormain";
     }
 
-/////////////////////////////////////////////////////////////////////////////////////////For MAJOR
+    /////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model) {
         model.addAttribute("major", new Major());
@@ -147,7 +146,7 @@ public class HomeController {
         model.addAttribute("major", majorRepository.findById(id));
         return "admin/majorform";
     }
-/////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
+    /////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
     public String changeRole(Model model) {
         model.addAttribute("users", userRepository.findAll());
@@ -293,7 +292,7 @@ public class HomeController {
         return "admin/classroomform";
     }
 
-/////////////////////////////////////////////////////////////////////////////FOR Department
+    /////////////////////////////////////////////////////////////////////////////FOR Department
     @GetMapping("/addDepartment")
     public String addDepartment(Model model)
     {
@@ -314,8 +313,8 @@ public class HomeController {
     @RequestMapping("/listDepartment")
     public String viewAllDepartment(Model model)
     {
-      model.addAttribute("departments", departmentRepository.findAll());
-      return "admin/departments";
+        model.addAttribute("departments", departmentRepository.findAll());
+        return "admin/departments";
     }
     @RequestMapping("/updateDepartment/{id}")
     public String updateDepartment(@PathVariable("id") long id, Model model)
@@ -323,7 +322,7 @@ public class HomeController {
         model.addAttribute("department", departmentRepository.findById(id));
         return "admin/departmentform";
     }
-//////////////////////////////////////////////////////////////////////////////For Class
+    //////////////////////////////////////////////////////////////////////////////For Class
     @GetMapping("/classform")
     public String addClass() {
         return "admin/classform";
