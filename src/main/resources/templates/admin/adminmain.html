@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+
 <head>
     <title>Admin Home</title>
     <th:block th:insert="base :: header"></th:block>
@@ -12,60 +13,65 @@
     <div th:replace="base :: nav"></div>
     <h2>Admin Main Page</h2>
     <div class="table-responsive">
-        <table class="table table-hover text-center">
+        <table class="table table-hover">
             <thead>
-                <tr>
-                    <th></th>
-                </tr>
+            <tr>
+                <th></th>
+            </tr>
             </thead>
             <tbody>
+            <tr>
+                <td >
+                    <a class="btn btn-primary" href ="/courseform">Create course</a>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a class="btn btn-primary" href ="/classroomform">Create classroom</a>
+                 </td>
+             </tr>
+             <tr>
+                 <td>
+                       <a class="btn btn-primary" href ="/departmentform">Create department</a>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <a class="btn btn-primary" href ="/addMajor">Create major</a>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <a class="btn btn-primary" href ="/classform">Add class to schedule for current or later semester</a>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <a class="btn btn-primary" href ="/users">Change a new users type to (student, instructor, advisor or administrator)</a>
+                   </td>
+               </tr>
+               <tr>
+                   <td>
+                       <a class="btn btn-primary" href ="/courses">View all courses</a>
+                </td>
+                </tr>
                 <tr>
-                    <td >
-                        <a class="btn btn-primary" th:href ="/courseform">Create course</a>
+                    <td>
+                        <a class="btn btn-primary" href ="/classesInCurrentSemester">View all classes in current semester</a>
                     </td>
                 </tr>
                 <tr>
                     <td>
-                        <a class="btn btn-primary" th:href ="/classroomform">Create classroom</a>
+                        <a class="btn btn-primary" href ="/adminsearch">Other Search Queries</a>
                     </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/departmentform">Create department</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/majorform">Create major</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/classform">Add class to schedule for current or later semester</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/users">Change a new users type to (student, instructor, advisor or administrator)</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/courses">View all courses</a>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        <a class="btn btn-primary" th:href ="/adminsearch">Search Queries</a>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-    </div>
+                   </tr>
+                   </tbody>
+               </table>
+           </div>
 
-    <div th:replace="base :: footer"></div>
+           <div th:replace="base :: footer"></div>
 
-</div>
+       </div>
 
-</body>
-</html>
+       </body>
+       </html>

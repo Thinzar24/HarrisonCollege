@@ -11,26 +11,18 @@
 
     <div th:replace="base :: nav"></div>
 
-    <!-- Need to add fields for student number, major, entry year-->
-
     <div class="row p-5">
         <div class="col-sm-0 col-md-2"></div>
         <div class="col-sm-12 col-md-8">
             <form method="post" action="/register" th:object="${user}">
                 <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
-                <div class="form-group"><strong>First Name: </strong>
-                    <input type="text" placeholder="Enter your First name" th:field="*{firstName}" class="form-control">
-                    <span th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}"></span>
-                </div>
-                <div class="form-group"><strong>Last Name: </strong>
-                    <input type="text" placeholder="Enter your Last name" th:field="*{lastName}" class="form-control">
-                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                <div class="form-group"><strong>Name: </strong>
+                    <input type="text" placeholder="Enter your name" th:field="*{name}" class="form-control">
                 </div>
 
                 <div class="form-group"><strong>Student Number: </strong>
-                    <input type="text" placeholder="Enter your Last name" name="student_number" class="form-control">
-                    <span th:if="${#fields.hasErrors('lastName')}" th:errors="*{lastName}"></span>
+                    <input type="text" placeholder="Enter student number" name="student_number" class="form-control">
                 </div>
 
                 <div class="form-group"><strong>Year of Entry: </strong>
@@ -42,7 +34,7 @@
                     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
                 </div>
                 <div class="form-group"><strong>Password: </strong>
-                    <input type="password" placeholder="Enter year password " th:field="*{password}" class="form-control">
+                    <input type="password" placeholder="Enter your password " th:field="*{password}" class="form-control">
                     <span th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></span>
                 </div>
 
@@ -51,7 +43,7 @@
                     <select class="form-control" id="majorInput" name="major">
                         <option th:each="major : ${majors}"
                                 th:value="${major.id}"
-                                th:utext="${major.major_name}"/>
+                                th:utext="${major.majorName}"/>
                     </select>
                 </div>
 

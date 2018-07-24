@@ -9,15 +9,16 @@ public class Course {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
 
-    private String course_number;
-    private String course_name;
-    private String course_description;
+    private String courseNumber;
+    private String courseName;
+    private String courseDescription;
     private int credits;
     private boolean disabled;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "major_id")
     private Major major;
+
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "subject_id")
     private Subject subject;
@@ -33,28 +34,28 @@ public class Course {
         this.id = id;
     }
 
-    public String getCourse_number() {
-        return course_number;
+    public String getCourseNumber() {
+        return courseNumber;
     }
 
-    public void setCourse_number(String course_number) {
-        this.course_number = course_number;
+    public void setCourseNumber(String courseNumber) {
+        this.courseNumber = courseNumber;
     }
 
-    public String getCourse_name() {
-        return course_name;
+    public String getCourseName() {
+        return courseName;
     }
 
-    public void setCourse_name(String course_name) {
-        this.course_name = course_name;
+    public void setCourseName(String courseName) {
+        this.courseName = courseName;
     }
 
-    public String getCourse_description() {
-        return course_description;
+    public String getCourseDescription() {
+        return courseDescription;
     }
 
-    public void setCourse_description(String course_description) {
-        this.course_description = course_description;
+    public void setCourseDescription(String courseDescription) {
+        this.courseDescription = courseDescription;
     }
 
     public int getCredits() {
