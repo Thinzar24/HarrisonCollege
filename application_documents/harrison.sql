@@ -3,7 +3,7 @@ use harrison;
 
 -- truncate table student;
 -- truncate table class;
--- truncate table classroom;
+-- truncate table clasasroom;
 -- truncate table course;
 -- truncate table subject;
 -- truncate table major;
