@@ -15,5 +15,6 @@ public interface ClassRepository extends CrudRepository<Class, Long> {
     Iterable<Class> findAllByCourse(Course course);
     Iterable<Class> findAllByCourseAndSemester(Course course, String semester);
     Iterable<Class> findAllByInstructorAndSemester(Instructor instructor, String semester);
-//    Iterable findAllByTimeAndSemester(String time, String semester);
+    Iterable<Class> findAllByTimeAndSemester(String time, String semester);
+
 }

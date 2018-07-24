@@ -15,10 +15,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
 import java.lang.Class;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Controller
 public class HomeController {
@@ -296,14 +293,65 @@ public class HomeController {
         ArrayList<Course> courses = courseRepository.findAllBySubject(subject);
         ArrayList<com.example.demo.Beans.Class> classes = new ArrayList<>();
 
-        while(courses.iterator().hasNext()){
-            Course course = courses.iterator().next();
-            while(classRepository.findAllByCourse(course).iterator().hasNext()){
-                com.example.demo.Beans.Class aClass = classRepository.findAllByCourse(course).iterator().next();
+        Iterator<Course> courseIterator = courses.iterator();
+
+        while(courseIterator.hasNext()){
+            Course course = courseIterator.next();
+            Iterator<com.example.demo.Beans.Class> classIterator = classRepository.findAllByCourseAndSemester(course,"current").iterator();
+            while(classIterator.hasNext()){
+                com.example.demo.Beans.Class aClass = classIterator.next();
                 classes.add(aClass);
+                classIterator.remove();
             }
+            courseIterator.remove();
         }
 
+        model.addAttribute("classes", classes);
+        return "classes";
+    }
+
+    @PostMapping("/classesByInstructorInCurrentSemester")
+    public String getClassesByInstructorInCurrentSemester(Model model, @RequestParam("instructorname3") String instructor_name) {
+        User user = userRepository.findByName(instructor_name);
+        Instructor instructor = instructorRepository.findByUser(user);
+
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor,"current"));
+
+        return "classes";
+    }
+
+    @PostMapping("/classesByTimeInCurrentSemester")
+    public String getClassesByTimeInCurrentSemester(Model model, @RequestParam("class_time") String class_time){
+        model.addAttribute("classes", classRepository.findAllByTimeAndSemester(class_time,"current"));
+        return "classes";
+    }
+
+    @PostMapping("/classesByDepartment")
+    public String getClassesByDepartment(Model model, @RequestParam("department1") String department_name){
+
+        Department department = departmentRepository.findByDepartmentName(department_name);
+        ArrayList<Major> majors = majorRepository.findAllByDepartment(department);
+        ArrayList<Course> courses = new ArrayList<>();
+        ArrayList<com.example.demo.Beans.Class> classes = new ArrayList<>();
+
+        Iterator<Major> majorIterator = majors.iterator();
+        while(majorIterator.hasNext()){
+            Major major = majorIterator.next();
+            courses = courseRepository.findAllByMajor(major);
+            Iterator<Course> courseIterator = courses.iterator();
+
+            while(courseIterator.hasNext()) {
+                Course course = courseIterator.next();
+                Iterator<com.example.demo.Beans.Class> classIterator = classRepository.findAllByCourseAndSemester(course,"current").iterator();
+                while(classIterator.hasNext()){
+                    com.example.demo.Beans.Class aClass = classIterator.next();
+                    classes.add(aClass);
+                    classIterator.remove();
+                }
+                courseIterator.remove();
+            }
+            majorIterator.remove();
+        }
         model.addAttribute("classes", classes);
         return "classes";
     }
