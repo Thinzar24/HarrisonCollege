@@ -60,6 +60,7 @@ public class HomeController {
     private UserService userService;
 
 
+
     @RequestMapping("/")
     public String getIndex() {
         return "index";
@@ -77,6 +78,7 @@ public class HomeController {
         model.addAttribute("majors", majorRepository.findAll());
         return "studentform";
     }
+
 
     @PostMapping("/register")
     public String processRegistrationPage(@Valid @ModelAttribute User user, BindingResult result, HttpServletRequest request)
@@ -127,6 +129,8 @@ public class HomeController {
     {
         return "advisormain";
     }
+
+
 
     @GetMapping("/addMajor")
     public String addMajor(Model model)
@@ -307,4 +311,5 @@ public class HomeController {
         model.addAttribute("classes", classes);
         return "classes";
     }
+
 }
