@@ -35,7 +35,7 @@ public class User {
         this.password = password;
         this.enabled = enabled;
         this.username = username;
-
+        this.name=name;
     }
 
     public long getId() {

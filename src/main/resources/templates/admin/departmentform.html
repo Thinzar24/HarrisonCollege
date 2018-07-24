@@ -18,29 +18,10 @@
                 <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
                 <div class="form-group"><strong>Department name: </strong>
-                    <input type="text" placeholder="Enter Department Name" th:field="*{department_name}" class="form-control">
-                    <span th:if="${#fields.hasErrors('department_name')}" th:errors="*{department_name}"></span>
+                    <input type="text" placeholder="Enter Department Name" th:field="*{departmentName}" class="form-control">
+                    <span th:if="${#fields.hasErrors('departmentName')}" th:errors="*{departmentName}"></span>
                 </div>
 
-
-                <div class="form-group">
-                    <label for="majorInput"><strong>Choose A Major</strong></label>
-                    <select class="form-control" id="majorInput" th:field="*{major}">
-                        <option th:each="major : ${majors}"
-                                th:value="${major.id}"
-                                th:utext="${major.major_name}"/>
-                    </select>
-                </div>
-
-
-                <div class="form-group">
-                    <label for="instructorInput"><strong>Choose an Instructor</strong></label>
-                    <select class="form-control" id="instructorInput" th:field="*{instructor}">
-                        <option th:each="instructor : ${instructors}"
-                                th:value="${instructor.id}"
-                                th:utext="${instructor.employee_number}"/>
-                    </select>
-                </div>
 
                 <div sec:authorize="hasAuthority('Admin')">
                     <div class="form-group">
