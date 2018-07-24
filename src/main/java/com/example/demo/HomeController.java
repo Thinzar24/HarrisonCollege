@@ -300,6 +300,7 @@ public class HomeController {
         model.addAttribute("department", new Department());
         return "admin/departmentform";
     }
+
     @PostMapping("/addDepartment")
     public String processDepartment(@Valid @ModelAttribute Department department, BindingResult result)
     {

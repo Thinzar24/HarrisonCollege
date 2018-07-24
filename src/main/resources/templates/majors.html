@@ -27,7 +27,7 @@
                 <td><span th:text="${major.department.departmentName}"></span></td>
                 <td><span th:text="${major.majorName}"></span></td>
                 <td th:if="${user_role_id == 1}">
-                    <a class="btn btn-primary" th:href ="@{/updateMajor/{id}(id=${major.id})}">Disable</a>
+                    <a class="btn btn-primary" th:href ="@{/updateMajor/{id}(id=${major.id})}">Update</a>
                 </td>
             </tr>
             </tbody>
