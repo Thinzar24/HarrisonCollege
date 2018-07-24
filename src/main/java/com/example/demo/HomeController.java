@@ -260,7 +260,7 @@ public class HomeController {
     }
 
     private long getUserRoleID(User user){
-        String role = getOldRole(getUser());
+        String role = getOldRole(user);
         long role_id = roleRepository.findByRole(role).getId();
         return role_id;
     }
