@@ -16,18 +16,23 @@
     <div class="table-responsive">
         <table class="table table-hover text-center">
             <thead>
-            <tr>
-                <th>Column title goes here</th>
-            </tr>
+                <tr>
+                    <th>Building Name</th>
+                    <th>Room Number</th>
+                    <th>Capacity</th>
+                    <th>Disabled</th>
+                    <th></th>
+                </tr>
             </thead>
             <tbody>
-            <!--sample for loop-->
-            <tr th:each="company : ${companies}">
-                <!--Sample cell text-->
-                <td ><span th:text="${company.companyid}"></span></td>
+            <tr th:each="classroom : ${classrooms}">
+                <td ><span th:text="${classroom.buildingName}"></span></td>
+                <td ><span th:text="${classroom.roomNumber}"></span></td>
+                <td ><span th:text="${classroom.capacity}"></span></td>
+                <td ><span th:text="${classroom.disabled}"></span></td>
                 <td >
                     <!--Sample button link-->
-                    <a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>
+                    <!--<a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>-->
                 </td>
             </tr>
             </tbody>
