@@ -10,6 +10,8 @@
 
     <div th:fragment="nav">
 
+        <input type="hidden" th:value="${user_role_id}" name="userID">
+
         <nav class="navbar navbar-expand-sm bg-light fixed-top">
 
             <!-- Links -->
@@ -22,6 +24,18 @@
                 </li>
                 <li sec:authorize="!isAuthenticated()" class="nav-item">
                     <a class="nav-link" href="/login">Login</a>
+                </li>
+                <li th:if="${userID == 1}" class="nav-item">
+                    <a class="nav-link" href="/adminmain">Admin Main</a>
+                </li>
+                <!--<li sec:authorize="isAuthenticated()" th:if="${user_role_id == 2}" class="nav-item">-->
+                    <!--<a class="nav-link" href="/studentmain">Student Main</a>-->
+                <!--</li>-->
+                <!--<li sec:authorize="isAuthenticated()" th:if="${user_role_id == 3}" class="nav-item">-->
+                    <!--<a class="nav-link" href="/instructormain">Instructor Main</a>-->
+                <!--</li>-->
+                <!--<li sec:authorize="isAuthenticated()" th:if="${user_role_id == 4}" class="nav-item">-->
+                    <!--<a class="nav-link" href="/advisormain">Advisor Main</a>-->
                 </li>
                 <li sec:authorize="isAuthenticated()" class="nav-item">
                     <a class="nav-link" href="/logout">Logout</a>
