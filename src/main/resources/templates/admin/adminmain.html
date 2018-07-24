@@ -20,6 +20,7 @@
             </tr>
             </thead>
             <tbody>
+
             <tr>
                 <td >
                     <a class="btn btn-primary" href ="/courseform">Create course</a>
@@ -66,16 +67,71 @@
              <tr>
                  <td>
                      <!--    <a class="btn btn-primary" th:href ="/classesInCurrentSemester">View all classes in current semester</a> -->
+
+                <tr>
+                    <td >
+                        <a class="btn btn-primary" th:href ="/courseform">Create course</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <a class="btn btn-primary" th:href ="/classroomform">Create classroom</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/departmentform">Create department</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/addMajor">Create major</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/classform">Add class to schedule for current or later semester</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/users">Change a new users type to (student, instructor, advisor or administrator)</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                         <a class="btn btn-primary" th:href ="/courses">View all courses</a>
+
                      </td>
                  </tr>
                  <tr>
                      <td>
-                         <!--  <a class="btn btn-primary" th:href ="/adminsearch">Search Queries</a> -->
+            <!--  <a class="btn btn-primary" th:href ="/adminsearch">Search Queries</a> -->
                        </td>
                    </tr>
                    </tbody>
                </table>
            </div>
+
+                         <a class="btn btn-primary" th:href ="/adminsearch">Search Queries</a>
+                     </td>
+                 </tr>
+                        <a class="btn btn-primary" th:href ="/courses">View all courses</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/classesInCurrentSemester">View all classes in current semester</a>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <a class="btn btn-primary" th:href ="/adminsearch">Search Queries</a>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
 
            <div th:replace="base :: footer"></div>
 

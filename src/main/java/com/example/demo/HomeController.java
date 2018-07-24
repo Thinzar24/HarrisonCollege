@@ -130,7 +130,11 @@ public class HomeController {
         return "redirect:/adminmain";
     }
 
+<<<<<<< HEAD
     @RequestMapping("/users")
+=======
+    @GetMapping("/users")
+>>>>>>> 27819920b1b5c813e7403dfc59006499adda958f
     public String changeRole(Model model)
     {
         model.addAttribute("users", userRepository.findAll());
@@ -166,12 +170,6 @@ public class HomeController {
         }
         return "redirect:/adminmain";
     }
-
-
-
-
-
-
 
 
     @GetMapping("/courseform")

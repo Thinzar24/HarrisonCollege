@@ -23,6 +23,7 @@
             </thead>
             <tbody>
             <tr th:each="user : ${users}">
+
                 <td ><span th:text="${user.username}"></span></td>
                 <td ><span th:text="${user.name}"></span></td>
                 <td ><span th:text="${user.roles.role}"></span></td>
@@ -38,6 +39,13 @@
                                     value = "4" text="Admin"/>
                         </select>
                             <a class="btn btn-primary" th:href ="@{/updateRole/{id}(id=${user.id})}">Change</a>
+
+                <td ><span th:text="${user.id}"></span></td>
+                <td ><span th:text="${user.name}"></span></td>
+                <td >
+                    <span th:if="${user.role != 'Student'}"></span>
+                    <a class="btn btn-primary" th:href ="@{/updateToStudent/{id}(id=${user.id})}">Student</a>
+
                 </td>
             </tr>
             </tbody>
