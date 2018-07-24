@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Add or Update Department</title>
+    <title>Add Department</title>
     <th:block th:insert="base :: header"></th:block>
 </head>
 <body>
@@ -11,33 +11,52 @@
 
     <div th:replace="base :: nav"></div>
 
-    <form action="#"
-          th:action="@{/}"
-          th:object="${}"
-          method="post">
+    <div class="row p-5">
+        <div class="col-sm-0 col-md-2"></div>
+        <div class="col-sm-12 col-md-8">
+            <form method="post" action="/addDepartment" th:object="${department}">
+                <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
-        <input type="hidden" th:field="*{id}">
+                <div class="form-group"><strong>Department name: </strong>
+                    <input type="text" placeholder="Enter Department Name" th:field="*{department_name}" class="form-control">
+                    <span th:if="${#fields.hasErrors('department_name')}" th:errors="*{department_name}"></span>
+                </div>
 
-        <!--Sample text input-->
-        <div class="form-group">
-            <label for="manufacturer">Manufacturer:</label>
-            <input class="form-control" type="text" id="manufacturer" th:field="*{manufacturer}"/>
+
+                <div class="form-group">
+                    <label for="majorInput"><strong>Choose A Major</strong></label>
+                    <select class="form-control" id="majorInput" th:field="*{major}">
+                        <option th:each="major : ${majors}"
+                                th:value="${major.id}"
+                                th:utext="${major.major_name}"/>
+                    </select>
+                </div>
+
+
+                <div class="form-group">
+                    <label for="instructorInput"><strong>Choose an Instructor</strong></label>
+                    <select class="form-control" id="instructorInput" th:field="*{instructor}">
+                        <option th:each="instructor : ${instructors}"
+                                th:value="${instructor.id}"
+                                th:utext="${instructor.employee_number}"/>
+                    </select>
+                </div>
+
+                <div sec:authorize="hasAuthority('Admin')">
+                    <div class="form-group">
+                        <label for="enabledInput"><strong>Enabled</strong></label>
+                        <select class="form-control" id="enabledInput" th:field="*{disabled}">
+                            <option value="0">disabled</option>
+                            <option value="1">active</option>
+                        </select>
+                    </div>
+                </div>
+
+                <input class="submit-btn" type="submit" value="Submit"/>
+            </form>
         </div>
-
-        <!--Sample dropdown input-->
-        <div class="form-group">
-            <label for="category">Category:</label>
-            <select name="category" id="category" class="custom-select" th:field="*{category}">
-                <option value="">Select Category</option>
-                <option th:each="category : ${categories}"
-                        th:value="${category.id}"
-                        th:utext="${category.categoryName}"/>
-            </select>
-        </div>
-
-        <input class="submit-btn" type="submit" value="Submit"/>
-    </form>
-
+        <div class="col-sm-0 col-md-2"></div>
+    </div>
 
     <div th:replace="base :: footer"></div>
 

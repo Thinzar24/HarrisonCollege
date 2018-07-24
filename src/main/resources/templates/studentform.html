@@ -35,8 +35,8 @@
 
                 <div class="form-group"><strong>Year of Entry: </strong>
                     <input type="text" placeholder="Enter year of Entry: " name="entry_year" class="form-control">
-                    <span th:if="${#fields.hasErrors('yearEntry')}" th:errors="*{yearEntry}"></span>
                 </div>
+
                 <div class="form-group"><strong>User Name: </strong>
                     <input type="text" placeholder="Enter username you want: " th:field="*{username}" class="form-control">
                     <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
@@ -50,7 +50,7 @@
                     <label for="majorInput"><strong>Choose your Major</strong></label>
                     <select class="form-control" id="majorInput" name="major">
                         <option th:each="major : ${majors}"
-                                th:value="${major.major_name}"
+                                th:value="${major.id}"
                                 th:utext="${major.major_name}"/>
                     </select>
                 </div>

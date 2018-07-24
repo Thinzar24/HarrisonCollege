@@ -35,17 +35,13 @@
         </div>
 
         <!--Sample dropdown input-->
-        <div class="form-group">
-        <label for="category">Category:</label>
-        <select name="category" id="category" class="custom-select" th:field="*{category}">
-        <option value="">Select Category</option>
-        <option th:each="category : ${categories}"
-        th:value="${category.id}"
-        th:utext="${category.categoryName}"/>
-        <option value="Yes">Yes</option>
-            <option value="No">No</option>
-        </select>
-        </div>
+        <!--<div class="form-group">-->
+        <!--<label for="category">Category:</label>-->
+        <!--<select name="category" id="category" class="custom-select" th:field="*{category}">-->
+        <!--<option value="">Select Category</option>-->
+        <!--<option th:each="category : ${categories}"-->
+        <!--th:value="${category.id}"-->
+        <!--th:utext="${category.categoryName}"/>-->
 
         <div sec:authorize="hasAuthority('Admin')">
             <div class="form-group">

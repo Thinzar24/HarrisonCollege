@@ -12,7 +12,7 @@
     <div th:replace="base :: nav"></div>
 
     <form action="#"
-          th:action="@{/process}"
+          th:action="@{/addClass}"
           th:object="${class}"
           method="post">
 
@@ -44,17 +44,11 @@
 
         <!--Sample dropdown input-->
         <div class="form-group">
-            <label for="classInput">Choose your Class:</label>
-            <select class="form-control" id="classInput" name="class">
-                <option th:each="class : ${classes}"
-                        th:value="${class.building_name}"
-                        th:utext="${class.building_name}"/>
-                <option th:each="class : ${classes}"
-                        th:value="${class.room_number}"
-                        th:utext="${class.room_number}"/>
-                <option th:each="class : ${classes}"
-                        th:value="${class.capacity}"
-                        th:utext="${class.capacity}"/>
+            <label for="instInput">Choose your Instructor:</label>
+            <select class="form-control" id="instInput" name="class">
+                <option th:each="instructor : ${instructors}"
+                        th:value="${instructor.id}"
+                        th:utext="${instructor.employee_number}"/>
             </select>
         </div>
 
