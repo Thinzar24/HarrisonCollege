@@ -1,6 +1,7 @@
 package com.example.demo.Beans;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -20,8 +21,8 @@ public class Student {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "students")
-    private Set<Class> classes;
+    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
+    private Collection<Class> classes;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
@@ -66,11 +67,11 @@ public class Student {
         this.user = user;
     }
 
-    public Set<Class> getClasses() {
+    public Collection<Class> getClasses() {
         return classes;
     }
 
-    public void setClasses(Set<Class> classes) {
+    public void setClasses(Collection<Class> classes) {
         this.classes = classes;
     }
 

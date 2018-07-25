@@ -1,6 +1,7 @@
 package com.example.demo.Beans;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -18,12 +19,14 @@ public class Class {
     @JoinColumn(name="instructor_id")
     private Instructor instructor;
 
-    @ManyToMany
+    @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(
             name="student_class", joinColumns = @JoinColumn(name="Student_ID", referencedColumnName = "ID"),
             inverseJoinColumns = @JoinColumn(name="Class_ID",
                     referencedColumnName = "ID"))
-    private Set<Student> students;
+    private Collection<Student> students;
+
+
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
@@ -84,11 +87,11 @@ public class Class {
         this.instructor = instructor;
     }
 
-    public Set<Student> getStudents() {
+    public Collection<Student> getStudents() {
         return students;
     }
 
-    public void setStudents(Set<Student> students) {
+    public void setStudents(Collection<Student> students) {
         this.students = students;
     }
 
