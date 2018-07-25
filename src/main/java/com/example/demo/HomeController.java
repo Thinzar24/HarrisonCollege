@@ -143,6 +143,7 @@ public class HomeController {
     public String updateMajor(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("major", majorRepository.findById(id));
+        model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
 
@@ -323,6 +324,8 @@ public class HomeController {
     public String updateCourse(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("course", courseRepository.findById(id));
+        model.addAttribute("majors", majorRepository.findAll());
+        model.addAttribute("subjects", subjectRepository.findAll());
         return "admin/courseform";
     }
 
@@ -356,6 +359,8 @@ public class HomeController {
     public String updateClass(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("class", classRepository.findById(id));
+        model.addAttribute("instructors", instructorRepository.findAll());
+        model.addAttribute("courses", courseRepository.findAll());
         return "admin/classform";
     }
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
