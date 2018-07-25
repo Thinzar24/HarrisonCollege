@@ -425,13 +425,14 @@ public class HomeController {
     public String viewStudentSchedule(Model model)
     {
         User user = getUser();
-       // System.out.println("##################");
         Student student = studentRepository.findByUser(user);
-       // System.out.println("%%%%%%%%%%%%%%"+student.getId());
-        //Collection<Class> classes = student.getClasses();
-        //System.out.println(student.getClasses().size());
-        //System.out.println("***********"+classes.getClass());
-        //model.addAttribute("classes", classes);
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        Set<Class> classes = new HashSet<>();
+        for(int i=0; i<studentClasses.size(); i++)
+        {
+            classes.add(studentClasses.get(i).getaClass());
+        }
+        model.addAttribute("classes", classes);
         return "classes";
     }
 

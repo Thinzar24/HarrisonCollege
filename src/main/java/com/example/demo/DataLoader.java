@@ -32,7 +32,7 @@ public class DataLoader implements CommandLineRunner{
     public void run(String... strings) throws Exception{
         System.out.println("Loading data...");
 
-//        loadData();
+       // loadData();
 
     }
 
