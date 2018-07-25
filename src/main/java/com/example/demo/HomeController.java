@@ -117,6 +117,12 @@ public class HomeController {
         return "advisormain";
     }
 
+    @RequestMapping("/createClassroom")
+    public String listClassroom(Model model){
+        model.addAttribute("classrooms",classroomRepository.findAll());
+        return "classrooms";
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model) {
@@ -151,9 +157,10 @@ public class HomeController {
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
+        model.addAttribute("classes",classRepository.findAll());
         return "classroomform";
     }
-    @PostMapping("/process")
+    @PostMapping("/addClassroom")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
         if (result.hasErrors()) {
             return "admin/classroomform";
@@ -369,6 +376,56 @@ public class HomeController {
         classRepository.deleteById(id);
         return "admin/classes";
     }
+
+    @RequestMapping("/enrollClassForStudent/{id}")
+    public String enrollClassStudent(@PathVariable("id") long id)
+    {
+        User user = getUser();
+        Student student = studentRepository.findByUser(user);
+        Class aClass = classRepository.findById(id).get();
+        Set<Class> classes = student.getClasses();
+        classes.add(aClass);
+        student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/dropClassForStudent/{id}")
+    public String dropClassStudent(@PathVariable("id") long id)
+    {
+        User user = getUser();
+        Student student = studentRepository.findByUser(user);
+        Class aClass = classRepository.findById(id).get();
+        Set<Class> classes = student.getClasses();
+        classes.remove(aClass);
+        student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/enrollClassForAdvisor/{id}")
+    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    {
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        Set<Class> classes = student.getClasses();
+        classes.add(aClass);
+        student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/dropClassForAdvisor/{id}}")
+    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    {
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        Set<Class> classes = student.getClasses();
+        classes.remove(aClass);
+        student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
     @GetMapping("/addDepartment")
@@ -484,11 +541,19 @@ public class HomeController {
         return "classes";
     }
 
-    @RequestMapping("/instructorClasses")
-    public String getInstructorClasses(Model model){
+    @RequestMapping("/instructorCurrentClasses")
+    public String getInstructorCurrentClasses(Model model){
         User user = userRepository.findById(getUser().getId()).get();
         Instructor instructor = instructorRepository.findByUser(user);
         model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "current"));
+        return "classes";
+    }
+
+    @RequestMapping("/instructorPastClasses")
+    public String getInstructorPastClasses(Model model){
+        User user = userRepository.findById(getUser().getId()).get();
+        Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "past"));
         return "classes";
     }
 
@@ -639,5 +704,9 @@ public class HomeController {
         return "majors";
     }
 
+    @RequestMapping("/viewStudentSchedule")
+    public String getStudentSchedule(Model model){
+        return "";
+    }
 
 }
