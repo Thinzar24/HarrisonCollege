@@ -151,7 +151,7 @@ public class HomeController {
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
-        return "classroomform";
+        return "admin/classroomform";
     }
     @PostMapping("/process")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {

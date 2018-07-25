@@ -14,7 +14,7 @@ public class Classroom {
     private int capacity;
     private boolean disabled;
 
-    @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "classroom", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Class> classes;
 
     public long getId() {
