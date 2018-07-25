@@ -11,7 +11,7 @@
 
     <div th:replace="base :: nav"></div>
 
-    <h3>Classrooms used by [[${title_type}]]</h3>
+    <h3 th:text="${title_type}"></h3>
 
     <div class="table-responsive">
         <table class="table table-hover text-center">
