@@ -20,23 +20,41 @@
 
         <!--Sample text input-->
         <div class="form-group">
-            <label for="course_number">Enter Course Number:</label>
-            <input class="form-control" type="text" id="course_number" th:field="*{course_number}"/>
+            <label for="courseNumber">Enter Course Number:</label>
+            <input class="form-control" type="text" id="courseNumber" th:field="*{courseNumber}"/>
         </div>
 
         <div class="form-group">
-            <label for="course_name">Enter Course Name:</label>
-            <input class="form-control" type="text" id="course_name" th:field="*{course_name}"/>
+            <label for="courseName">Enter Course Name:</label>
+            <input class="form-control" type="text" id="courseName" th:field="*{courseName}"/>
         </div>
 
         <div class="form-group">
-            <label for="course_description">Course Description:</label>
-            <input class="form-control" type="text" id="course_description" th:field="*{course_description}"/>
+            <label for="courseDescription">Course Description:</label>
+            <input class="form-control" type="text" id="courseDescription" th:field="*{courseDescription}"/>
         </div>
 
         <div class="form-group">
             <label for="credits">Credits :</label>
             <input class="form-control" type="text" id="credits" th:field="*{credits}"/>
+        </div>
+
+        <div class="form-group">
+            <label for="majorInput"><strong>Choose A Major</strong></label>
+            <select class="form-control" id="majorInput" th:field="*{major}">
+                <option th:each="major : ${majors}"
+                        th:value="${major.id}"
+                        th:utext="${major.majorName}"/>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="subjectInput"><strong>Choose A Subject</strong></label>
+            <select class="form-control" id="subjectInput" th:field="*{subject}">
+                <option th:each="subject : ${subjects}"
+                        th:value="${subject.id}"
+                        th:utext="${subject.subjectName}"/>
+            </select>
         </div>
 
         <!--Sample dropdown input-->
