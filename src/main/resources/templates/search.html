@@ -12,6 +12,7 @@
     <div th:replace="base :: nav"></div>
 
     <!--View all classes by an instructor-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View all classes by an instructor</strong>
     <form action="#"
           th:action="@{/classesByInstructor}"
@@ -22,8 +23,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all classes by a student-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View all classes by a student</strong>
     <form action="#"
           th:action="@{/classesByStudent}"
@@ -34,8 +37,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all classes that an instructor has taught-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all classes that an instructor has taught</strong>
     <form action="#"
           th:action="@{/classesTaughtByInstructor}"
@@ -46,8 +51,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all classes of a course-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all classes of a course</strong>
     <form action="#"
           th:action="@{/classesByCourse}"
@@ -58,8 +65,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all classes in a subject in current semester-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all classes in a subject in current semester</strong>
     <form action="#"
           th:action="@{/classesBySubjectInCurrentSemester}"
@@ -70,8 +79,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all classes by an instructor in a current semester-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all classes by an instructor in a current semester</strong>
     <form action="#"
           th:action="@{/classesByInstructorInCurrentSemester}"
@@ -82,8 +93,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all classes at a certain time in the current semester-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all classes at a certain time in the current semester</strong>
     <form action="#"
           th:action="@{/classesByTimeInCurrentSemester}"
@@ -94,8 +107,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all current classes in a department-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all current classes in a department</strong>
     <form action="#"
           th:action="@{/classesByDepartment}"
@@ -106,8 +121,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all classrooms used by a course-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all classrooms used by a course</strong>
     <form action="#"
           th:action="@{/classroomsByCourse}"
@@ -118,8 +135,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all classrooms used by an instructor-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all classrooms used by an instructor</strong>
     <form action="#"
           th:action="@{/classroomsByInstructor}"
@@ -130,8 +149,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all classrooms used by a student-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all classrooms used by a student</strong>
     <form action="#"
           th:action="@{/classroomsByStudent}"
@@ -142,8 +163,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all students taught by an instructor-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all students taught by an instructor</strong>
     <form action="#"
           th:action="@{/studentsByInstructor}"
@@ -154,8 +177,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View a list of all instructors that have taught a class-->
+    <div sec:authorize="hasAuthority('Admin')">
     <strong>View a list of all instructors that have taught a class</strong>
     <form action="#"
           th:action="@{/instructorsByClass}"
@@ -166,8 +191,10 @@
         </div>
         <button type="submit" class="btn btn-primary">Search</button>
     </form>
+    </div>
 
     <!--View all courses in a department-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all courses in a department</strong>
     <form action="#"
           th:action="@{/coursesByDepartment}"
@@ -178,8 +205,10 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <!--View all majors in a department-->
+    <div sec:authorize="isAuthenticated()">
     <strong>View all majors in a department</strong>
     <form action="#"
           th:action="@{/majorsByDepartment}"
@@ -190,6 +219,7 @@
             <button type="submit" class="btn btn-primary">Search</button>
         </div>
     </form>
+    </div>
 
     <div th:replace="base :: footer"></div>
 
