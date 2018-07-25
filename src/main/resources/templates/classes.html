@@ -41,8 +41,10 @@
                     <td><span th:text="${aClass.course.credits}"></span></td>
                     <td><span th:text="${aClass.semester}"></span></td>
                     <td>
+                        <div sec:authorize="hasAuthority('Admin')">
                         <a class="btn btn-primary" th:href ="@{/updateClass/{id}(id=${aClass.id})}">Update</a> <br>
                         <a class="btn btn-primary" th:href ="@{/deleteClass/{id}(id=${aClass.id})}">Delete</a><br>
+                        </div>
                         <div sec:authorize="hasAuthority('Student')">
                             <a class="btn btn-primary" th:href ="@{/enrollClassForStudent/{id}(id=${aClass.id})}">Enroll</a> <br>
                             <a class="btn btn-primary" th:href ="@{/dropClassForStudent/{id}(id=${aClass.id})}">Drop</a> <br>
