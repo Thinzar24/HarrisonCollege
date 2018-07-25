@@ -20,13 +20,13 @@
 
         <!--Sample text input-->
         <div class="form-group">
-            <label for="building_name">Enter Building Name :</label>
-            <input class="form-control" type="text" id="building_name" th:field="*{building_name}"/>
+            <label for="buildingName">Enter Building Name :</label>
+            <input class="form-control" type="text" id="buildingName" th:field="*{buildingName}"/>
         </div>
 
         <div class="form-group">
-            <label for="room_number">Enter Room Number :</label>
-            <input class="form-control" type="text" id="room_number" th:field="*{room_number}"/>
+            <label for="roomNumber">Enter Room Number :</label>
+            <input class="form-control" type="text" id="roomNumber" th:field="*{roomNumber}"/>
         </div>
 
         <div class="form-group">
@@ -46,7 +46,7 @@
         <div sec:authorize="hasAuthority('Admin')">
             <div class="form-group">
                 <label for="enabledInput"><strong>Enabled</strong></label>
-                <select class="form-control" id="enabledInput" th:field="*{enabled}">
+                <select class="form-control" id="enabledInput" th:field="*{disabled}">
                     <option value="0">disabled</option>
                     <option value="1">active</option>
                 </select>
