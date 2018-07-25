@@ -367,7 +367,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id){
         classRepository.deleteById(id);
-        return "admin/classform";
+        return "admin/classes";
     }
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
