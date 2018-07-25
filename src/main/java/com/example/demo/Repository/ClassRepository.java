@@ -12,8 +12,6 @@ import java.util.Set;
 public interface ClassRepository extends CrudRepository<Class, Long> {
     Iterable<Class> findAllBySemester(String semester);
     Iterable<Class> findAllByInstructor(Instructor instructor);
-    Class findByStudents(Set<Student> students);
-    ArrayList<Class> findAllByStudents(Set<Student> students);
     Iterable<Class> findAllByCourse(Course course);
     Iterable<Class> findAllByCourseAndSemester(Course course, String semester);
     Iterable<Class> findAllByInstructorAndSemester(Instructor instructor, String semester);

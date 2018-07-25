@@ -21,8 +21,8 @@ public class Student {
     @JoinColumn(name = "user_id")
     private User user;
 
-    @ManyToMany(mappedBy = "students", fetch = FetchType.LAZY)
-    private Collection<Class> classes;
+    @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    public Set<StudentClass> studentClasses;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
@@ -67,12 +67,12 @@ public class Student {
         this.user = user;
     }
 
-    public Collection<Class> getClasses() {
-        return classes;
+    public Set<StudentClass> getStudentClasses() {
+        return studentClasses;
     }
 
-    public void setClasses(Collection<Class> classes) {
-        this.classes = classes;
+    public void setStudentClasses(Set<StudentClass> studentClasses) {
+        this.studentClasses = studentClasses;
     }
 
     public Set<Grade> getGrades() {

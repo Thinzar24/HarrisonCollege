@@ -22,6 +22,16 @@ inner join student_class c on b.id = c.student_id
 inner join class d on c.class_id = d.id
 inner join course e on d.course_id = e.id;
 
+-- List of students with classes and their grades
+select name, course_name, grade, crn, days, time, semester
+from user a
+inner join student b on a.id = b.user_id
+inner join student_class c on b.id = c.student_id
+inner join class d on c.class_id = d.id
+inner join course e on d.course_id = e.id
+inner join grade f on b.id = f.student_id
+where f.class_id = d.id;
+
 -- List of classes that an instructor has taught
 select name, course_name, crn, days, time, semester
 from user a
