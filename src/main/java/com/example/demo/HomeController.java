@@ -134,6 +134,35 @@ public class HomeController {
         majorRepository.save(major);
         return "redirect:/adminmain";
     }
+
+    //////////////////////////////////////////////////////// For Classroom
+    @GetMapping("/addClassroom")
+    public String classroomForm(Model model) {
+        model.addAttribute("classroom", new Classroom());
+        return "admin/classroomform";
+    }
+    @PostMapping("/process")
+    public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
+        if (result.hasErrors()) {
+            return "classroomform";
+        }
+        classroomRepository.save(classroom);
+        return "redirect:/adminmain";
+    }
+
+    @RequestMapping("/listClassroom")
+    public String viewAllClassroom( Model model){
+        model.addAttribute("classrooms",classroomRepository.findAll());
+        return "classroom";
+    }
+
+    @RequestMapping("/updateClassroom/{id}")
+    public String updateClassroom(@PathVariable("id")long id, Model model){
+        model.addAttribute("classroom",classroomRepository.findById(id));
+        return "admin/classroomform";
+    }
+
+//////////////////////////////////For Major
     @RequestMapping("/listMajor")
     public String viewAllMajor(Model model)
     {
