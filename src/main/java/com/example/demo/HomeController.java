@@ -363,6 +363,12 @@ public class HomeController {
         model.addAttribute("courses", courseRepository.findAll());
         return "admin/classform";
     }
+
+    @RequestMapping("/deleteClass/{id}")
+    public String deleteClass(@PathVariable("id")long id){
+        classRepository.deleteById(id);
+        return "admin/classform";
+    }
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
     @GetMapping("/addDepartment")
