@@ -57,10 +57,7 @@ public class HomeController {
 
 
     @RequestMapping("/")
-    public String getIndex(Model model) {
-        if(getUser() != null) {
-            model.addAttribute("user_role_id", getUserRoleID(getUser()));
-        }
+    public String getIndex() {
         return "index";
     }
 
@@ -286,11 +283,7 @@ public class HomeController {
         }
         return oldRole;
     }
-    private long getUserRoleID(User user){
-        String role = getOldRole(user);
-        long role_id = roleRepository.findByRole(role).getId();
-        return role_id;
-    }
+
     // receives role id and role name, returns collection of roles
     private Collection<Role> setNewRole(long id, String role_name) {
         Role role = new Role();
@@ -620,7 +613,6 @@ public class HomeController {
     public String getMajorsByDepartment(Model model, @RequestParam("department") String department_name){
         Department department = departmentRepository.findByDepartmentName(department_name);
 
-        model.addAttribute("user_role_id", getUserRoleID(getUser()));
         model.addAttribute("majors",majorRepository.findAllByDepartment(department));
         return "majors";
     }
