@@ -157,7 +157,6 @@ public class HomeController {
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
-        model.addAttribute("classes",classRepository.findAll());
         return "classroomform";
     }
     @PostMapping("/addClassroom")
