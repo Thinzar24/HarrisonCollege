@@ -96,7 +96,7 @@ public class HomeController {
         User user = userRepository.findByUsername(currentusername);
         return user;
     }
-
+/////////////////////////////////////////////////////////////AFTER LOGIN REDIRECT
     @RequestMapping("/studentmain")
     public String studentMain() {
         return "studentmain";
@@ -155,7 +155,7 @@ public class HomeController {
     @PostMapping("/process")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
         if (result.hasErrors()) {
-            return "classroomform";
+            return "admin/classroomform";
         }
         classroomRepository.save(classroom);
         return "redirect:/adminmain";
@@ -164,7 +164,7 @@ public class HomeController {
     @RequestMapping("/listClassroom")
     public String viewAllClassroom( Model model){
         model.addAttribute("classrooms",classroomRepository.findAll());
-        return "classroom";
+        return "admin/classrooms";
     }
 
     @RequestMapping("/updateClassroom/{id}")
@@ -172,7 +172,7 @@ public class HomeController {
         model.addAttribute("classroom",classroomRepository.findById(id));
         return "admin/classroomform";
     }
-    /////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
+    /////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
     public String changeRole(Model model) {
         model.addAttribute("users", userRepository.findAll());
@@ -298,6 +298,8 @@ public class HomeController {
     @GetMapping("/addCourse")
     public String addCourse(Model model) {
         model.addAttribute("course", new Course());
+        model.addAttribute("majors", majorRepository.findAll());
+        model.addAttribute("subjects", subjectRepository.findAll());
         return "admin/courseform" ;
     }
 
@@ -324,12 +326,13 @@ public class HomeController {
         return "admin/courseform";
     }
 
-//////////////////////////////////////////////////////////////////////////////////////////For Classes
+//////////////////////////////////////////////////////////////////////////////////////////For Class
 
     @GetMapping("/addClass")
     public String addClass(Model model) {
         model.addAttribute("instructors", instructorRepository.findAll());
-    model.addAttribute("class", new Class());
+        model.addAttribute("class", new Class());
+        model.addAttribute("courses", courseRepository.findAll());
     return "admin/classform" ;
 }
 
