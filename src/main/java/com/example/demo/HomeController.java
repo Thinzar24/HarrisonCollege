@@ -136,6 +136,19 @@ public class HomeController {
         return "redirect:/adminmain";
     }
 
+    @RequestMapping("/listMajor")
+    public String viewAllMajor(Model model)
+    {
+        model.addAttribute("majors", majorRepository.findAll());
+        return "majors";
+    }
+    @RequestMapping("/updateMajor/{id}")
+    public String updateMajor(@PathVariable("id") long id, Model model)
+    {
+        model.addAttribute("major", majorRepository.findById(id));
+        return "admin/majorform";
+    }
+
     //////////////////////////////////////////////////////// For Classroom
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
@@ -161,20 +174,6 @@ public class HomeController {
     public String updateClassroom(@PathVariable("id")long id, Model model){
         model.addAttribute("classroom",classroomRepository.findById(id));
         return "admin/classroomform";
-    }
-
-//////////////////////////////////For Major
-    @RequestMapping("/listMajor")
-    public String viewAllMajor(Model model)
-    {
-        model.addAttribute("majors", majorRepository.findAll());
-        return "majors";
-    }
-    @RequestMapping("/updateMajor/{id}")
-    public String updateMajor(@PathVariable("id") long id, Model model)
-    {
-        model.addAttribute("major", majorRepository.findById(id));
-        return "admin/majorform";
     }
     /////////////////////////////////////////////////////////////////////////////////////////////////UPDATE ROLES
     @GetMapping("/users")
