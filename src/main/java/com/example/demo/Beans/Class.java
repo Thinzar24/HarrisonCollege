@@ -18,12 +18,8 @@ public class Class {
     @JoinColumn(name="instructor_id")
     private Instructor instructor;
 
-    @ManyToMany
-    @JoinTable(
-            name="student_class", joinColumns = @JoinColumn(name="Student_ID", referencedColumnName = "ID"),
-            inverseJoinColumns = @JoinColumn(name="Class_ID",
-                    referencedColumnName = "ID"))
-    private Set<Student> students;
+    @OneToMany(mappedBy = "aClass", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
+    public Set<StudentClass> studentClasses;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "classroom_id")
@@ -84,12 +80,12 @@ public class Class {
         this.instructor = instructor;
     }
 
-    public Set<Student> getStudents() {
-        return students;
+    public Set<StudentClass> getStudentClasses() {
+        return studentClasses;
     }
 
-    public void setStudents(Set<Student> students) {
-        this.students = students;
+    public void setStudentClasses(Set<StudentClass> studentClasses) {
+        this.studentClasses = studentClasses;
     }
 
     public Classroom getClassroom() {

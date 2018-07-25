@@ -53,6 +53,9 @@ public class HomeController {
     GradeRepository gradeRepository;
 
     @Autowired
+    StudentClassRepository studentClassRepository;
+
+    @Autowired
     private UserService userService;
 
 
@@ -424,12 +427,12 @@ public class HomeController {
 
     @PostMapping("/classesByStudent")
     public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name) {
-        User user = userRepository.findByName(student_name);
-        Student student = studentRepository.findByUser(user);
-        Set<com.example.demo.Beans.Class> classList = student.getClasses();
-
-        model.addAttribute("classes_title", "Classes taken by " + student_name);
-        model.addAttribute("classes", classList);
+//        User user = userRepository.findByName(student_name);
+//        Student student = studentRepository.findByUser(user);
+//        Set<com.example.demo.Beans.Class> classList = student.getClasses();
+//
+//        model.addAttribute("classes_title", "Classes taken by " + student_name);
+//        model.addAttribute("classes", classList);
         return "classes";
     }
 
@@ -649,7 +652,22 @@ public class HomeController {
 
     @RequestMapping("/viewStudentSchedule")
     public String getStudentSchedule(Model model){
-        return "";
+        Student student = studentRepository.findByUser(getUser());
+
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Class> classList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Class aClass = classRepository.findById(studentClass.getaClass().getId()).get();
+            classList.add(aClass);
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("classes",classList);
+        return "classes";
     }
 
 }
