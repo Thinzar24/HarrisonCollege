@@ -143,6 +143,7 @@ public class HomeController {
     public String updateMajor(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("major", majorRepository.findById(id));
+        model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
 
@@ -150,7 +151,7 @@ public class HomeController {
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
-        return "admin/classroomform";
+        return "classroomform";
     }
     @PostMapping("/process")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
@@ -323,6 +324,8 @@ public class HomeController {
     public String updateCourse(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("course", courseRepository.findById(id));
+        model.addAttribute("majors", majorRepository.findAll());
+        model.addAttribute("subjects", subjectRepository.findAll());
         return "admin/courseform";
     }
 
@@ -356,6 +359,8 @@ public class HomeController {
     public String updateClass(@PathVariable("id") long id, Model model)
     {
         model.addAttribute("class", classRepository.findById(id));
+        model.addAttribute("instructors", instructorRepository.findAll());
+        model.addAttribute("courses", courseRepository.findAll());
         return "admin/classform";
     }
 
@@ -404,9 +409,9 @@ public class HomeController {
         return "classes";
     }
 
-    @GetMapping("/adminsearch")
-    public String getAdminSearch() {
-        return "admin/adminsearch";
+    @GetMapping("/search")
+    public String getSearch() {
+        return "search";
     }
 
     @PostMapping("/classesByInstructor")
@@ -479,6 +484,14 @@ public class HomeController {
         return "classes";
     }
 
+    @RequestMapping("/instructorClasses")
+    public String getInstructorClasses(Model model){
+        User user = userRepository.findById(getUser().getId()).get();
+        Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "current"));
+        return "classes";
+    }
+
     @PostMapping("/classesByTimeInCurrentSemester")
     public String getClassesByTimeInCurrentSemester(Model model, @RequestParam("class_time") String class_time) {
         model.addAttribute("classes", classRepository.findAllByTimeAndSemester(class_time, "current"));
@@ -536,7 +549,7 @@ public class HomeController {
             classIterator.remove();
         }
 
-        model.addAttribute("title_type", course_name);
+        model.addAttribute("title_type", "Classrooms used by " + course_name);
         model.addAttribute("classrooms", classrooms);
         return "admin/classrooms";
     }
