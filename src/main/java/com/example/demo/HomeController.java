@@ -367,7 +367,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id){
         classRepository.deleteById(id);
-        return "admin/classform";
+        return "admin/classes";
     }
 
     @RequestMapping("/enrollClassForStudent/{id}")
@@ -534,11 +534,19 @@ public class HomeController {
         return "classes";
     }
 
-    @RequestMapping("/instructorClasses")
-    public String getInstructorClasses(Model model){
+    @RequestMapping("/instructorCurrentClasses")
+    public String getInstructorCurrentClasses(Model model){
         User user = userRepository.findById(getUser().getId()).get();
         Instructor instructor = instructorRepository.findByUser(user);
         model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "current"));
+        return "classes";
+    }
+
+    @RequestMapping("/instructorPastClasses")
+    public String getInstructorPastClasses(Model model){
+        User user = userRepository.findById(getUser().getId()).get();
+        Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "past"));
         return "classes";
     }
 
@@ -689,5 +697,9 @@ public class HomeController {
         return "majors";
     }
 
+    @RequestMapping("/viewStudentSchedule")
+    public String getStudentSchedule(Model model){
+        return "";
+    }
 
 }
