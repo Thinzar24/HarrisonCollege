@@ -1,6 +1,7 @@
 package com.example.demo.Beans;
 
 import javax.persistence.*;
+import java.util.Collection;
 import java.util.Set;
 
 @Entity
@@ -17,6 +18,7 @@ public class Class {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name="instructor_id")
     private Instructor instructor;
+
 
     @OneToMany(mappedBy = "aClass", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
     public Set<StudentClass> studentClasses;

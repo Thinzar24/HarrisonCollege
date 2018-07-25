@@ -372,6 +372,70 @@ public class HomeController {
         classRepository.deleteById(id);
         return "admin/classes";
     }
+
+    @RequestMapping("/enrollClassForStudent/{id}")
+    public String enrollClassStudent(@PathVariable("id") long id)
+    {
+        User user = getUser();
+        Student student = studentRepository.findByUser(user);
+        Class aClass = classRepository.findById(id).get();
+        //Collection<Class> classes = student.getClasses();
+        //classes.add(aClass);
+        //student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/dropClassForStudent/{id}")
+    public String dropClassStudent(@PathVariable("id") long id)
+    {
+        User user = getUser();
+        Student student = studentRepository.findByUser(user);
+        Class aClass = classRepository.findById(id).get();
+        //Collection<Class> classes = student.getClasses();
+        //classes.remove(aClass);
+        //student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/enrollClassForAdvisor/{id}")
+    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    {
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        //Collection<Class> classes = student.getClasses();
+        //classes.add(aClass);
+        //student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/dropClassForAdvisor/{id}}")
+    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    {
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        //Collection<Class> classes = student.getClasses();
+        //classes.remove(aClass);
+        //student.setClasses(classes);
+        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/viewStudentScheduleStudent")
+    public String viewStudentSchedule(Model model)
+    {
+        User user = getUser();
+       // System.out.println("##################");
+        Student student = studentRepository.findByUser(user);
+       // System.out.println("%%%%%%%%%%%%%%"+student.getId());
+        //Collection<Class> classes = student.getClasses();
+        //System.out.println(student.getClasses().size());
+        //System.out.println("***********"+classes.getClass());
+        //model.addAttribute("classes", classes);
+        return "classes";
+    }
+
+
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
     @GetMapping("/addDepartment")
