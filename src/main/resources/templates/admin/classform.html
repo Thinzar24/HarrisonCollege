@@ -48,20 +48,9 @@
             <select class="form-control" id="instInput" name="class">
                 <option th:each="instructor : ${instructors}"
                         th:value="${instructor.id}"
-                        th:utext="${instructor.employee_number}"/>
+                        th:utext="${instructor.user.name}"/>
             </select>
         </div>
-
-        <div sec:authorize="hasAuthority('Admin')">
-            <div class="form-group">
-                <label for="enabledInput"><strong>Enabled</strong></label>
-                <select class="form-control" id="enabledInput" th:field="*{enabled}">
-                    <option value="0">disabled</option>
-                    <option value="1">active</option>
-                </select>
-            </div>
-        </div>
-
 
         <input class="submit-btn" type="submit" value="Submit"/>
     </form>
