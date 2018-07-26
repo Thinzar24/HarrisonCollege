@@ -34,7 +34,7 @@
                         <!--</div>-->
                     </td>
                     <td sec:authorize="hasAuthority('Advisor')">
-                        <a class="btn btn-primary" th:href ="@{/viewTranscript/{id}(id=${student.id})}">View Transcript</a>
+                        <a class="btn btn-primary" th:href ="@{/viewTranscriptByAdvisor/{id}(id=${student.id})}">View Transcript</a>
                     </td>
                     <td sec:authorize="hasAuthority('Instructor')">
                         <input type="text" name="grade"/>

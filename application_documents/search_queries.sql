@@ -9,13 +9,15 @@ select * from instructor;
 select * from major;
 select * from student;
 select * from subject;
+select * from role;
+
+-- List of users and their roles
 select username, a.name, a.id, role_id, c.role from user a 
 inner join user_roles b on a.id = b.user_id 
 inner join role c on b.role_id = c.id;
-select * from role;
 
 -- List of students and classes they signed up for
-select name, course_name, crn, days, time, semester
+select name, d.id as class_id, course_name, crn, days, time, semester
 from user a
 inner join student b on a.id = b.user_id
 inner join student_class c on b.id = c.student_id
@@ -33,7 +35,7 @@ inner join grade f on b.id = f.student_id
 where f.class_id = d.id;
 
 -- List of classes that an instructor has taught
-select name, course_name, crn, days, time, semester
+select c.instructor_id, name, c.id as class_id, course_name, crn, days, time, semester
 from user a
 inner join instructor b on a.id = b.user_id
 inner join class c on c.instructor_id = b.id
@@ -48,7 +50,7 @@ inner join subject c on b.subject_id = c.id
 where semester = 'current';
 
 -- List of classes by instructor in current semester
-select name, course_name, crn, days, time, semester
+select b.id as instructor_id, name, course_name, crn, days, time, semester
 from user a
 inner join instructor b on a.id = b.user_id
 inner join class c on c.instructor_id = b.id
@@ -69,6 +71,14 @@ select name, building_name, room_number, capacity, disabled
 from classroom a
 inner join class b on a.id = b.classroom_id
 inner join instructor c on b.instructor_id = c.id
+inner join user d on c.user_id = d.id;
+
+-- List of classrooms by student
+select name, building_name, room_number, capacity, disabled
+from classroom a
+inner join class b on a.id = b.classroom_id
+inner join student_class e on b.id = e.class_id
+inner join student c on e.student_id = c.id
 inner join user d on c.user_id = d.id;
 
 -- List of classrooms by course

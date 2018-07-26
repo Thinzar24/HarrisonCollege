@@ -9,6 +9,5 @@ import java.util.ArrayList;
 import java.util.Set;
 
 public interface StudentRepository extends CrudRepository<Student, Long> {
-    ArrayList<Student> findAllByUser(User user);
     Student findByUser(User user);
 }

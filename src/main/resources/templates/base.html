@@ -15,7 +15,9 @@
             <!-- Links -->
             <ul class="navbar-nav">
                 <li sec:authorize="isAuthenticated()" class="nav-item">
-                    Welcome <span th:text="${#authentication.name}"></span>!
+                    <strong>
+                        <a href="#">Welcome <span th:text="${#authentication.name}"></span>!</a>
+                    </strong>
                 </li>
                 <li sec:authorize="!isAuthenticated()" class="nav-item">
                     <a class="nav-link" href="/register">Register</a>

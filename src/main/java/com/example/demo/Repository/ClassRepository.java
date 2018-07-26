@@ -1,9 +1,7 @@
 package com.example.demo.Repository;
 
+import com.example.demo.Beans.*;
 import com.example.demo.Beans.Class;
-import com.example.demo.Beans.Course;
-import com.example.demo.Beans.Instructor;
-import com.example.demo.Beans.Student;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;
@@ -16,5 +14,5 @@ public interface ClassRepository extends CrudRepository<Class, Long> {
     Iterable<Class> findAllByCourseAndSemester(Course course, String semester);
     Iterable<Class> findAllByInstructorAndSemester(Instructor instructor, String semester);
     Iterable<Class> findAllByTimeAndSemester(String time, String semester);
-    Class findByCrn(String crn);
+    Iterable<Class> findAllByCrn(String crn);
 }
