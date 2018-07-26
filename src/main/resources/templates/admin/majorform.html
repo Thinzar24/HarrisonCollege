@@ -12,11 +12,11 @@
     <div th:replace="base :: nav"></div>
 
     <form method="post" action="/addMajor" th:object="${major}">
+
         <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
         <div class="form-group"><strong>Major name: </strong>
             <input type="text" placeholder="Enter Major Name" th:field="*{majorName}" class="form-control">
-            <span th:if="${#fields.hasErrors('majorName')}" th:errors="*{majorName}"></span>
         </div>
 
 
