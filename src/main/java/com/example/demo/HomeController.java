@@ -149,13 +149,11 @@ public class HomeController {
         model.addAttribute("departments", departmentRepository.findAll());
         return "admin/majorform";
     }
+
     @PostMapping("/addMajor")
-    public String processMajor(@Valid @ModelAttribute Major major, BindingResult result) {
-        if (result.hasErrors()) {
-            return "majorform";
-        }
+    public String processMajor(@ModelAttribute Major major) {
         majorRepository.save(major);
-        return "redirect:/adminmain";
+        return "redirect:/listMajor";
     }
 
     @RequestMapping("/listMajor")
@@ -184,7 +182,7 @@ public class HomeController {
             return "admin/classroomform";
         }
         classroomRepository.save(classroom);
-        return "redirect:/adminmain";
+        return "redirect:/listClassroom";
     }
 
     @RequestMapping("/listClassroom")
@@ -337,7 +335,7 @@ public class HomeController {
             return "admin/courseform";
         }
         courseRepository.save(course);
-        return "redirect:/adminmain";
+        return "redirect:/listCourse";
     }
     @RequestMapping("/listCourse")
     public String viewAllCourse(Model model)
@@ -372,7 +370,7 @@ public class HomeController {
             return "admin/classform";
         }
         classRepository.save(aclass);
-        return "redirect:/adminmain";
+        return "redirect:/listClass";
     }
     @RequestMapping("/listClass")
     public String viewAllClass(Model model)
@@ -392,7 +390,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id, Model model){
         classRepository.deleteById(id);
-        return "redirect:/classes";
+        return "redirect:/listClass";
     }
 
     @RequestMapping("/listClassToEnrollByStudent")
@@ -608,7 +606,7 @@ public class HomeController {
             return "admin/departmentform";
         }
         departmentRepository.save(department);
-        return "redirect:/adminmain";
+        return "redirect:/listDepartment";
     }
     @RequestMapping("/listDepartment")
     public String viewAllDepartment(Model model)
@@ -835,7 +833,9 @@ public class HomeController {
             com.example.demo.Beans.Class aClass = classIterator.next();
             classSet.add(aClass);
             Classroom classroom = classroomRepository.findByClasses(classSet);
-            classrooms.add(classroom);
+            if(!classrooms.contains(classroom)) {
+                classrooms.add(classroom);
+            }
             classSet.remove(aClass);
             classIterator.remove();
         }

@@ -42,6 +42,14 @@ inner join class c on c.instructor_id = b.id
 inner join course d on c.course_id = d.id
 where semester = 'past';
 
+-- List of classes by course
+select subject_name, course_name, crn, days, time, semester
+from class a
+inner join course b on a.course_id = b.id
+inner join subject c on b.subject_id = c.id
+where semester = 'current'
+order by course_name;
+
 -- List of classes by subject in current semester
 select subject_name, course_name, crn, days, time, semester
 from class a
@@ -56,6 +64,13 @@ inner join instructor b on a.id = b.user_id
 inner join class c on c.instructor_id = b.id
 inner join course d on c.course_id = d.id
 where semester = 'current'
+order by instructor_id;
+
+-- List of classes by certain time in current semester
+select course_name, crn, days, time, semester
+from class a
+inner join course b on a.course_id = b.id
+where semester = 'current'
 order by time;
 
 -- List of classes by department in current semester
@@ -64,14 +79,16 @@ from class a
 inner join course b on a.course_id = b.id
 inner join major c on b.major_id = c.id
 inner join department d on c.department_id = d.id
-where semester = 'current';
+where semester = 'current'
+order by department_name;
 
 -- List of classrooms by instructor
 select name, building_name, room_number, capacity, disabled
 from classroom a
 inner join class b on a.id = b.classroom_id
 inner join instructor c on b.instructor_id = c.id
-inner join user d on c.user_id = d.id;
+inner join user d on c.user_id = d.id
+order by d.name;
 
 -- List of classrooms by student
 select d.name, building_name, room_number, capacity, disabled
@@ -79,13 +96,15 @@ from classroom a
 left outer join class b on a.id = b.classroom_id
 left outer join student_class e on b.id = es.class_id
 inner join student c on e.student_id = c.id
-inner join user d on c.user_id = d.id;
+inner join user d on c.user_id = d.id
+order by d.name;
 
 -- List of classrooms by course
 select course_name, building_name, room_number, capacity, a.disabled
 from classroom a
 inner join class b on a.id = b.classroom_id
-inner join course c on b.course_id = c.id;
+inner join course c on b.course_id = c.id
+order by course_name;
 
 -- List of courses by department
 select department_name, course_name, course_description, credits
