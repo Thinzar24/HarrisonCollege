@@ -121,6 +121,12 @@ public class HomeController {
         return "advisormain";
     }
 
+    @RequestMapping("/createClassroom")
+    public String listClassroom(Model model){
+        model.addAttribute("classrooms",classroomRepository.findAll());
+        return "classrooms";
+    }
+
     /////////////////////////////////////////////////////////////////////////////////////////For MAJOR
     @GetMapping("/addMajor")
     public String addMajor(Model model) {
@@ -157,7 +163,7 @@ public class HomeController {
         model.addAttribute("classroom", new Classroom());
         return "admin/classroomform";
     }
-    @PostMapping("/process")
+    @PostMapping("/addClassroom")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
         if (result.hasErrors()) {
             return "admin/classroomform";
@@ -369,7 +375,7 @@ public class HomeController {
     }
 
     @RequestMapping("/deleteClass/{id}")
-    public String deleteClass(@PathVariable("id")long id){
+    public String deleteClass(@PathVariable("id")long id, Model model){
         classRepository.deleteById(id);
         return "admin/classes";
     }

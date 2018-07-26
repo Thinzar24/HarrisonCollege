@@ -12,7 +12,7 @@
     <div th:replace="base :: nav"></div>
 
     <form action="#"
-          th:action="@{/process}"
+          th:action="@{/addClassroom}"
           th:object="${classroom}"
           method="post">
 
@@ -20,19 +20,22 @@
 
         <!--Sample text input-->
         <div class="form-group">
-            <label for="buildingName">Enter Building Name :</label>
+            <label for="buildingName">Enter Building Number :</label>
             <input class="form-control" type="text" id="buildingName" th:field="*{buildingName}"/>
         </div>
+        <br/>
 
         <div class="form-group">
             <label for="roomNumber">Enter Room Number :</label>
             <input class="form-control" type="text" id="roomNumber" th:field="*{roomNumber}"/>
         </div>
+        <br/>
 
         <div class="form-group">
             <label for="capacity">Enter Capacity :</label>
             <input class="form-control" type="text" id="capacity" th:field="*{capacity}"/>
         </div>
+        <br/>
 
         <!--Sample dropdown input-->
         <!--<div class="form-group">-->
@@ -42,6 +45,15 @@
         <!--<option th:each="category : ${categories}"-->
         <!--th:value="${category.id}"-->
         <!--th:utext="${category.categoryName}"/>-->
+
+        <div class="form-group">
+            <label for="classInput">Choose your Class:</label>
+            <select class="form-control" id="classInput" name="classes">
+                <option th:each="class : ${classes}"
+                        th:value="${class.id}"
+                        th:utext="${class.user.name}"/>
+            </select>
+        </div>
 
         <div sec:authorize="hasAuthority('Admin')">
             <div class="form-group">
