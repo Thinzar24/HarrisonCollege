@@ -41,7 +41,7 @@
 
     <!--View a list of all classes that an instructor has taught-->
     <div sec:authorize="hasAuthority('Admin')">
-    <strong>View a list of all classes that an instructor has taught</strong>
+    <strong>View a list of all classes that an instructor has taught in the past semester</strong>
     <form action="#"
           th:action="@{/classesTaughtByInstructor}"
           method="post">
