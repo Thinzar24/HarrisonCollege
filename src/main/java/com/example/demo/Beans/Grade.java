@@ -18,6 +18,13 @@ public class Grade {
     @JoinColumn(name = "student_id")
     private Student student;
 
+    public Grade() {}
+
+    public Grade(Class aClass, Student student) {
+        this.aClass = aClass;
+        this.student = student;
+    }
+
     public long getId() {
         return id;
     }
