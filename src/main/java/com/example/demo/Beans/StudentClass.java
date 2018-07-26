@@ -16,6 +16,11 @@ public class StudentClass {
     @JoinColumn(name = "class_id")
     private Class aClass;
 
+    public StudentClass(Student student, Class aClass) {
+        this.student = student;
+        this.aClass = aClass;
+    }
+
     public long getId() {
         return id;
     }

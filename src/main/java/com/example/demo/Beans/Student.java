@@ -1,6 +1,7 @@
 package com.example.demo.Beans;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
 
@@ -22,7 +23,7 @@ public class Student {
     private User user;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    public Set<StudentClass> studentClasses;
+    public ArrayList<StudentClass> studentClasses;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
@@ -67,11 +68,11 @@ public class Student {
         this.user = user;
     }
 
-    public Set<StudentClass> getStudentClasses() {
+    public ArrayList<StudentClass> getStudentClasses() {
         return studentClasses;
     }
 
-    public void setStudentClasses(Set<StudentClass> studentClasses) {
+    public void setStudentClasses(ArrayList<StudentClass> studentClasses) {
         this.studentClasses = studentClasses;
     }
 

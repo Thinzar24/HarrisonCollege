@@ -379,10 +379,13 @@ public class HomeController {
     {
         User user = getUser();
         Student student = studentRepository.findByUser(user);
+        ArrayList<Class> classList = getSchedule(student);
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.add(aClass);
-        //student.setClasses(classes);
+        classList.add(aClass);
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        StudentClass studentClass = new StudentClass(student, aClass);
+        studentClasses.add(studentClass);
+        student.setStudentClasses(studentClasses);
         return "redirect:/studentmain";
     }
 
@@ -391,10 +394,12 @@ public class HomeController {
     {
         User user = getUser();
         Student student = studentRepository.findByUser(user);
+        ArrayList<Class> classList = getSchedule(student);
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.remove(aClass);
-        //student.setClasses(classes);
+        classList.remove(aClass);
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        studentClasses.remove(studentClassRepository.findByStudentAndClass(student,aClass));
+        student.setStudentClasses(studentClasses);
         return "redirect:/studentmain";
     }
 
@@ -403,11 +408,14 @@ public class HomeController {
     {
         long studentId= Long.parseLong(request.getParameter("student_id"));
         Student student = studentRepository.findById(studentId).get();
+        ArrayList<Class> classList = getSchedule(student);
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.add(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+        classList.add(aClass);
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        StudentClass studentClass = new StudentClass(student, aClass);
+        studentClasses.add(studentClass);
+        student.setStudentClasses(studentClasses);
+        return "redirect:/advisormain";
     }
 
     @RequestMapping("/dropClassForAdvisor/{id}}")
@@ -415,11 +423,13 @@ public class HomeController {
     {
         long studentId= Long.parseLong(request.getParameter("student_id"));
         Student student = studentRepository.findById(studentId).get();
+        ArrayList<Class> classList = getSchedule(student);
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.remove(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+        classList.remove(aClass);
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        studentClasses.remove(studentClassRepository.findByStudentAndClass(student,aClass));
+        student.setStudentClasses(studentClasses);
+        return "redirect:/advisormain";
     }
 
 //    @RequestMapping("/viewStudentScheduleStudent")
