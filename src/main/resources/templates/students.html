@@ -23,6 +23,7 @@
                     <th>Name</th>
                     <th sec:authorize="hasAuthority('Instructor')">Grade</th>
                     <th sec:authorize="hasAuthority('Advisor')"></th>
+                    <th sec:authorize="hasAuthority('Advisor')"></th>
                     <th sec:authorize="hasAuthority('Instructor')"></th>
                 </tr>
             </thead>
@@ -38,7 +39,9 @@
                         </div>
                     </td>
                     <td sec:authorize="hasAuthority('Advisor')">
-                        <p><a class="btn btn-primary" th:href ="@{/viewTranscriptByAdvisor/{id}(id=${student.id})}">View Transcript</a></p>
+                        <a class="btn btn-primary" th:href ="@{/viewTranscriptByAdvisor/{id}(id=${student.id})}">View Transcript</a>
+                    </td>
+                    <td sec:authorize="hasAuthority('Advisor')">
                         <p><a class="btn btn-primary" th:href ="@{/getListClassToEnrollByAdvisor/{id}(id=${student.id})}">Enroll Student in Classes</a></p>
                         <p><a class="btn btn-primary" th:href ="@{/getListClassToDropByAdvisor/{id}(id=${student.id})}">Drop Student From Classes</a></p>
                     </td>
