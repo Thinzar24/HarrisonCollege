@@ -8,51 +8,54 @@
 </head>
 <body>
 
-    <div th:fragment="nav">
+<div th:fragment="nav">
 
-        <nav class="navbar navbar-expand-sm bg-light fixed-top">
+    <!--<nav class="navbar navbar-expand-sm bg-light fixed-top">-->
 
-            <!-- Links -->
-            <ul class="navbar-nav">
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <strong>
-                        <a href="#">Welcome <span th:text="${#authentication.name}"></span>!</a>
-                    </strong>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/register">Register</a>
-                </li>
-                <li sec:authorize="!isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/login">Login</a>
-                </li>
-                <li sec:authorize="hasAuthority('Admin')" class="nav-item">
-                    <a class="nav-link" href="/adminmain">Admin Main</a>
-                </li>
-                <li sec:authorize="hasAuthority('Student')" class="nav-item">
-                    <a class="nav-link" href="/studentmain">Student Main</a>
-                </li>
-                <li sec:authorize="hasAuthority('Instructor')" class="nav-item">
-                    <a class="nav-link" href="/instructormain">Instructor Main</a>
-                </li>
-                <li sec:authorize="hasAuthority('Advisor')" class="nav-item">
-                    <a class="nav-link" href="/advisormain">Advisor Main</a>
-                </li>
-                <li sec:authorize="isAuthenticated()" class="nav-item">
-                    <a class="nav-link" href="/logout">Logout</a>
-                </li>
-            </ul>
+    <nav class="navbar navbar navbar-expand-lg navbar-dark bg-dark fixed-top" th:fragment="main-navbar" >
+            <!-- Navbar content -->
 
-        </nav>
+        <!-- Links -->
+        <ul class="navbar-nav">
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <strong>
+                    <a href="#">Welcome <span th:text="${#authentication.name}"></span>!</a>
+                </strong>
+            </li>
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+            </li>
+            <li sec:authorize="!isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+            </li>
+            <li sec:authorize="hasAuthority('Admin')" class="nav-item">
+                <a class="nav-link" href="/adminmain">Admin Main</a>
+            </li>
+            <li sec:authorize="hasAuthority('Student')" class="nav-item">
+                <a class="nav-link" href="/studentmain">Student Main</a>
+            </li>
+            <li sec:authorize="hasAuthority('Instructor')" class="nav-item">
+                <a class="nav-link" href="/instructormain">Instructor Main</a>
+            </li>
+            <li sec:authorize="hasAuthority('Advisor')" class="nav-item">
+                <a class="nav-link" href="/advisormain">Advisor Main</a>
+            </li>
+            <li sec:authorize="isAuthenticated()" class="nav-item">
+                <a class="nav-link" href="/logout">Logout</a>
+            </li>
+        </ul>
 
-        <div class="jumbotron text-center">
-            <h1>Harrison College</h1>
-        </div>
+    </nav>
 
-    </div><!--end div fragment nav-->
-
-    <div th:fragment="footer">
-        <div class="footer">&#169; 2018 Harrison College</div>
+    <div class="jumbotron text-center">
+        <h1>Harrison College</h1>
     </div>
+
+</div><!--end div fragment nav-->
+
+<div th:fragment="footer">
+    <div class="footer">&#169; 2018 Harrison College</div>
+</div>
 
 </body>
 </html>
