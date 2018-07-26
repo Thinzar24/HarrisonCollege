@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -665,26 +666,23 @@ public class HomeController {
 
     @PostMapping("/classroomsByStudent")
     public String getClassroomsByStudent(Model model, @RequestParam("studentname") String student_name) {
-//        User user = userRepository.findByName(student_name);
-//        Instructor instructor = instructorRepository.findByUser(user);
-//
-//        Set<com.example.demo.Beans.Class> classSet = new HashSet<>();
-//        Iterable<com.example.demo.Beans.Class> classes = classRepository.findAllByInstructor(instructor);
-//        Iterator<com.example.demo.Beans.Class> classIterator = classes.iterator();
-//
-//        ArrayList<Classroom> classrooms = new ArrayList<>();
-//
-//        while(classIterator.hasNext()){
-//            com.example.demo.Beans.Class aClass = classIterator.next();
-//            classSet.add(aClass);
-//            Classroom classroom = classroomRepository.findByClasses(classSet);
-//            classrooms.add(classroom);
-//            classSet.remove(aClass);
-//            classIterator.remove();
-//        }
-//
-//        model.addAttribute("title_type", instructor_name);
-//        model.addAttribute("classrooms", classrooms);
+        Student student = studentRepository.findByUser(userRepository.findByName(student_name));
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Classroom> classroomList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Classroom classroom = studentClass.getaClass().getClassroom();
+            if(!classroomList.contains(classroom)) {
+                classroomList.add(classroom);
+            }
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("title_type", "Classrooms used by " +student_name);
+        model.addAttribute("classrooms", classroomList);
         return "admin/classrooms";
     }
 
@@ -761,6 +759,41 @@ public class HomeController {
     public String getStudentsByAdvisor(Model model) {
         model.addAttribute("students",studentRepository.findAll());
         return "students";
+    }
+
+    @PostMapping("/studentsByInstructor")
+    public String getStudentsByInstructor(Model model, @RequestParam("instructorname") String instructor_name){
+        Instructor instructor = instructorRepository.findByUser(userRepository.findByName(instructor_name));
+
+        ArrayList<Student> students = new ArrayList<>();
+
+        Iterable<Class> classes = classRepository.findAllByInstructor(instructor);
+        Iterator<Class> classIterator = classes.iterator();
+
+        while(classIterator.hasNext()){
+            ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByAClass(classIterator.next());
+            Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+            while(studentClassIterator.hasNext()){
+                Student student = studentClassIterator.next().getStudent();
+                if(!students.contains(student)){
+                    students.add(student);
+                }
+                studentClassIterator.remove();
+            }
+            classIterator.remove();
+        }
+
+        model.addAttribute("page_title", "Students Taught by " + instructor_name);
+        model.addAttribute("students",students);
+        return "students";
+    }
+
+    @PostMapping("/instructorsByClass")
+    public String getInstructorsByClass(Model model, @RequestParam("crn") String class_crn){
+        model.addAttribute("classes_title", "Instructors for Class CRN " + class_crn);
+        model.addAttribute("classes", classRepository.findAllByCrn(class_crn));
+        return "classes";
     }
 
 }

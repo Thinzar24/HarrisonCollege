@@ -11,33 +11,27 @@
 
     <div th:replace="base :: nav"></div>
 
-    <div class="row p-5">
-        <div class="col-sm-0 col-md-2"></div>
-        <div class="col-sm-12 col-md-8">
-            <form method="post" action="/addDepartment" th:object="${department}">
-                <div class="form-group"><input type="hidden" th:field="*{id}"></div>
+    <form method="post" action="/addDepartment" th:object="${department}">
+        <div class="form-group"><input type="hidden" th:field="*{id}"></div>
 
-                <div class="form-group"><strong>Department name: </strong>
-                    <input type="text" placeholder="Enter Department Name" th:field="*{departmentName}" class="form-control">
-                    <span th:if="${#fields.hasErrors('departmentName')}" th:errors="*{departmentName}"></span>
-                </div>
-
-
-                <div sec:authorize="hasAuthority('Admin')">
-                    <div class="form-group">
-                        <label for="enabledInput"><strong>Enabled</strong></label>
-                        <select class="form-control" id="enabledInput" th:field="*{disabled}">
-                            <option value="0">disabled</option>
-                            <option value="1">active</option>
-                        </select>
-                    </div>
-                </div>
-
-                <input class="submit-btn" type="submit" value="Submit"/>
-            </form>
+        <div class="form-group"><strong>Department name: </strong>
+            <input type="text" placeholder="Enter Department Name" th:field="*{departmentName}" class="form-control">
+            <span th:if="${#fields.hasErrors('departmentName')}" th:errors="*{departmentName}"></span>
         </div>
-        <div class="col-sm-0 col-md-2"></div>
-    </div>
+
+
+        <div sec:authorize="hasAuthority('Admin')">
+            <div class="form-group">
+                <label for="enabledInput"><strong>Enabled</strong></label>
+                <select class="form-control" id="enabledInput" th:field="*{disabled}">
+                    <option value="0">disabled</option>
+                    <option value="1">active</option>
+                </select>
+            </div>
+        </div>
+
+        <input class="submit-btn" type="submit" value="Submit"/>
+    </form>
 
     <div th:replace="base :: footer"></div>
 

@@ -1,5 +1,5 @@
 body {
-    margin: 30px auto 0px auto;
+    margin: 30px auto 50px auto;
     font-family: Verdana;
     font-size: 8pt;
     width: 85%;
@@ -14,7 +14,6 @@ div.jumbotron {
 }
 
 div.footer {
-    margin-top: 30px;
     position: fixed;
     left: 0;
     bottom: 0;
