@@ -475,18 +475,23 @@ public class HomeController {
     }
 
     private ArrayList<Class> getGrades(Student student){
-        ArrayList<Grade> grades = gradeRepository.findAllByStudent(student);
-        Iterator<Grade> gradeIterator = grades.iterator();
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
 
         ArrayList<Class> classes = new ArrayList<>();
 
-        while(gradeIterator.hasNext()){
-            Grade grade = gradeIterator.next();
-            Class aClass = grade.getaClass();
+        while(studentClassIterator.hasNext()){
+            StudentClass studentClass = studentClassIterator.next();
+            Class aClass = studentClass.getaClass();
+            Grade grade = gradeRepository.findByAClassAndStudent(aClass, student);
 
-            // Add class to list for student
-            classes.add(aClass);
-            gradeIterator.remove();
+            if(grade != null){
+                classes.add(grade.getaClass());
+            }
+            else {
+                classes.add(aClass);
+            }
+            studentClassIterator.remove();
         }
 
         return classes;

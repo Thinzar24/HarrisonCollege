@@ -127,7 +127,7 @@ public class DataLoader implements CommandLineRunner{
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
 
-        user = new User("password", "Bobby Pin", true, "BPin");
+        user = new User("password", "Bobby Pin", true, "advisor");
         user.setRoles(Arrays.asList(advisorRole));
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
