@@ -703,6 +703,7 @@ public class HomeController {
             studentClassIterator.remove();
         }
 
+        model.addAttribute("class_obj", aClass);
         model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
         model.addAttribute("students", students);
         return "students";
@@ -862,13 +863,25 @@ public class HomeController {
         return "classes";
     }
 
-    @RequestMapping("/viewScheduleAdvisor/{id}")
+    @RequestMapping("/getListClassToDropByAdvisor/{id}")
     public String getStudentScheduleByAdisor(@PathVariable("id") long id, Model model){
         Student student = studentRepository.findById(id).get();
-        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("classes_title","Current Classes for " + student.getUser().getName());
+        model.addAttribute("student_in", student.getId());
         model.addAttribute("displayEnroll",false);
         model.addAttribute("displayDrop",true);
         model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
+
+    @RequestMapping("/getListClassToEnrollByAdvisor/{id}")
+    public String getListClassToEnrollByAdvisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findById(id).get();
+        model.addAttribute("classes_title","Classes to Enrll " + student.getUser().getName() + " In");
+        model.addAttribute("student_in", student.getId());
+        model.addAttribute("displayEnroll",true);
+        model.addAttribute("displayDrop",false);
+        model.addAttribute("classes",getClassListToEnroll(student));
         return "classes";
     }
 
