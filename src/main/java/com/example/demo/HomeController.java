@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.HTMLDocument;
 import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -377,7 +376,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id, Model model){
         classRepository.deleteById(id);
-        return "admin/classes";
+        return "redirect:/classes";
     }
 
     @RequestMapping("/listClassToEnrollByStudent")
@@ -428,46 +427,20 @@ public class HomeController {
         Student student = studentRepository.findByUser(getUser());
         // Get class to enroll in
         Class aClass = classRepository.findById(id).get();
-
         StudentClass studentClass = new StudentClass(student,aClass);
         studentClassRepository.save(studentClass);
-
         return "redirect:/viewScheduleStudent";
 
-//        User user = getUser();
-//        Student student = studentRepository.findByUser(user);
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.add(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        StudentClass studentClass = new StudentClass(student, aClass);
-//        studentClasses.add(studentClass);
-//        student.setStudentClasses(studentClasses);
-//        return "redirect:/studentmain";
     }
-
     @RequestMapping("/dropClassForStudent/{id}")
     public String dropClassStudent(@PathVariable("id") long id)
     {
-        // Get student
-        Student student = studentRepository.findByUser(getUser());
-        // Get class to drop
-        Class aClass = classRepository.findById(id).get();
 
-        // Get student/class record and remove it
+        Student student = studentRepository.findByUser(getUser());
+        Class aClass = classRepository.findById(id).get();
         StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
         studentClassRepository.deleteById(studentClass.getId());
-
         return "redirect:/viewScheduleStudent";
-//        User user = getUser();
-//        Student student = studentRepository.findByUser(user);
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.remove(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
-//        student.setStudentClasses(studentClasses);
-//        return "redirect:/studentmain";
     }
 
     @RequestMapping("/getTranscript")
@@ -556,32 +529,24 @@ public class HomeController {
     @RequestMapping("/enrollClassForAdvisor/{id}")
     public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
     {
-//        long studentId= Long.parseLong(request.getParameter("student_id"));
-//        Student student = studentRepository.findById(studentId).get();
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.add(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        StudentClass studentClass = new StudentClass(student, aClass);
-//        studentClasses.add(studentClass);
-//        student.setStudentClasses(studentClasses);
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        StudentClass studentClass = new StudentClass(student,aClass);
+        studentClassRepository.save(studentClass);
         return "redirect:/advisormain";
     }
 
     @RequestMapping("/dropClassForAdvisor/{id}}")
     public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
     {
-//        long studentId= Long.parseLong(request.getParameter("student_id"));
-//        Student student = studentRepository.findById(studentId).get();
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.remove(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
-//        student.setStudentClasses(studentClasses);
+        long studentId= Long.parseLong(request.getParameter("student_id"));
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
+        studentClassRepository.deleteById(studentClass.getId());
         return "redirect:/advisormain";
     }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
