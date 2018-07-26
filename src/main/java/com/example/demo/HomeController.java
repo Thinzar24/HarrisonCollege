@@ -53,6 +53,9 @@ public class HomeController {
     GradeRepository gradeRepository;
 
     @Autowired
+    StudentClassRepository studentClassRepository;
+
+    @Autowired
     private UserService userService;
 
 
@@ -157,7 +160,7 @@ public class HomeController {
     @GetMapping("/addClassroom")
     public String classroomForm(Model model) {
         model.addAttribute("classroom", new Classroom());
-        return "classroomform";
+        return "admin/classroomform";
     }
     @PostMapping("/addClassroom")
     public String processForm(@Valid @ModelAttribute Classroom classroom, BindingResult result) {
@@ -382,9 +385,9 @@ public class HomeController {
         User user = getUser();
         Student student = studentRepository.findByUser(user);
         Class aClass = classRepository.findById(id).get();
-        Collection<Class> classes = student.getClasses();
-        classes.add(aClass);
-        student.setClasses(classes);
+        //Collection<Class> classes = student.getClasses();
+        //classes.add(aClass);
+        //student.setClasses(classes);
         return "redirect:/studentmain";
     }
 
@@ -394,9 +397,9 @@ public class HomeController {
         User user = getUser();
         Student student = studentRepository.findByUser(user);
         Class aClass = classRepository.findById(id).get();
-        Collection<Class> classes = student.getClasses();
-        classes.remove(aClass);
-        student.setClasses(classes);
+        //Collection<Class> classes = student.getClasses();
+        //classes.remove(aClass);
+        //student.setClasses(classes);
         return "redirect:/studentmain";
     }
 
@@ -406,9 +409,9 @@ public class HomeController {
         long studentId= Long.parseLong(request.getParameter("student_id"));
         Student student = studentRepository.findById(studentId).get();
         Class aClass = classRepository.findById(id).get();
-        Collection<Class> classes = student.getClasses();
-        classes.add(aClass);
-        student.setClasses(classes);
+        //Collection<Class> classes = student.getClasses();
+        //classes.add(aClass);
+        //student.setClasses(classes);
         return "redirect:/studentmain";
     }
 
@@ -418,9 +421,9 @@ public class HomeController {
         long studentId= Long.parseLong(request.getParameter("student_id"));
         Student student = studentRepository.findById(studentId).get();
         Class aClass = classRepository.findById(id).get();
-        Collection<Class> classes = student.getClasses();
-        classes.remove(aClass);
-        student.setClasses(classes);
+        //Collection<Class> classes = student.getClasses();
+        //classes.remove(aClass);
+        //student.setClasses(classes);
         return "redirect:/studentmain";
     }
 
@@ -431,10 +434,10 @@ public class HomeController {
        // System.out.println("##################");
         Student student = studentRepository.findByUser(user);
        // System.out.println("%%%%%%%%%%%%%%"+student.getId());
-        Collection<Class> classes = student.getClasses();
+        //Collection<Class> classes = student.getClasses();
         //System.out.println(student.getClasses().size());
         //System.out.println("***********"+classes.getClass());
-        model.addAttribute("classes", classes);
+        //model.addAttribute("classes", classes);
         return "classes";
     }
 
@@ -494,12 +497,12 @@ public class HomeController {
 
     @PostMapping("/classesByStudent")
     public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name) {
-        User user = userRepository.findByName(student_name);
-        Student student = studentRepository.findByUser(user);
-        Collection<com.example.demo.Beans.Class> classList = student.getClasses();
-
-        model.addAttribute("classes_title", "Classes taken by " + student_name);
-        model.addAttribute("classes", classList);
+//        User user = userRepository.findByName(student_name);
+//        Student student = studentRepository.findByUser(user);
+//        Set<com.example.demo.Beans.Class> classList = student.getClasses();
+//
+//        model.addAttribute("classes_title", "Classes taken by " + student_name);
+//        model.addAttribute("classes", classList);
         return "classes";
     }
 
@@ -719,7 +722,22 @@ public class HomeController {
 
     @RequestMapping("/viewStudentSchedule")
     public String getStudentSchedule(Model model){
-        return "";
+        Student student = studentRepository.findByUser(getUser());
+
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Class> classList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Class aClass = classRepository.findById(studentClass.getaClass().getId()).get();
+            classList.add(aClass);
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("classes",classList);
+        return "classes";
     }
 
 }

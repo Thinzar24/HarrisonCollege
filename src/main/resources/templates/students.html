@@ -16,20 +16,31 @@
     <div class="table-responsive">
         <table class="table table-hover text-center">
             <thead>
-            <tr>
-                <th>Column title goes here</th>
-            </tr>
+                <tr>
+                    <th>Student Number</th>
+                    <th>Name</th>
+                    <th sec:authorize="hasAuthority('Instructor')">Grade</th>
+                    <th sec:authorize="hasAuthority('Advisor')"></th>
+                    <th sec:authorize="hasAuthority('Instructor')"></th>
+                </tr>
             </thead>
             <tbody>
-            <!--sample for loop-->
-            <tr th:each="company : ${companies}">
-                <!--Sample cell text-->
-                <td ><span th:text="${company.companyid}"></span></td>
-                <td >
-                    <!--Sample button link-->
-                    <a class="btn btn-primary" th:href ="@{/updateCompany/{id}(id=${company.companyid})}">Update</a>
-                </td>
-            </tr>
+                <tr th:each="student : ${students}">
+                    <td ><span th:text="${student.studentNumber}"></span></td>
+                    <td ><span th:text="${student.user.name}"></span></td>
+                    <td sec:authorize="hasAuthority('Instructor')">
+                        <!--<div th:each="${grade : student.grades}">-->
+
+                        <!--</div>-->
+                    </td>
+                    <td sec:authorize="hasAuthority('Advisor')">
+                        <a class="btn btn-primary" th:href ="@{/viewTranscript/{id}(id=${student.id})}">View Transcript</a>
+                    </td>
+                    <td sec:authorize="hasAuthority('Instructor')">
+                        <input type="text" name="grade"/>
+                        <a class="btn btn-primary" th:href ="@{/assignGrade/{id}(id=${student.id})}">Assign Grade</a>
+                    </td>
+                </tr>
             </tbody>
         </table>
     </div>
