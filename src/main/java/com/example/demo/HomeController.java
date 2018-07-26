@@ -727,6 +727,14 @@ public class HomeController {
     @RequestMapping("/viewStudentInClass/{id}")
     public String getStudentsInClass(@PathVariable("id") long id, Model model) {
         Class aClass = classRepository.findById(id).get();
+
+        model.addAttribute("class_id", aClass.getId());
+        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
+        model.addAttribute("students", getStudentsInClass(aClass));
+        return "students";
+    }
+
+    private ArrayList<Student> getStudentsInClass(Class aClass) {
         ArrayList<Student> students = new ArrayList<>();
 
         Set<StudentClass> studentClasses = aClass.getStudentClasses();
@@ -738,10 +746,7 @@ public class HomeController {
             studentClassIterator.remove();
         }
 
-        model.addAttribute("class_obj", aClass);
-        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
-        model.addAttribute("students", students);
-        return "students";
+        return  students;
     }
 
     @PostMapping("/classesByTimeInCurrentSemester")
@@ -899,7 +904,7 @@ public class HomeController {
     }
 
     @RequestMapping("/getListClassToDropByAdvisor/{id}")
-    public String getStudentScheduleByAdisor(@PathVariable("id") long id, Model model){
+    public String getStudentScheduleByAdvisor(@PathVariable("id") long id, Model model){
         Student student = studentRepository.findById(id).get();
         model.addAttribute("classes_title","Current Classes for " + student.getUser().getName());
         model.addAttribute("student_in", student.getId());
@@ -977,6 +982,33 @@ public class HomeController {
         model.addAttribute("classes_title", "Instructors for Class CRN " + class_crn);
         model.addAttribute("classes", classRepository.findAllByCrn(class_crn));
         return "classes";
+    }
+
+    @RequestMapping("/assignGrade")
+    public String assignGradeToStudent(Model model, HttpServletRequest request){
+        Student student = studentRepository.findById(new Long(request.getParameter("student_id"))).get();
+        Class aClass = classRepository.findById(new Long(request.getParameter("class_id2"))).get();
+
+        Grade oldGrade = gradeRepository.findByAClassAndStudent(aClass,student);
+        String newGrade = "";
+
+        if(!request.getParameter("assign_grade").isEmpty()){
+            newGrade = request.getParameter("assign_grade");
+            if(oldGrade != null){
+                oldGrade.setGrade(newGrade);
+                gradeRepository.save(oldGrade);
+            }
+            else {
+                Grade grade = new Grade(aClass, student);
+                grade.setGrade(newGrade);
+                gradeRepository.save(grade);
+            }
+        }
+
+        model.addAttribute("class_id", aClass.getId());
+        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
+        model.addAttribute("students", getStudentsInClass(aClass));
+        return "students";
     }
 
 }

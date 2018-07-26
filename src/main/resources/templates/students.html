@@ -13,10 +13,10 @@
 
     <h3>[[${page_title}]]</h3>
 
-    <input type="hidden" th:value ="${class_obj}" name = "class_obj">
+    <input type="hidden" th:value ="${class_id}" name = "class_id">
 
     <div class="table-responsive">
-        <table class="table table-hover text-center">
+        <table class="table table-hover">
             <thead>
                 <tr>
                     <th>Student Number</th>
@@ -24,19 +24,27 @@
                     <th sec:authorize="hasAuthority('Instructor')">Grade</th>
                     <th sec:authorize="hasAuthority('Advisor')"></th>
                     <th sec:authorize="hasAuthority('Advisor')"></th>
-                    <th sec:authorize="hasAuthority('Instructor')"></th>
                 </tr>
             </thead>
             <tbody>
                 <tr th:each="student : ${students}">
-                    <td ><span th:text="${student.studentNumber}"></span></td>
-                    <td ><span th:text="${student.user.name}"></span></td>
+                    <td><span th:text="${student.studentNumber}"></span></td>
+                    <td><span th:text="${student.user.name}"></span></td>
                     <td sec:authorize="hasAuthority('Instructor')">
-                        <div th:each="${grade : student.grades}">
-                            <div th:if="${grade.aClass == class_obj}">
-                                <span th:text="${grade.grade}"></span>
-                            </div>
+                        <div th:each="grade : ${student.grades}">
+                            <span th:if="${grade != null}">
+                                <span th:if="${grade.aClass.id == class_id}">
+                                    <strong>Current Grade: <span th:text="${grade.grade}"></span></strong>
+                                </span>
+                            </span>
                         </div>
+                        <form action="#" th:action="@{/assignGrade}" method="post">
+                            <strong><span>Assign or Change Grade:</span></strong>
+                            <input type="hidden" th:value="${student.id}" name="student_id">
+                            <input type="hidden" th:value="${class_id}" name="class_id2">
+                            <input type="text" name="assign_grade"/>
+                            <button class="btn btn-primary" type="submit">Submit</button>
+                        </form>
                     </td>
                     <td sec:authorize="hasAuthority('Advisor')">
                         <a class="btn btn-primary" th:href ="@{/viewTranscriptByAdvisor/{id}(id=${student.id})}">View Transcript</a>
@@ -44,10 +52,6 @@
                     <td sec:authorize="hasAuthority('Advisor')">
                         <p><a class="btn btn-primary" th:href ="@{/getListClassToEnrollByAdvisor/{id}(id=${student.id})}">Enroll Student in Classes</a></p>
                         <p><a class="btn btn-primary" th:href ="@{/getListClassToDropByAdvisor/{id}(id=${student.id})}">Drop Student From Classes</a></p>
-                    </td>
-                    <td sec:authorize="hasAuthority('Instructor')">
-                        <input type="text" name="grade"/>
-                        <a class="btn btn-primary" th:href ="@{/assignGrade/{id}(id=${student.id})}">Assign Grade</a>
                     </td>
                 </tr>
             </tbody>

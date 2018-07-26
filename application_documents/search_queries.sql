@@ -98,5 +98,14 @@ select department_name, major_name
 from major a
 inner join department b on a.department_id = b.id;
 
+-- Get classes with students that don't have a grade
+select a.id as class_id, instructor_id
+from class a
+inner join instructor b on a.instructor_id = b.id
+inner join user c on b.user_id = c.id
+inner join student_class d on a.id = d.class_id
+left outer join grade e on a.id = d.class_id
+where count(d.class_id) > 0 group by d.class_id;
+
 select * from user;
 
