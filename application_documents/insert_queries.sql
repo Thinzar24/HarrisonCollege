@@ -23,6 +23,7 @@ insert into instructor (id, department_id, employee_number, office_number, user_
 insert into instructor (id, department_id, employee_number, office_number, user_id) values (5,3,"IT0005","IT3214",14);
 insert into instructor (id, department_id, employee_number, office_number, user_id) values (6,3,"IT0006","IT7856",15);
 insert into instructor (id, department_id, employee_number, office_number, user_id) values (7,4,"IT0007","MA8751",16);
+insert into instructor (id, department_id, employee_number, office_number, user_id) values (8,4,"IT0008","MA8706",17);
 
 insert into major (id, department_id, major_name,disabled) values (1,1,"Dance",false);
 insert into major (id, department_id, major_name,disabled) values (2,1,"Visual Arts",false);
@@ -78,8 +79,8 @@ insert into class(id, course_id, instructor_id, classroom_id, crn, semester, day
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (10,6,3,3,"6161","current","MoWeFr","10:00am-10:50am");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (11,7,3,3,"4402","current","MoFr","11:00am-11:50am");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (12,7,4,3,"4403","current","Mo","2:30pm-4:20pm");
-insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (13,7,4,3,"4484","past","TuTh","8:30am-9:45am");
-insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (14,7,4,3,"4486","current","Tu","1:00pm-2:15pm");
+insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (13,8,4,3,"4484","past","TuTh","8:30am-9:45am");
+insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (14,8,4,3,"4486","current","Tu","1:00pm-2:15pm");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (15,9,5,4,"1800","current","Mo","2:30pm-3:45pm");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (16,9,5,4,"7826","current","Tu","8:30am-9:45am");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (17,10,5,4,"5986","current","We","8:30am-9:45am");
@@ -90,9 +91,9 @@ insert into class(id, course_id, instructor_id, classroom_id, crn, semester, day
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (22,13,7,5,"2611","current","TuTh","7:10pm-8:00pm");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (23,14,7,5,"2384","current","TuTh","5:30pm-6:45pm");
 insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (24,14,7,5,"4525","past","TuTh","7:10pm-8:25pm");
-insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (25,15,8,6,"3467","current","MoWeFr","11:00am-11:50am");
-insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (26,15,8,6,"3469","current","Fr","1:00pm-1:50pm");
-insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (27,16,8,6,"2497","current","TuTh","10:00am-11:15am");
+insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (25,15,7,6,"3467","current","MoWeFr","11:00am-11:50am");
+insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (26,15,7,6,"3469","current","Fr","1:00pm-1:50pm");
+insert into class(id, course_id, instructor_id, classroom_id, crn, semester, days, time) values (27,16,7,6,"2497","current","TuTh","10:00am-11:15am");
 
 insert into student (id, major_id, student_number, entry_year, user_id) values (1,1,"ST0001","2018",1);
 insert into student (id, major_id, student_number, entry_year, user_id) values (2,2,"ST0002","2018",2);
