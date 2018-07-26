@@ -86,8 +86,8 @@ public class HomeController {
             student.setStudentNumber(request.getParameter("student_number"));
             student.setMajor(majorRepository.findById(Long.parseLong(request.getParameter("major"))).get());
             student.setUser(user);
-            studentRepository.save(student);
             userService.saveStudent(user);
+            studentRepository.save(student);
         }
         return "redirect:/";
     }
