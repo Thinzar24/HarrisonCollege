@@ -421,20 +421,20 @@ public class HomeController {
         return "redirect:/studentmain";
     }
 
-    @RequestMapping("/viewStudentScheduleStudent")
-    public String viewStudentSchedule(Model model)
-    {
-        User user = getUser();
-        Student student = studentRepository.findByUser(user);
-        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-        Set<Class> classes = new HashSet<>();
-        for(int i=0; i<studentClasses.size(); i++)
-        {
-            classes.add(studentClasses.get(i).getaClass());
-        }
-        model.addAttribute("classes", classes);
-        return "classes";
-    }
+//    @RequestMapping("/viewStudentScheduleStudent")
+//    public String viewStudentSchedule(Model model)
+//    {
+//        User user = getUser();
+//        Student student = studentRepository.findByUser(user);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        Set<Class> classes = new HashSet<>();
+//        for(int i=0; i<studentClasses.size(); i++)
+//        {
+//            classes.add(studentClasses.get(i).getaClass());
+//        }
+//        model.addAttribute("classes", classes);
+//        return "classes";
+//    }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
@@ -492,12 +492,20 @@ public class HomeController {
 
     @PostMapping("/classesByStudent")
     public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name) {
-//        User user = userRepository.findByName(student_name);
-//        Student student = studentRepository.findByUser(user);
-//        Set<com.example.demo.Beans.Class> classList = student.getClasses();
-//
-//        model.addAttribute("classes_title", "Classes taken by " + student_name);
-//        model.addAttribute("classes", classList);
+        Student student = studentRepository.findByUser(userRepository.findByName(student_name));
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Class> classList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Class aClass = studentClass.getaClass();
+            classList.add(aClass);
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("classes",classList);
         return "classes";
     }
 
@@ -715,10 +723,23 @@ public class HomeController {
         return "majors";
     }
 
-    @RequestMapping("/viewStudentSchedule")
+    @RequestMapping("/viewScheduleStudent")
     public String getStudentSchedule(Model model){
         Student student = studentRepository.findByUser(getUser());
+        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
 
+    @RequestMapping("/viewScheduleAdvisor/{id}")
+    public String getStudentScheduleByAdisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findById(id).get();
+        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
+
+    private ArrayList<Class> getSchedule(Student student){
         ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
         ArrayList<Class> classList = new ArrayList<>();
 
@@ -726,13 +747,20 @@ public class HomeController {
 
         while(studentClassIterator.hasNext()) {
             StudentClass studentClass = studentClassIterator.next();
-            Class aClass = classRepository.findById(studentClass.getaClass().getId()).get();
-            classList.add(aClass);
+            Class aClass = studentClass.getaClass();
+            if(aClass.getSemester().equalsIgnoreCase("current")) {
+                classList.add(aClass);
+            }
             studentClassIterator.remove();
         }
 
-        model.addAttribute("classes",classList);
-        return "classes";
+        return classList;
+    }
+
+    @RequestMapping("/viewStudents")
+    public String getStudentsByAdvisor(Model model) {
+        model.addAttribute("students",studentRepository.findAll());
+        return "students";
     }
 
 }

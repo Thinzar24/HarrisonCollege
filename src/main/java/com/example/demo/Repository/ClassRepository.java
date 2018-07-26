@@ -1,9 +1,7 @@
 package com.example.demo.Repository;
 
+import com.example.demo.Beans.*;
 import com.example.demo.Beans.Class;
-import com.example.demo.Beans.Course;
-import com.example.demo.Beans.Instructor;
-import com.example.demo.Beans.Student;
 import org.springframework.data.repository.CrudRepository;
 
 import java.util.ArrayList;
