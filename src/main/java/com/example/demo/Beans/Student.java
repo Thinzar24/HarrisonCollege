@@ -23,7 +23,7 @@ public class Student {
     private User user;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.EAGER)
-    public ArrayList<StudentClass> studentClasses;
+    public Set<StudentClass> studentClasses;
 
     @OneToMany(mappedBy = "student", cascade = CascadeType.REMOVE, fetch = FetchType.LAZY)
     public Set<Grade> grades;
@@ -68,11 +68,11 @@ public class Student {
         this.user = user;
     }
 
-    public ArrayList<StudentClass> getStudentClasses() {
+    public Set<StudentClass> getStudentClasses() {
         return studentClasses;
     }
 
-    public void setStudentClasses(ArrayList<StudentClass> studentClasses) {
+    public void setStudentClasses(Set<StudentClass> studentClasses) {
         this.studentClasses = studentClasses;
     }
 

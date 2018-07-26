@@ -11,5 +11,5 @@ import java.util.ArrayList;
 public interface StudentClassRepository extends CrudRepository<StudentClass, Long> {
     ArrayList<StudentClass> findAllByStudent(Student student);
     ArrayList<StudentClass> findAllByAClass(Class aClass);
-    StudentClass findByStudentAndClass(Student student, Class aClass);
+    StudentClass findByStudentAndAClass(Student student, Class aClass);
 }
