@@ -20,7 +20,7 @@
 
         <!--Sample text input-->
         <div class="form-group">
-            <label for="buildingName">Enter Building Number :</label>
+            <label for="buildingName">Enter Building Name :</label>
             <input class="form-control" type="text" id="buildingName" th:field="*{buildingName}"/>
         </div>
         <br/>
@@ -36,24 +36,6 @@
             <input class="form-control" type="text" id="capacity" th:field="*{capacity}"/>
         </div>
         <br/>
-
-        <!--Sample dropdown input-->
-        <!--<div class="form-group">-->
-        <!--<label for="category">Category:</label>-->
-        <!--<select name="category" id="category" class="custom-select" th:field="*{category}">-->
-        <!--<option value="">Select Category</option>-->
-        <!--<option th:each="category : ${categories}"-->
-        <!--th:value="${category.id}"-->
-        <!--th:utext="${category.categoryName}"/>-->
-
-        <div class="form-group">
-            <label for="classInput">Choose your Class:</label>
-            <select class="form-control" id="classInput" name="classes">
-                <option th:each="class : ${classes}"
-                        th:value="${class.id}"
-                        th:utext="${class.user.name}"/>
-            </select>
-        </div>
 
         <div sec:authorize="hasAuthority('Admin')">
             <div class="form-group">

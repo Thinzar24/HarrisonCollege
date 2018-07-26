@@ -74,10 +74,10 @@ inner join instructor c on b.instructor_id = c.id
 inner join user d on c.user_id = d.id;
 
 -- List of classrooms by student
-select name, building_name, room_number, capacity, disabled
+select d.name, building_name, room_number, capacity, disabled
 from classroom a
-inner join class b on a.id = b.classroom_id
-inner join student_class e on b.id = e.class_id
+left outer join class b on a.id = b.classroom_id
+left outer join student_class e on b.id = es.class_id
 inner join student c on e.student_id = c.id
 inner join user d on c.user_id = d.id;
 
@@ -97,6 +97,14 @@ inner join department c on b.department_id = c.id;
 select department_name, major_name
 from major a
 inner join department b on a.department_id = b.id;
+
+-- Get classes with students that don't have a grade
+select a.id as class_id, a.crn, instructor_id, c.name as instructor_name, e.grade
+from class a
+inner join instructor b on a.instructor_id = b.id
+inner join user c on b.user_id = c.id
+inner join student_class d on a.id = d.class_id
+left outer join grade e on d.class_id = e.class_id;
 
 select * from user;
 

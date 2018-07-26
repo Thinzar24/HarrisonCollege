@@ -12,4 +12,5 @@ public interface StudentClassRepository extends CrudRepository<StudentClass, Lon
     ArrayList<StudentClass> findAllByStudent(Student student);
     ArrayList<StudentClass> findAllByAClass(Class aClass);
     StudentClass findByStudentAndAClass(Student student, Class aClass);
+    int countStudentByAClass(Class aClass);
 }

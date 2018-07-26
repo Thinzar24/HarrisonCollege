@@ -12,7 +12,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.swing.text.html.HTMLDocument;
 import javax.validation.Valid;
 import java.text.DecimalFormat;
 import java.util.*;
@@ -377,7 +376,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id, Model model){
         classRepository.deleteById(id);
-        return "admin/classes";
+        return "redirect:/classes";
     }
 
     @RequestMapping("/listClassToEnrollByStudent")
@@ -422,52 +421,35 @@ public class HomeController {
     }
 
     @RequestMapping("/enrollClassForStudent/{id}")
-    public String enrollClassStudent(@PathVariable("id") long id)
+    public String enrollClassStudent(@PathVariable("id") long id, Model model)
     {
         // Get student
         Student student = studentRepository.findByUser(getUser());
-        // Get class to enroll in
         Class aClass = classRepository.findById(id).get();
-
-        StudentClass studentClass = new StudentClass(student,aClass);
-        studentClassRepository.save(studentClass);
-
-        return "redirect:/viewScheduleStudent";
-
-//        User user = getUser();
-//        Student student = studentRepository.findByUser(user);
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.add(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        StudentClass studentClass = new StudentClass(student, aClass);
-//        studentClasses.add(studentClass);
-//        student.setStudentClasses(studentClasses);
-//        return "redirect:/studentmain";
+        int currentStudentNum =studentClassRepository.countStudentByAClass(aClass);
+       // System.out.println("$$$$$$$$$$$$$$$$$$$$"+currentStudentNum);
+        int capacity = aClass.getClassroom().getCapacity();
+       // System.out.println("%%%%%%%%%%%%%%%%%%"+capacity);
+        if(capacity > currentStudentNum) {
+            StudentClass studentClass = new StudentClass(student, aClass);
+            studentClassRepository.save(studentClass);
+            return "redirect:/viewScheduleStudent";
+        }
+        else
+        {
+            model.addAttribute("message", "Max capacity for class reached, so unable to enroll");
+            return "error";
+        }
     }
-
     @RequestMapping("/dropClassForStudent/{id}")
     public String dropClassStudent(@PathVariable("id") long id)
     {
-        // Get student
-        Student student = studentRepository.findByUser(getUser());
-        // Get class to drop
-        Class aClass = classRepository.findById(id).get();
 
-        // Get student/class record and remove it
+        Student student = studentRepository.findByUser(getUser());
+        Class aClass = classRepository.findById(id).get();
         StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
         studentClassRepository.deleteById(studentClass.getId());
-
         return "redirect:/viewScheduleStudent";
-//        User user = getUser();
-//        Student student = studentRepository.findByUser(user);
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.remove(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
-//        student.setStudentClasses(studentClasses);
-//        return "redirect:/studentmain";
     }
 
     @RequestMapping("/getTranscript")
@@ -554,49 +536,42 @@ public class HomeController {
     }
 
     @RequestMapping("/enrollClassForAdvisor/{id}")
-    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
-//        long studentId= Long.parseLong(request.getParameter("student_id"));
-//        Student student = studentRepository.findById(studentId).get();
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.add(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        StudentClass studentClass = new StudentClass(student, aClass);
-//        studentClasses.add(studentClass);
-//        student.setStudentClasses(studentClasses);
-        return "redirect:/advisormain";
+        long studentId= Long.parseLong(request.getParameter("student_in"));
+        String sStudentId = request.getParameter("student_in");
+        Student student = studentRepository.findById(studentId).get();
+        Class aClass = classRepository.findById(id).get();
+        int currentStudentNum =studentClassRepository.countStudentByAClass(aClass);
+        // System.out.println("$$$$$$$$$$$$$$$$$$$$"+currentStudentNum);
+        int capacity = aClass.getClassroom().getCapacity();
+        // System.out.println("%%%%%%%%%%%%%%%%%%"+capacity);
+        if(capacity > currentStudentNum) {
+            StudentClass studentClass = new StudentClass(student, aClass);
+            studentClassRepository.save(studentClass);
+            return "redirect:/viewStudents";
+        }
+        else
+        {
+            model.addAttribute("message", "Max capacity for class reached, so unable to enroll");
+            return "error";
+        }
+
     }
 
-    @RequestMapping("/dropClassForAdvisor/{id}}")
-    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    @RequestMapping("/dropClassForAdvisor/{id}")
+    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
-//        long studentId= Long.parseLong(request.getParameter("student_id"));
-//        Student student = studentRepository.findById(studentId).get();
-//        ArrayList<Class> classList = getSchedule(student);
-//        Class aClass = classRepository.findById(id).get();
-//        classList.remove(aClass);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
-//        student.setStudentClasses(studentClasses);
-        return "redirect:/advisormain";
+       // System.out.println("^^^^^^^^^^^^"+request.getParameter("student_in"));
+        long studentId= Long.parseLong(request.getParameter("student_in"));
+        String sStudentId = request.getParameter("student_in");
+        Student student = studentRepository.findById(studentId).get();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@"+student.getUser().getName());
+        Class aClass = classRepository.findById(id).get();
+        StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
+        studentClassRepository.deleteById(studentClass.getId());
+        return "redirect:/viewStudents";
     }
-
-//    @RequestMapping("/viewStudentScheduleStudent")
-//    public String viewStudentSchedule(Model model)
-//    {
-//        User user = getUser();
-//        Student student = studentRepository.findByUser(user);
-//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-//        Set<Class> classes = new HashSet<>();
-//        for(int i=0; i<studentClasses.size(); i++)
-//        {
-//            classes.add(studentClasses.get(i).getaClass());
-//        }
-//        model.addAttribute("classes", classes);
-//        return "classes";
-//    }
-
 
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
 
@@ -742,6 +717,14 @@ public class HomeController {
     @RequestMapping("/viewStudentInClass/{id}")
     public String getStudentsInClass(@PathVariable("id") long id, Model model) {
         Class aClass = classRepository.findById(id).get();
+
+        model.addAttribute("class_id", aClass.getId());
+        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
+        model.addAttribute("students", getStudentsInClass(aClass));
+        return "students";
+    }
+
+    private ArrayList<Student> getStudentsInClass(Class aClass) {
         ArrayList<Student> students = new ArrayList<>();
 
         Set<StudentClass> studentClasses = aClass.getStudentClasses();
@@ -753,9 +736,7 @@ public class HomeController {
             studentClassIterator.remove();
         }
 
-        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
-        model.addAttribute("students", students);
-        return "students";
+        return  students;
     }
 
     @PostMapping("/classesByTimeInCurrentSemester")
@@ -912,13 +893,25 @@ public class HomeController {
         return "classes";
     }
 
-    @RequestMapping("/viewScheduleAdvisor/{id}")
-    public String getStudentScheduleByAdisor(@PathVariable("id") long id, Model model){
+    @RequestMapping("/getListClassToDropByAdvisor/{id}")
+    public String getStudentScheduleByAdvisor(@PathVariable("id") long id, Model model){
         Student student = studentRepository.findById(id).get();
-        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("classes_title","Current Classes for " + student.getUser().getName());
+        model.addAttribute("student_in", student.getId());
         model.addAttribute("displayEnroll",false);
         model.addAttribute("displayDrop",true);
         model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
+
+    @RequestMapping("/getListClassToEnrollByAdvisor/{id}")
+    public String getListClassToEnrollByAdvisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findById(id).get();
+        model.addAttribute("classes_title","Classes to Enroll " + student.getUser().getName() + " In");
+        model.addAttribute("student_in", student.getId());
+        model.addAttribute("displayEnroll",true);
+        model.addAttribute("displayDrop",false);
+        model.addAttribute("classes",getClassListToEnroll(student));
         return "classes";
     }
 
@@ -979,6 +972,33 @@ public class HomeController {
         model.addAttribute("classes_title", "Instructors for Class CRN " + class_crn);
         model.addAttribute("classes", classRepository.findAllByCrn(class_crn));
         return "classes";
+    }
+
+    @RequestMapping("/assignGrade")
+    public String assignGradeToStudent(Model model, HttpServletRequest request){
+        Student student = studentRepository.findById(new Long(request.getParameter("student_id"))).get();
+        Class aClass = classRepository.findById(new Long(request.getParameter("class_id2"))).get();
+
+        Grade oldGrade = gradeRepository.findByAClassAndStudent(aClass,student);
+        String newGrade = "";
+
+        if(!request.getParameter("assign_grade").isEmpty()){
+            newGrade = request.getParameter("assign_grade");
+            if(oldGrade != null){
+                oldGrade.setGrade(newGrade);
+                gradeRepository.save(oldGrade);
+            }
+            else {
+                Grade grade = new Grade(aClass, student);
+                grade.setGrade(newGrade);
+                gradeRepository.save(grade);
+            }
+        }
+
+        model.addAttribute("class_id", aClass.getId());
+        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
+        model.addAttribute("students", getStudentsInClass(aClass));
+        return "students";
     }
 
 }

@@ -39,3 +39,7 @@ form {
     font-size: 8pt;
     font-weight: bold;
 }
+
+.hidden_student_id{
+    display: none;
+}
