@@ -92,6 +92,22 @@ public class HomeController {
         return "redirect:/";
     }
 
+    @PostMapping("/register1")
+    public String processRegistrationPage1(@Valid @ModelAttribute User user, BindingResult result, HttpServletRequest request) {
+        if (result.hasErrors()) {
+            return "studentform";
+        } else {
+            Student student = new Student();
+            student.setEntryYear(request.getParameter("entry_year"));
+            student.setStudentNumber(request.getParameter("student_number"));
+            student.setMajor(majorRepository.findById(Long.parseLong(request.getParameter("major"))).get());
+            student.setUser(user);
+            userService.saveStudent(user);
+            studentRepository.save(student);
+        }
+        return "redirect:/users";
+    }
+
     // Returns currently logged in user
     private User getUser() {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -222,7 +238,7 @@ public class HomeController {
         }
         model.addAttribute("user", userRepository.findById(id));
         model.addAttribute("majors", majorRepository.findAll());
-        return "studentform";
+        return "studentform1";
     }
     @GetMapping("/updateToInstructor/{id}")
     public String updateToInstructor(@PathVariable("id") long id, Model model)
@@ -533,8 +549,11 @@ public class HomeController {
             gradeIterator.remove();
         }
 
+        if(sumCredits == 0)
+        {
+            return 0;
+        }
         gpa = sumGradeCredits/sumCredits;
-
         return gpa;
     }
 
