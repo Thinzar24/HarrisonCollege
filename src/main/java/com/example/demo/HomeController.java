@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import javax.websocket.server.PathParam;
+import java.lang.reflect.Array;
 import java.util.*;
 
 @Controller
@@ -414,10 +415,10 @@ public class HomeController {
     {
         long studentId= Long.parseLong(request.getParameter("student_id"));
         Student student = studentRepository.findById(studentId).get();
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.remove(aClass);
-        //student.setClasses(classes);
+        //ADD MORE
+       // student.setClasses(classes);
         return "redirect:/studentmain";
     }
 
@@ -426,8 +427,9 @@ public class HomeController {
     {
         User user = getUser();
         Student student = studentRepository.findByUser(user);
+        System.out.println("%%%%%%%%%%%%%%%%%%"+student.getUser().getName());
         ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
-        Set<Class> classes = new HashSet<>();
+        ArrayList<Class> classes = new ArrayList<>();
         for(int i=0; i<studentClasses.size(); i++)
         {
             classes.add(studentClasses.get(i).getaClass());
