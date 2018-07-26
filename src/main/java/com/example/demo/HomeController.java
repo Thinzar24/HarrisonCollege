@@ -12,8 +12,9 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
+import javax.swing.text.html.HTMLDocument;
 import javax.validation.Valid;
-import javax.websocket.server.PathParam;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Controller
@@ -379,67 +380,222 @@ public class HomeController {
         return "admin/classes";
     }
 
+    @RequestMapping("/listClassToEnrollByStudent")
+    public String getClassToEnrollByStudent(Model model){
+        Student student = studentRepository.findByUser(getUser());
+
+        model.addAttribute("displayEnroll",true);
+        model.addAttribute("displayDrop",false);
+        model.addAttribute("classes", getClassListToEnroll(student));
+        return "classes";
+    }
+
+    private ArrayList<Class> getClassListToEnroll(Student student) {
+        ArrayList<Class> classList = new ArrayList<>();
+
+        Iterable<Class> classes = classRepository.findAllBySemester("current");
+        Iterator<Class> classIterator = classes.iterator();
+
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        // Classes student currently enrolled in
+        ArrayList<Class> classesStudent = new ArrayList<>();
+
+        // Loop through studentClasses to get classes student
+        // currently enrolled in
+        while(studentClassIterator.hasNext()) {
+            Class aClass = studentClassIterator.next().getaClass();
+            classesStudent.add(aClass);
+            studentClassIterator.remove();
+        }
+
+        while(classIterator.hasNext()){
+            Class aClass = classIterator.next();
+            if(!classesStudent.contains(aClass)){
+                classList.add(aClass);
+            }
+            classIterator.remove();
+        }
+
+        return  classList;
+    }
+
     @RequestMapping("/enrollClassForStudent/{id}")
     public String enrollClassStudent(@PathVariable("id") long id)
     {
-        User user = getUser();
-        Student student = studentRepository.findByUser(user);
+        // Get student
+        Student student = studentRepository.findByUser(getUser());
+        // Get class to enroll in
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.add(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+
+        StudentClass studentClass = new StudentClass(student,aClass);
+        studentClassRepository.save(studentClass);
+
+        return "redirect:/viewScheduleStudent";
+
+//        User user = getUser();
+//        Student student = studentRepository.findByUser(user);
+//        ArrayList<Class> classList = getSchedule(student);
+//        Class aClass = classRepository.findById(id).get();
+//        classList.add(aClass);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        StudentClass studentClass = new StudentClass(student, aClass);
+//        studentClasses.add(studentClass);
+//        student.setStudentClasses(studentClasses);
+//        return "redirect:/studentmain";
     }
 
     @RequestMapping("/dropClassForStudent/{id}")
     public String dropClassStudent(@PathVariable("id") long id)
     {
-        User user = getUser();
-        Student student = studentRepository.findByUser(user);
+        // Get student
+        Student student = studentRepository.findByUser(getUser());
+        // Get class to drop
         Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.remove(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+
+        // Get student/class record and remove it
+        StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
+        studentClassRepository.deleteById(studentClass.getId());
+
+        return "redirect:/viewScheduleStudent";
+//        User user = getUser();
+//        Student student = studentRepository.findByUser(user);
+//        ArrayList<Class> classList = getSchedule(student);
+//        Class aClass = classRepository.findById(id).get();
+//        classList.remove(aClass);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
+//        student.setStudentClasses(studentClasses);
+//        return "redirect:/studentmain";
+    }
+
+    @RequestMapping("/getTranscript")
+    public String getTranscriptByStudent(Model model){
+        Student student = studentRepository.findByUser(getUser());
+        DecimalFormat df = new DecimalFormat( "#.00" );
+
+        model.addAttribute("student", student);
+        model.addAttribute("student_name",getUser().getName());
+        model.addAttribute("gpa",df.format(getGPA(student)));
+        model.addAttribute("classes", getGrades(student));
+        return "transcript";
+    }
+
+    @RequestMapping("/viewTranscriptByAdvisor/{id}")
+    public String getTranscriptByAdvisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findByUser(userRepository.findById(id).get());
+        DecimalFormat df = new DecimalFormat( "#.00" );
+
+        model.addAttribute("student", student);
+        model.addAttribute("student_name",student.getUser().getName());
+        model.addAttribute("gpa",df.format(getGPA(student)));
+        model.addAttribute("classes", getGrades(student));
+        return "transcript";
+    }
+
+    private ArrayList<Class> getGrades(Student student){
+        ArrayList<Grade> grades = gradeRepository.findAllByStudent(student);
+        Iterator<Grade> gradeIterator = grades.iterator();
+
+        ArrayList<Class> classes = new ArrayList<>();
+
+        while(gradeIterator.hasNext()){
+            Grade grade = gradeIterator.next();
+            Class aClass = grade.getaClass();
+
+            // Add class to list for student
+            classes.add(aClass);
+            gradeIterator.remove();
+        }
+
+        return classes;
+    }
+
+    private double getGPA(Student student) {
+        ArrayList<Grade> grades = gradeRepository.findAllByStudent(student);
+        Iterator<Grade> gradeIterator = grades.iterator();
+
+        Integer numGrade = 0, sumGradeCredits = 0, sumCredits = 0;
+        double gpa = 0;
+
+        while(gradeIterator.hasNext()){
+            Grade grade = gradeIterator.next();
+            Class aClass = grade.getaClass();
+            String classGrade = grade.getGrade();
+            int credits = aClass.getCourse().getCredits();
+
+            switch (classGrade){
+                case "A":
+                    numGrade = 4;
+                    break;
+                case "B":
+                    numGrade = 3;
+                    break;
+                case "C":
+                    numGrade = 2;
+                    break;
+                case "D":
+                    numGrade = 1;
+                    break;
+                case "F":
+                    numGrade = 0;
+                    break;
+            }
+
+            sumGradeCredits += numGrade * credits;
+            sumCredits += credits;
+            gradeIterator.remove();
+        }
+
+        gpa = sumGradeCredits/sumCredits;
+
+        return gpa;
     }
 
     @RequestMapping("/enrollClassForAdvisor/{id}")
     public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
     {
-        long studentId= Long.parseLong(request.getParameter("student_id"));
-        Student student = studentRepository.findById(studentId).get();
-        Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.add(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+//        long studentId= Long.parseLong(request.getParameter("student_id"));
+//        Student student = studentRepository.findById(studentId).get();
+//        ArrayList<Class> classList = getSchedule(student);
+//        Class aClass = classRepository.findById(id).get();
+//        classList.add(aClass);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        StudentClass studentClass = new StudentClass(student, aClass);
+//        studentClasses.add(studentClass);
+//        student.setStudentClasses(studentClasses);
+        return "redirect:/advisormain";
     }
 
     @RequestMapping("/dropClassForAdvisor/{id}}")
     public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
     {
-        long studentId= Long.parseLong(request.getParameter("student_id"));
-        Student student = studentRepository.findById(studentId).get();
-        Class aClass = classRepository.findById(id).get();
-        //Collection<Class> classes = student.getClasses();
-        //classes.remove(aClass);
-        //student.setClasses(classes);
-        return "redirect:/studentmain";
+//        long studentId= Long.parseLong(request.getParameter("student_id"));
+//        Student student = studentRepository.findById(studentId).get();
+//        ArrayList<Class> classList = getSchedule(student);
+//        Class aClass = classRepository.findById(id).get();
+//        classList.remove(aClass);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        studentClasses.remove(studentClassRepository.findByStudentAndAClass(student,aClass));
+//        student.setStudentClasses(studentClasses);
+        return "redirect:/advisormain";
     }
 
-    @RequestMapping("/viewStudentScheduleStudent")
-    public String viewStudentSchedule(Model model)
-    {
-        User user = getUser();
-       // System.out.println("##################");
-        Student student = studentRepository.findByUser(user);
-       // System.out.println("%%%%%%%%%%%%%%"+student.getId());
-        //Collection<Class> classes = student.getClasses();
-        //System.out.println(student.getClasses().size());
-        //System.out.println("***********"+classes.getClass());
-        //model.addAttribute("classes", classes);
-        return "classes";
-    }
+//    @RequestMapping("/viewStudentScheduleStudent")
+//    public String viewStudentSchedule(Model model)
+//    {
+//        User user = getUser();
+//        Student student = studentRepository.findByUser(user);
+//        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+//        Set<Class> classes = new HashSet<>();
+//        for(int i=0; i<studentClasses.size(); i++)
+//        {
+//            classes.add(studentClasses.get(i).getaClass());
+//        }
+//        model.addAttribute("classes", classes);
+//        return "classes";
+//    }
 
 
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
@@ -497,12 +653,20 @@ public class HomeController {
 
     @PostMapping("/classesByStudent")
     public String getClassesByStudent(Model model, @RequestParam("studentname1") String student_name) {
-//        User user = userRepository.findByName(student_name);
-//        Student student = studentRepository.findByUser(user);
-//        Set<com.example.demo.Beans.Class> classList = student.getClasses();
-//
-//        model.addAttribute("classes_title", "Classes taken by " + student_name);
-//        model.addAttribute("classes", classList);
+        Student student = studentRepository.findByUser(userRepository.findByName(student_name));
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Class> classList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Class aClass = studentClass.getaClass();
+            classList.add(aClass);
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("classes",classList);
         return "classes";
     }
 
@@ -561,6 +725,7 @@ public class HomeController {
     public String getInstructorCurrentClasses(Model model){
         User user = userRepository.findById(getUser().getId()).get();
         Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes_title","Classes " + getUser().getName() + " is Currently Teaching");
         model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "current"));
         return "classes";
     }
@@ -569,8 +734,28 @@ public class HomeController {
     public String getInstructorPastClasses(Model model){
         User user = userRepository.findById(getUser().getId()).get();
         Instructor instructor = instructorRepository.findByUser(user);
+        model.addAttribute("classes_title","Classes " + getUser().getName() + " Has Taught");
         model.addAttribute("classes", classRepository.findAllByInstructorAndSemester(instructor, "past"));
         return "classes";
+    }
+
+    @RequestMapping("/viewStudentInClass/{id}")
+    public String getStudentsInClass(@PathVariable("id") long id, Model model) {
+        Class aClass = classRepository.findById(id).get();
+        ArrayList<Student> students = new ArrayList<>();
+
+        Set<StudentClass> studentClasses = aClass.getStudentClasses();
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()){
+            Student student = studentClassIterator.next().getStudent();
+            students.add(student);
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("page_title", "Students in " + aClass.getCourse().getCourseName() + ", CRN: " + aClass.getCrn());
+        model.addAttribute("students", students);
+        return "students";
     }
 
     @PostMapping("/classesByTimeInCurrentSemester")
@@ -662,26 +847,23 @@ public class HomeController {
 
     @PostMapping("/classroomsByStudent")
     public String getClassroomsByStudent(Model model, @RequestParam("studentname") String student_name) {
-//        User user = userRepository.findByName(student_name);
-//        Instructor instructor = instructorRepository.findByUser(user);
-//
-//        Set<com.example.demo.Beans.Class> classSet = new HashSet<>();
-//        Iterable<com.example.demo.Beans.Class> classes = classRepository.findAllByInstructor(instructor);
-//        Iterator<com.example.demo.Beans.Class> classIterator = classes.iterator();
-//
-//        ArrayList<Classroom> classrooms = new ArrayList<>();
-//
-//        while(classIterator.hasNext()){
-//            com.example.demo.Beans.Class aClass = classIterator.next();
-//            classSet.add(aClass);
-//            Classroom classroom = classroomRepository.findByClasses(classSet);
-//            classrooms.add(classroom);
-//            classSet.remove(aClass);
-//            classIterator.remove();
-//        }
-//
-//        model.addAttribute("title_type", instructor_name);
-//        model.addAttribute("classrooms", classrooms);
+        Student student = studentRepository.findByUser(userRepository.findByName(student_name));
+        ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
+        ArrayList<Classroom> classroomList = new ArrayList<>();
+
+        Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+        while(studentClassIterator.hasNext()) {
+            StudentClass studentClass = studentClassIterator.next();
+            Classroom classroom = studentClass.getaClass().getClassroom();
+            if(!classroomList.contains(classroom)) {
+                classroomList.add(classroom);
+            }
+            studentClassIterator.remove();
+        }
+
+        model.addAttribute("title_type", "Classrooms used by " +student_name);
+        model.addAttribute("classrooms", classroomList);
         return "admin/classrooms";
     }
 
@@ -720,10 +902,27 @@ public class HomeController {
         return "majors";
     }
 
-    @RequestMapping("/viewStudentSchedule")
+    @RequestMapping("/viewScheduleStudent")
     public String getStudentSchedule(Model model){
         Student student = studentRepository.findByUser(getUser());
+        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("displayEnroll",false);
+        model.addAttribute("displayDrop",true);
+        model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
 
+    @RequestMapping("/viewScheduleAdvisor/{id}")
+    public String getStudentScheduleByAdisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findById(id).get();
+        model.addAttribute("classes_title","Schedule for " + student.getUser().getName());
+        model.addAttribute("displayEnroll",false);
+        model.addAttribute("displayDrop",true);
+        model.addAttribute("classes",getSchedule(student));
+        return "classes";
+    }
+
+    private ArrayList<Class> getSchedule(Student student){
         ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByStudent(student);
         ArrayList<Class> classList = new ArrayList<>();
 
@@ -731,12 +930,54 @@ public class HomeController {
 
         while(studentClassIterator.hasNext()) {
             StudentClass studentClass = studentClassIterator.next();
-            Class aClass = classRepository.findById(studentClass.getaClass().getId()).get();
-            classList.add(aClass);
+            Class aClass = studentClass.getaClass();
+            if(aClass.getSemester().equalsIgnoreCase("current")) {
+                classList.add(aClass);
+            }
             studentClassIterator.remove();
         }
 
-        model.addAttribute("classes",classList);
+        return classList;
+    }
+
+    @RequestMapping("/viewStudents")
+    public String getStudentsByAdvisor(Model model) {
+        model.addAttribute("students",studentRepository.findAll());
+        return "students";
+    }
+
+    @PostMapping("/studentsByInstructor")
+    public String getStudentsByInstructor(Model model, @RequestParam("instructorname") String instructor_name){
+        Instructor instructor = instructorRepository.findByUser(userRepository.findByName(instructor_name));
+
+        ArrayList<Student> students = new ArrayList<>();
+
+        Iterable<Class> classes = classRepository.findAllByInstructor(instructor);
+        Iterator<Class> classIterator = classes.iterator();
+
+        while(classIterator.hasNext()){
+            ArrayList<StudentClass> studentClasses = studentClassRepository.findAllByAClass(classIterator.next());
+            Iterator<StudentClass> studentClassIterator = studentClasses.iterator();
+
+            while(studentClassIterator.hasNext()){
+                Student student = studentClassIterator.next().getStudent();
+                if(!students.contains(student)){
+                    students.add(student);
+                }
+                studentClassIterator.remove();
+            }
+            classIterator.remove();
+        }
+
+        model.addAttribute("page_title", "Students Taught by " + instructor_name);
+        model.addAttribute("students",students);
+        return "students";
+    }
+
+    @PostMapping("/instructorsByClass")
+    public String getInstructorsByClass(Model model, @RequestParam("crn") String class_crn){
+        model.addAttribute("classes_title", "Instructors for Class CRN " + class_crn);
+        model.addAttribute("classes", classRepository.findAllByCrn(class_crn));
         return "classes";
     }
 
