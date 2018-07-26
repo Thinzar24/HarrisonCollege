@@ -3,11 +3,20 @@ body {
     font-family: Verdana;
     font-size: 8pt;
     width: 85%;
+    background-image: url("../img/background.jpeg");
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+
 }
 
 div.jumbotron {
     padding-top: 10%;
+    opacity:.7;
+    color: black;
 }
+
 
 .navbar {
     margin-bottom: 30px;
@@ -20,6 +29,7 @@ div.footer {
     width: 100%;
     text-align: center;
     background-color: #c8cbcf;
+    padding: 15px auto;
 }
 
 form {
@@ -33,4 +43,9 @@ form {
 
 .hidden_student_id{
     display: none;
+}
+
+.table {
+    background-color: white;
+    opacity: 0.6;
 }
