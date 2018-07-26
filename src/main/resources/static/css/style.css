@@ -29,6 +29,7 @@ div.footer {
     width: 100%;
     text-align: center;
     background-color: #c8cbcf;
+    padding: 15px auto;
 }
 
 form {
@@ -42,4 +43,10 @@ form {
 
 .hidden_student_id{
     display: none;
+}
+
+.table-responsive {
+    background-color: white;
+    opacity: 0.6;
+    border-radius: 10px;
 }
