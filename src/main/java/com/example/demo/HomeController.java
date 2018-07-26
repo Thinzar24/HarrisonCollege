@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.html.HTMLDocument;
 import javax.validation.Valid;
+import java.text.DecimalFormat;
 import java.util.*;
 
 @Controller
@@ -444,7 +445,6 @@ public class HomeController {
     {
         // Get student
         Student student = studentRepository.findByUser(getUser());
-
         // Get class to drop
         Class aClass = classRepository.findById(id).get();
 
@@ -466,7 +466,85 @@ public class HomeController {
 
     @RequestMapping("/getTranscript")
     public String getTranscriptByStudent(Model model){
+        Student student = studentRepository.findByUser(getUser());
+        DecimalFormat df = new DecimalFormat( "#.00" );
+
+        model.addAttribute("student", student);
+        model.addAttribute("student_name",getUser().getName());
+        model.addAttribute("gpa",df.format(getGPA(student)));
+        model.addAttribute("classes", getGrades(student));
         return "transcript";
+    }
+
+    @RequestMapping("/viewTranscriptByAdvisor/{id}")
+    public String getTranscriptByAdvisor(@PathVariable("id") long id, Model model){
+        Student student = studentRepository.findByUser(userRepository.findById(id).get());
+        DecimalFormat df = new DecimalFormat( "#.00" );
+
+        model.addAttribute("student", student);
+        model.addAttribute("student_name",student.getUser().getName());
+        model.addAttribute("gpa",df.format(getGPA(student)));
+        model.addAttribute("classes", getGrades(student));
+        return "transcript";
+    }
+
+    private ArrayList<Class> getGrades(Student student){
+        ArrayList<Grade> grades = gradeRepository.findAllByStudent(student);
+        Iterator<Grade> gradeIterator = grades.iterator();
+
+        ArrayList<Class> classes = new ArrayList<>();
+
+        while(gradeIterator.hasNext()){
+            Grade grade = gradeIterator.next();
+            Class aClass = grade.getaClass();
+
+            // Add class to list for student
+            classes.add(aClass);
+            gradeIterator.remove();
+        }
+
+        return classes;
+    }
+
+    private double getGPA(Student student) {
+        ArrayList<Grade> grades = gradeRepository.findAllByStudent(student);
+        Iterator<Grade> gradeIterator = grades.iterator();
+
+        Integer numGrade = 0, sumGradeCredits = 0, sumCredits = 0;
+        double gpa = 0;
+
+        while(gradeIterator.hasNext()){
+            Grade grade = gradeIterator.next();
+            Class aClass = grade.getaClass();
+            String classGrade = grade.getGrade();
+            int credits = aClass.getCourse().getCredits();
+
+            switch (classGrade){
+                case "A":
+                    numGrade = 4;
+                    break;
+                case "B":
+                    numGrade = 3;
+                    break;
+                case "C":
+                    numGrade = 2;
+                    break;
+                case "D":
+                    numGrade = 1;
+                    break;
+                case "F":
+                    numGrade = 0;
+                    break;
+            }
+
+            sumGradeCredits += numGrade * credits;
+            sumCredits += credits;
+            gradeIterator.remove();
+        }
+
+        gpa = sumGradeCredits/sumCredits;
+
+        return gpa;
     }
 
     @RequestMapping("/enrollClassForAdvisor/{id}")
