@@ -45,7 +45,8 @@ form {
     display: none;
 }
 
-.table {
+.table-responsive {
     background-color: white;
     opacity: 0.6;
+    border-radius: 10px;
 }

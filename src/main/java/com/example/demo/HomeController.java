@@ -376,7 +376,7 @@ public class HomeController {
     @RequestMapping("/deleteClass/{id}")
     public String deleteClass(@PathVariable("id")long id, Model model){
         classRepository.deleteById(id);
-        return "redirect:/classes";
+        return "redirect:/listClass";
     }
 
     @RequestMapping("/listClassToEnrollByStudent")
