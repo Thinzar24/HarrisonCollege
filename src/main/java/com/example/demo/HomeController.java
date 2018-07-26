@@ -421,16 +421,25 @@ public class HomeController {
     }
 
     @RequestMapping("/enrollClassForStudent/{id}")
-    public String enrollClassStudent(@PathVariable("id") long id)
+    public String enrollClassStudent(@PathVariable("id") long id, Model model)
     {
         // Get student
         Student student = studentRepository.findByUser(getUser());
-        // Get class to enroll in
         Class aClass = classRepository.findById(id).get();
-        StudentClass studentClass = new StudentClass(student,aClass);
-        studentClassRepository.save(studentClass);
-        return "redirect:/viewScheduleStudent";
-
+        int currentStudentNum =studentClassRepository.countStudentByAClass(aClass);
+       // System.out.println("$$$$$$$$$$$$$$$$$$$$"+currentStudentNum);
+        int capacity = aClass.getClassroom().getCapacity();
+       // System.out.println("%%%%%%%%%%%%%%%%%%"+capacity);
+        if(capacity > currentStudentNum) {
+            StudentClass studentClass = new StudentClass(student, aClass);
+            studentClassRepository.save(studentClass);
+            return "redirect:/viewScheduleStudent";
+        }
+        else
+        {
+            model.addAttribute("message", "Max capacity for class reached, so unable to enroll");
+            return "error";
+        }
     }
     @RequestMapping("/dropClassForStudent/{id}")
     public String dropClassStudent(@PathVariable("id") long id)
@@ -527,25 +536,41 @@ public class HomeController {
     }
 
     @RequestMapping("/enrollClassForAdvisor/{id}")
-    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    public String enrollClassAdvisor(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
-        long studentId= Long.parseLong(request.getParameter("student_id"));
+        long studentId= Long.parseLong(request.getParameter("student_in"));
+        String sStudentId = request.getParameter("student_in");
         Student student = studentRepository.findById(studentId).get();
         Class aClass = classRepository.findById(id).get();
-        StudentClass studentClass = new StudentClass(student,aClass);
-        studentClassRepository.save(studentClass);
-        return "redirect:/advisormain";
+        int currentStudentNum =studentClassRepository.countStudentByAClass(aClass);
+        // System.out.println("$$$$$$$$$$$$$$$$$$$$"+currentStudentNum);
+        int capacity = aClass.getClassroom().getCapacity();
+        // System.out.println("%%%%%%%%%%%%%%%%%%"+capacity);
+        if(capacity > currentStudentNum) {
+            StudentClass studentClass = new StudentClass(student, aClass);
+            studentClassRepository.save(studentClass);
+            return "redirect:/viewStudents";
+        }
+        else
+        {
+            model.addAttribute("message", "Max capacity for class reached, so unable to enroll");
+            return "error";
+        }
+
     }
 
-    @RequestMapping("/dropClassForAdvisor/{id}}")
-    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request)
+    @RequestMapping("/dropClassForAdvisor/{id}")
+    public String dropClassAdvisor(@PathVariable("id") long id, HttpServletRequest request, Model model)
     {
-        long studentId= Long.parseLong(request.getParameter("student_id"));
+       // System.out.println("^^^^^^^^^^^^"+request.getParameter("student_in"));
+        long studentId= Long.parseLong(request.getParameter("student_in"));
+        String sStudentId = request.getParameter("student_in");
         Student student = studentRepository.findById(studentId).get();
+        System.out.println("@@@@@@@@@@@@@@@@@@@@@@"+student.getUser().getName());
         Class aClass = classRepository.findById(id).get();
         StudentClass studentClass = studentClassRepository.findByStudentAndAClass(student,aClass);
         studentClassRepository.deleteById(studentClass.getId());
-        return "redirect:/advisormain";
+        return "redirect:/viewStudents";
     }
 
 //////////////////////////////////////////////////////////////////////////////////////////FOR Department
@@ -882,7 +907,7 @@ public class HomeController {
     @RequestMapping("/getListClassToEnrollByAdvisor/{id}")
     public String getListClassToEnrollByAdvisor(@PathVariable("id") long id, Model model){
         Student student = studentRepository.findById(id).get();
-        model.addAttribute("classes_title","Classes to Enrll " + student.getUser().getName() + " In");
+        model.addAttribute("classes_title","Classes to Enroll " + student.getUser().getName() + " In");
         model.addAttribute("student_in", student.getId());
         model.addAttribute("displayEnroll",true);
         model.addAttribute("displayDrop",false);

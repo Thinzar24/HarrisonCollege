@@ -49,12 +49,21 @@
                             <p th:if="${displayEnroll == true}"><a class="btn btn-primary" th:href ="@{/enrollClassForStudent/{id}(id=${aClass.id})}">Enroll</a></p>
                             <p th:if="${displayDrop == true}"><a class="btn btn-primary" th:href ="@{/dropClassForStudent/{id}(id=${aClass.id})}">Drop</a></p>
                         </div>
-                        <div sec:authorize="hasAuthority('Advisor')">
-                            <input type="hidden" th:value ="${student_in}" name = "student_id">
-                            <p th:if="${displayEnroll == true}"><a class="btn btn-primary" th:href ="@{/enrollClassForAdvisor/{id}(id=${aClass.id})}">Enroll Student</a></p>
-                            <p th:if="${displayDrop == true}"><a class="btn btn-primary" th:href ="@{/dropClassForAdvisor/{id}(id=${aClass.id})}">Drop Student</a></p>
-                        </div>
 
+                        <div sec:authorize="hasAuthority('Advisor')">
+
+                            <form th:if="${displayEnroll == true}" method="get" th:action="@{/enrollClassForAdvisor/{id}(id=${aClass.id})}">
+                                <input type="hidden" th:value ="${student_in}" name = "student_in">
+                                <button class="btn btn-primary" type="submit">Enroll Student</button>
+                            </form>
+
+
+                            <form th:if="${displayDrop == true}" method="get" th:action="@{/dropClassForAdvisor/{id}(id=${aClass.id})}">
+                                <input type="hidden" th:value ="${student_in}" name = "student_in">
+                                <button class="btn btn-primary" type="submit">Drop Student</button>
+                            </form>
+
+                        </div>
                         <div sec:authorize="hasAuthority('Instructor')">
                             <p><a class="btn btn-primary" th:href ="@{/viewStudentInClass/{id}(id=${aClass.id})}">View Students</a>
                         </div>
