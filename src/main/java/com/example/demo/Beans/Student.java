@@ -18,6 +18,7 @@ public class Student {
     @JoinColumn(name = "major_id")
     private Major major;
 
+    @org.springframework.data.annotation.Transient
     @OneToOne(cascade = CascadeType.MERGE)
     @JoinColumn(name = "user_id")
     private User user;
